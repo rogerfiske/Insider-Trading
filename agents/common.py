@@ -77,7 +77,7 @@ if ENV_PATH.exists():
 # verification against Anthropic's current model list before real operation.
 
 DEFAULT_MODEL = os.environ.get("INSIDER_MODEL", "claude-sonnet-4-5-20250929")
-HAIKU_MODEL = os.environ.get("INSIDER_MODEL_FAST", "claude-haiku-4-5-20250630")
+HAIKU_MODEL = os.environ.get("INSIDER_MODEL_FAST", "claude-haiku-4-5-20251001")
 OPUS_MODEL = os.environ.get("INSIDER_MODEL_DEEP", "claude-opus-4-7-20251020")
 
 

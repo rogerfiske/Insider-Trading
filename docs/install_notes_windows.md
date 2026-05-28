@@ -40,11 +40,31 @@ All tasks use the venv Python executable (`.venv\Scripts\python.exe`) and the re
 
 To uninstall: `powershell -File install\uninstall_windows.ps1`
 
-## Live Data Access
+## Live Data Access (Updated CP09)
 
-Scout agents (eddie, maggie, frank, maya) are currently prompt-based prototypes. They send prompts to Claude asking it to research public sources (SEC EDGAR, 13F filings, Fed speeches, on-chain explorers), but the Anthropic SDK `messages.create()` calls do not attach web search tools.
+Scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Each connector fetches from a specific public API or website, returning structured `SourceFetchResult` objects. The fetched data is injected into the Claude prompt so the model analyzes real evidence rather than training knowledge.
 
-This means Claude responds based on training knowledge, not live data. Live web/source grounding is deferred to a future enhancement phase.
+| Agent | Connector | Source | Requires |
+| --- | --- | --- | --- |
+| Eddie | `SecForm4Connector` | SEC EDGAR EFTS | `SEC_USER_AGENT` env var |
+| Maggie | `Sec13FConnector` | SEC data.sec.gov | `SEC_USER_AGENT` env var |
+| Frank | `FedSpeechesConnector` | federalreserve.gov | Nothing (public HTML) |
+| Maya | `EtherscanConnector` | Etherscan API | `ETHERSCAN_API_KEY` env var |
+
+All evidence is persisted as JSON under `.state/evidence/` for auditability.
+
+### SEC EDGAR Compliance
+
+- All SEC requests include a `User-Agent` header read from `SEC_USER_AGENT` env var.
+- A 200ms rate limiter prevents hitting SEC rate limits.
+- Responses are cached under `.state/cache/` with configurable TTL.
+- 403/429 errors are caught and returned as `SourceFetchResult.failure()`.
+
+### Etherscan API
+
+- Maya requires `ETHERSCAN_API_KEY` in `.env` for on-chain data.
+- Without the key, Maya degrades gracefully (returns a clear config_error).
+- A 250ms rate limiter prevents hitting Etherscan rate limits.
 
 ## Environment Variable Naming
 
@@ -83,10 +103,11 @@ All 17 file blocks from `docs/source/original_prompt.md` have been extracted and
 
 ### Deferred Items
 
-- **Live source grounding** (web search tools for scouts): CP08+ enhancement candidate.
-- **Dependency installation**: Completed in CP04.
+- **Live source grounding**: Implemented in CP09 for Eddie, Maggie, Frank, Maya.
+- **Dependency installation**: Completed in CP04. pytest added in CP09.
 - **Task Scheduler registration**: CP06.
 - **Real `.env` creation**: User must edit `.env` locally with real credentials.
+- **Grounded runtime validation**: CP10 candidate (test connectors against live APIs).
 
 ## CP04 Environment Setup Notes
 
@@ -118,3 +139,14 @@ All 17 file blocks from `docs/source/original_prompt.md` have been extracted and
 - Sophie manually triggered via `Start-ScheduledTask`: completed with exit code 0, log entry confirmed at `.state/logs/sophie.log`.
 - Uninstall script verified: `install/uninstall_windows.ps1` correctly targets all 7 `Insider-*` tasks.
 - Dry-run mode remains active (`ROSS_DRY_RUN=true`). No real emails or Telegram messages were sent.
+
+## CP09 Source Connector Implementation Notes
+
+- Created `evidence/` package: `schema.py` (SourceEvidence, SourceFetchResult, EvidenceBundle dataclasses) and `store.py` (JSON file persistence under `.state/evidence/`).
+- Created `sources/` package: `base.py` (abstract BaseConnector), `sec_common.py` (SEC rate limiter, cache, User-Agent), `sec_form4.py` (Eddie), `sec_13f.py` (Maggie), `fed_speeches.py` (Frank), `onchain_base.py` (CEX addresses, token math), `etherscan.py` (Maya).
+- Updated 4 scout agents to import and use their connectors. Each agent fetches data, stores evidence, then injects formatted text into the Claude prompt.
+- Added `pytest` to `requirements.txt`. 64 unit tests across 6 test files, all passing. No live network access required.
+- All 17 source + evidence + agent files pass `py_compile`.
+- Smoke test passes 31/31 checks.
+- No scheduled tasks were changed or triggered.
+- No secrets were printed, no emails sent, no Telegram messages sent.

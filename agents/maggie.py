@@ -8,9 +8,9 @@ increases, and complete exits >= $50M. Emits one structured signal.
 
 Schedule: weekly, Sunday 19:00 local time.
 
-NOTE: This scout sends a prompt to Claude asking it to research EDGAR 13F
-filings. The current implementation does not attach web search tools.
-Responses reflect Claude's training knowledge, not verified real-time data.
+Source grounding: uses the Sec13FConnector to fetch real EDGAR data
+before calling Claude.  Claude analyzes the fetched filings rather than
+relying on training knowledge.
 """
 
 from __future__ import annotations
@@ -19,8 +19,13 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from common import run_scout
+from common import log, run_scout
+
+from evidence.schema import EvidenceBundle
+from evidence.store import save_evidence
+from sources.sec_13f import Sec13FConnector
 
 FUNDS = [
     ("Berkshire Hathaway", "0001067983"),
@@ -34,8 +39,8 @@ SYSTEM = """You are Maggie, a smart-money tracker. You watch the world's
 biggest institutional funds. You only surface moves big enough to matter.
 
 Your job:
-  1. For each fund in the watchlist, pull the most recent 13F-HR from EDGAR.
-  2. Compare against the prior quarter's 13F-HR for the same fund.
+  1. Review the LIVE SEC EDGAR 13F-HR data provided below.
+  2. For each fund, analyze the most recent filing metadata.
   3. Classify each holding's change as:
        - NEW POSITION (held now, not prior quarter)
        - INCREASED (>= 25% larger position)
@@ -61,24 +66,35 @@ If no fund has filed a new 13F since last run, output:
   {"ticker": "MACRO", "direction": "NEUTRAL", "confidence": 1,
    "reason": "no new 13F filings this week"}
 
-Never invent positions. Cite the filing date for each fund you read.
+Never invent positions. Only analyze the data provided below.
 """
 
-USER = (
-    "Pull the latest 13F-HR filings from these funds and compare "
-    "against the prior quarter:\n\n"
-    + "\n".join(f"  - {name} (CIK {cik})" for name, cik in FUNDS)
-    + "\n\nApply your filters. Pick the single most notable move. "
+USER_TEMPLATE = (
+    "Analyze the following SEC EDGAR 13F-HR data for these institutional "
+    "managers. Apply your filters. Pick the single most notable move. "
     "Output the prose summary followed by the JSON signal.\n\n"
-    "EDGAR pattern:\n"
-    "  https://www.sec.gov/cgi-bin/browse-edgar?"
-    "action=getcompany&CIK={CIK}&type=13F-HR"
+    "{source_data}"
 )
 
 
 def main() -> int:
-    """Run Maggie and print the signal summary."""
-    sig = run_scout("maggie", SYSTEM, USER)
+    """Run Maggie with source-grounded EDGAR 13F data."""
+    # 1. Fetch deterministic source data
+    connector = Sec13FConnector(managers=FUNDS)
+    result = connector.fetch()
+
+    # 2. Store evidence
+    bundle = EvidenceBundle(agent="maggie", fetch_result=result)
+    evidence_path = save_evidence(bundle)
+    log("maggie", f"evidence stored: {evidence_path}")
+
+    # 3. Format source data for Claude prompt
+    source_data = connector.format_for_prompt(result)
+
+    # 4. Run scout with grounded prompt
+    user_prompt = USER_TEMPLATE.format(source_data=source_data)
+    sig = run_scout("maggie", SYSTEM, user_prompt)
+
     print(f"[maggie] {sig.ticker} {sig.direction} conf={sig.confidence}")
     print(f"         {sig.reason}")
     return 0

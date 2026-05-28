@@ -35,17 +35,39 @@ This is an informational research and alerting prototype. It surfaces public sig
 
 **Ross** -- when Sophie fires, Ross sends a Gmail alert (always) + a Telegram message (if configured). Never places trades. Runs daily at 18:30.
 
-## Current Limitations
+## Source Grounding
 
-**Scout agents are prompt-based prototypes.** Eddie, Maggie, Frank, and Maya send prompts to Claude asking it to research public sources, but the current implementation does not attach web search tools to the Anthropic SDK calls. Responses reflect Claude's training knowledge, not verified real-time data. Live data grounding requires a future enhancement phase.
+Four scout agents now fetch live data from deterministic public sources before sending prompts to Claude. Each agent uses a dedicated connector that returns structured evidence:
 
-Janet works from local portfolio JSON files and does not require web access. Sophie and Ross are pure local logic (SQLite + Gmail SMTP).
+| Agent | Connector | Source | Classification |
+| --- | --- | --- | --- |
+| **Eddie** | `SecForm4Connector` | SEC EDGAR EFTS (Form 4 filings) | A -- deterministic, grounded |
+| **Maggie** | `Sec13FConnector` | SEC EDGAR data.sec.gov (13F-HR submissions) | A -- deterministic, grounded |
+| **Frank** | `FedSpeechesConnector` | federalreserve.gov (speeches listing + text) | A -- deterministic, grounded |
+| **Maya** | `EtherscanConnector` | Etherscan API (ERC-20 token transfers) | A -- deterministic, grounded (requires API key) |
+| **Janet** | N/A | Local portfolio JSON files | B -- local deterministic |
+| **Sophie** | N/A | Local SQLite signal window | B -- local deterministic |
+| **Ross** | N/A | Local consensus events | B -- local deterministic |
+
+All fetched evidence is stored as JSON files under `.state/evidence/` for auditability. See `docs/source_grounding.md` for details.
+
+### SEC Compliance
+
+All SEC EDGAR requests include a valid `User-Agent` header (set via `SEC_USER_AGENT` env var) and a 200ms rate limiter. Responses are cached under `.state/cache/` to reduce repeated hits. The system handles 403/429 errors gracefully.
+
+### Current Limitations
+
+- Maya requires an `ETHERSCAN_API_KEY` in `.env`. Without it, she degrades gracefully to a failure result.
+- Fed speech HTML parsing may break if the Federal Reserve website changes its layout.
+- SEC EFTS search may return empty results during low-filing periods.
+- All signals remain informational and are not trading advice.
+- Ross remains in dry-run mode unless explicitly changed.
 
 ## Status
 
-**Current checkpoint: CP07 (Final Review / Commit / Push) -- complete.**
+**Current checkpoint: CP09 (Source Connector Implementation) -- complete, awaiting PM approval.**
 
-Initial commit pushed to `origin/main`. All 7 agents registered in Windows Task Scheduler under `\InsiderRoutines\` with conservative daily schedules. All quality gates pass: compile, import, smoke test, secret scan, ignore checks. Dry-run mode remains active.
+All 4 external-facing scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Evidence schema, storage, and 64 unit tests implemented. Dry-run mode remains active.
 
 ## Project Structure
 
@@ -57,13 +79,25 @@ Insider-Trading/
   .env.example              Credential template (never commit .env)
   agents/
     common.py               Shared foundation (client, state store, delivery)
-    eddie.py                SEC Form 4 scout
-    maggie.py               13F filings scout
-    frank.py                Fed speeches scout
-    maya.py                 On-chain whale scout
+    eddie.py                SEC Form 4 scout (grounded)
+    maggie.py               13F filings scout (grounded)
+    frank.py                Fed speeches scout (grounded)
+    maya.py                 On-chain whale scout (grounded)
     janet.py                Portfolio drift scout
     sophie.py               Consensus engine
     ross.py                 Dispatcher (dry-run by default)
+  evidence/
+    schema.py               SourceEvidence, SourceFetchResult, EvidenceBundle
+    store.py                File-backed JSON evidence persistence
+  sources/
+    base.py                 Abstract BaseConnector interface
+    sec_common.py           SEC EDGAR shared utilities (rate limit, cache)
+    sec_form4.py            Form 4 connector (Eddie)
+    sec_13f.py              13F-HR connector (Maggie)
+    fed_speeches.py         Fed speeches connector (Frank)
+    onchain_base.py         On-chain utilities (CEX addresses, token math)
+    etherscan.py            Etherscan ERC-20 connector (Maya)
+  tests/                    Unit tests (pytest, 64 tests)
   config/                   Portfolio example files
   install/
     schedule_windows.ps1    Register Windows Task Scheduler tasks
@@ -75,9 +109,12 @@ Insider-Trading/
     init_project_windows.ps1  First-time setup helper
   docs/
     source/                 Original prompt, transcript, handoff prompt
+    source_grounding.md     Source connector architecture details
     checkpoints/            Checkpoint audit trail
     install_notes_windows.md  Windows-specific notes
   .state/                   Runtime state (gitignored except .gitkeep)
+    evidence/               JSON evidence files (auto-created)
+    cache/                  SEC response cache (auto-created)
 ```
 
 ## Environment Variables

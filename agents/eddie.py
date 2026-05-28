@@ -8,10 +8,9 @@ and emits a single structured signal for Sophie's consensus engine.
 
 Schedule: daily, 06:00 local time.
 
-NOTE: This scout sends a prompt to Claude asking it to research SEC EDGAR.
-The current implementation does not attach web search tools to the API call.
-Responses reflect Claude's training knowledge, not verified real-time data.
-Live data grounding requires a future enhancement phase.
+Source grounding: uses the SecForm4Connector to fetch real EDGAR data
+before calling Claude.  Claude analyzes the fetched filings rather than
+relying on training knowledge.
 """
 
 from __future__ import annotations
@@ -20,24 +19,27 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+# Add repo root for sources/ and evidence/ imports
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from common import run_scout
+from common import log, run_scout
+
+from evidence.schema import EvidenceBundle
+from evidence.store import save_evidence
+from sources.sec_form4 import SecForm4Connector
 
 SYSTEM = """You are Eddie, a financial intelligence agent. Your job is to
 watch every Form 4 insider filing published by the SEC in the last 24
 hours. You only surface buys that matter.
 
 Your job:
-  1. Query the SEC EDGAR full-text search for Form 4 filings published in
-     the last 24 hours.
-  2. Parse each filing's XML for: issuer (ticker + name), filer + role,
-     transaction code, share count, price, total value, filing date.
-  3. Filter to:
+  1. Review the LIVE SEC EDGAR Form 4 data provided below.
+  2. Identify filings where:
        - Transaction code = P (open-market purchase)
        - Total value >= $100,000
        - Filer role of CEO, CFO, President, Chairman, or Director
-  4. Group multiple buys by the same insider on the same day.
-  5. Pick THE SINGLE most notable buy (highest value, then highest seniority).
+  3. Group multiple buys by the same insider on the same day.
+  4. Pick THE SINGLE most notable buy (highest value, then highest seniority).
 
 Then output a short prose summary (one paragraph), followed by a STRICT
 JSON object on its own line, exactly in this shape:
@@ -47,27 +49,39 @@ JSON object on its own line, exactly in this shape:
 
 Confidence scale: 1 = small buy, sub-CEO; 5 = CEO buying >$1M of own stock.
 
-If no qualifying filings exist in the last 24h, output:
+If no qualifying filings exist in the provided data, output:
 
   {"ticker": "MACRO", "direction": "NEUTRAL", "confidence": 1,
    "reason": "no qualifying Form 4 insider buys in the last 24 hours"}
 
-Never invent filings. Never include filings you can't verify.
+Never invent filings. Only analyze the data provided below.
 """
 
-USER = """Search SEC EDGAR for Form 4 filings published in the last 24 hours.
-Apply your filters. Pick the single most notable buy. Output the prose
-summary followed by the JSON signal.
+USER_TEMPLATE = """Analyze the following SEC EDGAR Form 4 data and apply your
+filters. Pick the single most notable buy. Output the prose summary followed
+by the JSON signal.
 
-EDGAR search URL pattern:
-  https://efts.sec.gov/LATEST/search-index?forms=4&dateRange=custom
-
-Use the current date as the upper bound of the dateRange."""
+{source_data}"""
 
 
 def main() -> int:
-    """Run Eddie and print the signal summary."""
-    sig = run_scout("eddie", SYSTEM, USER)
+    """Run Eddie with source-grounded EDGAR data."""
+    # 1. Fetch deterministic source data
+    connector = SecForm4Connector()
+    result = connector.fetch()
+
+    # 2. Store evidence
+    bundle = EvidenceBundle(agent="eddie", fetch_result=result)
+    evidence_path = save_evidence(bundle)
+    log("eddie", f"evidence stored: {evidence_path}")
+
+    # 3. Format source data for Claude prompt
+    source_data = connector.format_for_prompt(result)
+
+    # 4. Run scout with grounded prompt
+    user_prompt = USER_TEMPLATE.format(source_data=source_data)
+    sig = run_scout("eddie", SYSTEM, user_prompt)
+
     print(f"[eddie] {sig.ticker} {sig.direction} conf={sig.confidence}")
     print(f"        {sig.reason}")
     return 0

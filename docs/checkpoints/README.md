@@ -34,13 +34,15 @@ Only `.example` files with placeholder values may be committed.
 
 ## Checkpoint History
 
-| Checkpoint | Description                               | Status                         |
-| ---------- | ----------------------------------------- | ------------------------------ |
-| CP00       | Environment Inspection                    | Complete                       |
-| CP01       | Implementation Plan                       | Complete                       |
-| CP02       | Project Scaffold                          | Complete                       |
-| CP03       | Agent Port                                | Complete                       |
-| CP04       | Windows Install / Local Environment Setup | Complete                       |
-| CP05       | Safe Runtime Smoke Tests                  | Complete                       |
-| CP06       | Task Scheduler Activation                 | Complete                       |
-| CP07       | Final Review / Commit / Push              | Complete                       |
+| Checkpoint | Description                               | Status                           |
+| ---------- | ----------------------------------------- | -------------------------------- |
+| CP00       | Environment Inspection                    | Complete                         |
+| CP01       | Implementation Plan                       | Complete                         |
+| CP02       | Project Scaffold                          | Complete                         |
+| CP03       | Agent Port                                | Complete                         |
+| CP04       | Windows Install / Local Environment Setup | Complete                         |
+| CP05       | Safe Runtime Smoke Tests                  | Complete                         |
+| CP06       | Task Scheduler Activation                 | Complete                         |
+| CP07       | Final Review / Commit / Push              | Complete                         |
+| CP08       | Live Source Grounding Plan                | Complete -- awaiting PM approval |
+| CP09       | Source Connector Implementation           | Complete -- awaiting PM approval |
