@@ -44,5 +44,6 @@ Only `.example` files with placeholder values may be committed.
 | CP05       | Safe Runtime Smoke Tests                  | Complete                         |
 | CP06       | Task Scheduler Activation                 | Complete                         |
 | CP07       | Final Review / Commit / Push              | Complete                         |
-| CP08       | Live Source Grounding Plan                | Complete -- awaiting PM approval |
-| CP09       | Source Connector Implementation           | Complete -- awaiting PM approval |
+| CP08       | Live Source Grounding Plan                | Complete                         |
+| CP09       | Source Connector Implementation           | Complete                         |
+| CP10       | Grounded Runtime Validation / Commit/Push | Complete                         |
