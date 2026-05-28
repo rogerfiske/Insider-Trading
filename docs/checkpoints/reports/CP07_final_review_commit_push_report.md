@@ -149,7 +149,27 @@ git add .gitignore .env.example README.md requirements.txt
 git add agents/ scripts/ install/ config/ docs/ .state/.gitkeep
 ```
 
-**PLACEHOLDER: staged file list will be confirmed after staging.**
+48 files staged (verified via `git diff --cached --name-only`):
+
+```
+.env.example                    agents/__init__.py
+.gitignore                      agents/common.py
+.state/.gitkeep                 agents/eddie.py .. ross.py .. sophie.py
+README.md                       config/.gitkeep
+requirements.txt                config/portfolio_current.example.json
+docs/checkpoints/CHECKPOINT_PROTOCOL.md
+docs/checkpoints/README.md
+docs/checkpoints/instructions/CP02..CP07 (6 files)
+docs/checkpoints/reports/CP01..CP07 (7 files)
+docs/install_notes_windows.md
+docs/source/original_prompt.md
+docs/source/Insider_Trading_Windows_Windsurf_Claude_Code_Handoff_Prompt.md
+docs/source/video_transcript.txt
+install/schedule_windows.ps1    install/uninstall_windows.ps1
+install/cross_platform/ (4 shell scripts + .gitkeep)
+scripts/init_project_windows.ps1
+scripts/run_agent.ps1           scripts/smoke_test_windows.ps1
+```
 
 ---
 
@@ -161,25 +181,57 @@ Verified with:
 git diff --cached --name-only | Select-String -Pattern '^\.env$|^\.venv/|^\.claude/|^\.state/(?!\.gitkeep)|\.log$|\.db$|\.sqlite$|\.sqlite3$|config/portfolio_target\.json|config/portfolio_current\.json'
 ```
 
-**PLACEHOLDER: will be confirmed after staging.**
+Result: `NO FORBIDDEN FILES STAGED -- CLEAN`
+
+**PASS** -- no `.env`, `.venv/`, `.claude/`, `.state/` (except `.gitkeep`), `.log`, `.db`, `.sqlite`, or private portfolio files were staged.
 
 ---
 
 ## 13. Gate 8 -- Commit
 
-**PLACEHOLDER: commit hash will be added after commit.**
+```text
+git commit -m "Initial Windows Insider Trading agent scaffold"
+
+[main (root-commit) ca99296] Initial Windows Insider Trading agent scaffold
+ 48 files changed, 8403 insertions(+)
+```
+
+**Commit hash:** `ca99296b4b0a9edd74e42338d67a0a4fed94e3c6`
+
+**PASS** -- initial commit created successfully.
 
 ---
 
 ## 14. Gate 9 -- Push Result
 
-**PLACEHOLDER: push result will be added after push.**
+```text
+git push -u origin main
+
+branch 'main' set up to track 'origin/main'.
+To https://github.com/rogerfiske/Insider-Trading.git
+ * [new branch]      main -> main
+```
+
+**PASS** -- pushed successfully to `origin/main`.
 
 ---
 
 ## 15. Gate 10 -- Post-Push Tracked-File Safety Verification
 
-**PLACEHOLDER: will be added after push.**
+```text
+git status --short     -> (clean, no output)
+git log --oneline -1   -> ca99296 Initial Windows Insider Trading agent scaffold
+git ls-files           -> 48 tracked files
+```
+
+Forbidden file check on tracked files:
+
+```text
+git ls-files | Select-String -Pattern '<forbidden patterns>'
+Result: NO FORBIDDEN FILES TRACKED -- CLEAN
+```
+
+**PASS** -- no `.env`, `.venv/`, `.claude/`, `.state/` (except `.gitkeep`), logs, databases, or private portfolio files are tracked.
 
 ---
 
@@ -243,4 +295,15 @@ No blocking issues.
 
 ## 23. Final Completion
 
-**PLACEHOLDER: will be filled after push verification.**
+CP07 (Final Review / Commit / Push) is complete.
+
+- **Commit 1:** `ca99296b4b0a9edd74e42338d67a0a4fed94e3c6` -- Initial Windows Insider Trading agent scaffold (48 files, 8403 insertions)
+- **Commit 2:** *(this report update)* -- see below
+- **Push:** Succeeded to `origin/main` at `https://github.com/rogerfiske/Insider-Trading.git`
+- **All 10 quality gates:** PASS
+- **No secrets committed.** No forbidden files tracked.
+- **No real emails, Telegram messages, or scheduled task changes.**
+
+The Insider Trading project is now live on GitHub with all CP01-CP07 checkpoint documentation, agent code, scheduler scripts, and safety protections in place. Scout agents remain prompt-based prototypes (no live data grounding). Ross remains in dry-run mode.
+
+Recommended next steps: CP08 (Live Source Grounding) and CP09 (Alert Delivery Enablement).
