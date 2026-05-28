@@ -1,0 +1,40 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Runtime state
+.state/*
+!.state/.gitkeep
+
+# Local output / generated files
+logs/
+/reports/
+data/raw/
+data/cache/
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# Private portfolio/config files
+config/portfolio_target.json
+config/portfolio_current.json
+
+# IDE / OS / tooling config
+.vscode/
+.idea/
+.windsurf/
+.claude/
+.DS_Store
+Thumbs.db

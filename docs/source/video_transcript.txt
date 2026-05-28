@@ -1,0 +1,111 @@
+Chapter 1: CEO Trades Are Public Record
+0:00When the CEO of a massive company puts half a million dollars of his own money in his own stock, what do you think's
+0:077 secondsgoing on there? Yeah, he knows something's coming. But you might not know that CEO has to declare that trade he made by federal law. So, if you've
+0:1717 secondsever been frustrated about the insider trading of the top dogs, today is the day of retribution. We're going to use
+0:2424 secondsthe insanely cool capabilities of AI to get as close to that insider trading world as possible. So, in today's video,
+0:3232 secondsI'm going to be giving you seven AI agents that scrapes information from the US government, which I'm pretty sure is legal. I'm going to give you a simple
+0:4040 secondscopy and paste prompt that you can put into your AI right now, and I can guarantee you're going to have this whole thing up and running on the cloud
+0:4747 seconds24/7 in the next 15 minutes. Everything is absolutely free for you to take. Just use the link in the top line of the description. That will bring you to 01
+0:5656 secondssystems. Come up to the top where it says classroom. Then click onto YouTube video prompts. This is all free, by the way. And there you are. You're going to copy and paste this entire prompt.
+1:061 minute, 6 secondsFirst, I'm going to talk about the agents and then we're going to get into the actual tutorial. I'll go click by click and show you every step of the
+1:131 minute, 13 secondsprocess. So, right after you subscribe, let's get into it.
+Chapter 2: Meet the 7 Agents
+1:221 minute, 22 secondsSo, something I love to do when I create AI agents is create real names for them.
+1:261 minute, 26 secondsNot like really weird AI names, but legit names. So, today we're going to create Eddie, Maggie, Frank, Maya,
+1:341 minute, 34 secondsJanet, Sophie, and Ross. And they're all going to do slightly different things.
+1:381 minute, 38 secondsAnd the way they all come together, I think, is really, really unique. And so I'm going to explain that now because we're going to be running something called a consensus model here because
+1:471 minute, 47 secondsfive of the agents are going out to the internet into the deep dark corners of the US government pulling that information back and then giving it to
+1:551 minute, 55 secondsanother agent. That agent forms the consensus team even though the team is just one person. And what the consensus
+2:022 minutes, 2 secondsteam does is analyzes all of these indicators and signals that have come through from the five agents. looks at all of those signals and determines
+2:102 minutes, 10 secondswhether these signals are legit and should be progressed with. If they do need to be progressed with and a trade actually needs to be executed, well then
+2:172 minutes, 17 secondsyou as the owner of these agents needs to be alerted. So you can be alerted in many different ways. In the tutorial we're going to go over today, you're going to be alerted by email on your
+2:262 minutes, 26 secondsGmail account, but it could also be Telegram. It could be anywhere that you want to set up, but I think a nice simple email is most accessible for most
+2:342 minutes, 34 secondspeople. Now, if the consensus team realizes that only two out of the five uh signals that it's received in are compelling, then nothing will happen and
+2:422 minutes, 42 secondsyou won't be alerted and no trades will be executed. And I wanted to make it this way where the majority, three out of five at least, have to agree in all
+2:502 minutes, 50 secondsthe signals that they've pulled together before any trades are made. Now, this does result in a lower trading frequency, but when you do get the go
+2:582 minutes, 58 secondsfrom the consensus team, it's a strong signal. I'd rather trade less with strong signals when it does happen than trade a lot with weak or medium signals.
+Chapter 3: How Each Scout Works
+3:073 minutes, 7 secondsSo, let's talk about the first agent and his name is Eddie. Every morning, Eddie will go out to the SEC database and he
+3:143 minutes, 14 secondsgoes out to see if any CEOs have bought their own stocks and even for that matter any stocks. What are they buying?
+3:213 minutes, 21 secondsBecause it's likely if they're buying other stocks, it's probably because they've heard some information from their big and rich friends in other companies. The idea here is that Eddie
+3:293 minutes, 29 secondscan read that information and understand that information even before you wake up. Next, we move on to Maggie. Now, what Maggie does is she goes over to
+3:373 minutes, 37 secondsplaces like Birkshshire Hathaway and Bridgewater and Renaissance. And she'll do this every Sunday just to see what these companies are buying. These are
+3:453 minutes, 45 secondsthe top dogs in the world in the world of investing. And so, if they know something's up, then this is a good signal. And remember the scores that Eddie and Maggie give to these signals,
+3:533 minutes, 53 secondswhether it's like thumbs up or thumbs down, those get sent to the consensus team and the consensus team is adding those up. Next, we'll move on to Frank.
+4:014 minutes, 1 secondAnd what Frank is doing is he's listening for all of the Fed speeches that take place. So every Monday morning, he's going to look back over the last week. Did any Fed speeches take
+4:104 minutes, 10 secondsplace? What were they saying? Are we are we dovish or are we hawkish? It's pulling all this information and it will deduce a single signal from that
+4:184 minutes, 18 secondsinformation. Again, that signal can either not be sent or be sent down the ladder to the consensus team. Then we also have Maya. And Maya's interesting
+4:264 minutes, 26 secondsbecause she's actually watching the blockchain. So, she's looking at these big wallets and big wallet transfers, otherwise known as whale movements. And
+4:344 minutes, 34 secondsshe's doing that every 6 hours. So, there may be a known wallet for Jaime Diamond, for example. And if he's made a massive purchase of stocks and that's
+4:444 minutes, 44 secondsbeen recorded on the SEC form 4 filings and he's recently had a huge move from his known crypto wallet, these are signals that he's likely moved from
+4:524 minutes, 52 secondscrypto liquidity into buying these stocks. It's not 100% certain, but these are signals, not certainties. Now, as a nice little bonus, we also have Janet.
+5:005 minutesAnd Janet is watching your wallets and your portfolio just to make sure that nothing has gone stale or things are up to date. Relatively speaking, Janet will
+5:095 minutes, 9 secondscome mostly into play down the line once you've been using this system. Then we move into our consensus team. And the head of our consensus team is Sophie.
+Chapter 4: Sophie, Ross & the Signal
+5:185 minutes, 18 secondsAnd as mentioned earlier, Sophie is listening to all of the five agents we've just talked about. Her job is actually very very simple. She's just
+5:245 minutes, 24 secondsdoing 1 plus 1 + 1 equals go. And uh so so her job is very very easy, but it is
+5:315 minutes, 31 secondsa necessary layer. And so then Sophie adds them all up. Let's say she's got four out of five signals. This is a really strong signal. She'll go to Ross
+5:395 minutes, 39 secondsat that point and Ross is the head of outreach. He's like letting you know what's happening. So, he's the one who will send that email to you based on
+5:465 minutes, 46 secondswhat Sophie has told him. He is the only agent that can actually reach into the outside world and communicate with you.
+Chapter 5: Install in 15 Minutes
+5:525 minutes, 52 secondsSo, now you know how it works. Let's get into the oneshot prompt, shall we? So, on the screen, as I mentioned earlier, we can scroll all the way down. This is a huge prompt, by the way, just to let
+6:016 minutes, 1 secondyou know how much work goes into these prompts. and take that huge prompt, copy it, come over to our Clawude. I'm using the Claude app just because I think it's most accessible to most people here.
+6:116 minutes, 11 secondsWe're going to click paste and enter. Now, this will be a click byclick.
+6:156 minutes, 15 secondsYou'll see everything happen on the screen tutorial. Also, what I want you to know is that this prompt that I'm using on today's video may not be
+6:236 minutes, 23 secondsreflective of the exact same prompt that you're going to use when you're going through this. The reason I say that is because in 01 systems whenever anyone
+6:316 minutes, 31 secondshas a problem prompt is then fixed and redone. It's remade with that fix. And so the version you use will be the most
+6:386 minutes, 38 secondsup to date but it also may improve over time. So I've just been reminded of one thing here. Claude will always pop up and ask me to do things. I don't want it
+6:466 minutes, 46 secondsto keep asking me. So I'm going to click allow once. I'm going to come over to permissions. Click bypass permissions.
+6:526 minutes, 52 secondsIt's going to take me over to my settings here. And you'll see right here it says local sessions allow bypass permission mode. Yes, we want to do that. We're going to go back into our
+7:017 minutes, 1 secondarea here and click always allow. Um I'm going to say bypass permissions turn on.
+7:067 minutes, 6 secondsAnd there we go. We should be up and running now. The first step it's going to do is check my computer because if you're on a Windows, you need a
+7:137 minutes, 13 secondsdifferent process to set this up. But I'm on Mac, so it's going to detect that right now. You can see it's detected that I'm on MacOSS and the Python that
+7:227 minutes, 22 secondsI've got is detecting everything. It's called an environment check. It will do the same for you if you're on Windows or whatever you're on. You can also see that it's actually creating the
+7:317 minutes, 31 secondsdifferent agents. It's creating these agents now for you in the computer. And it's just going to walk walk you through a very small process to fully set this
+7:387 minutes, 38 secondsup so it's personalized to you. All right. So, it's been I don't know how long this took actually. Probably seven or eight minutes to get done. And it is
+7:477 minutes, 47 secondsdone now. We are we do have three steps to go through just to enter some in enter in some credentials for you so it all works properly. There is something
+Chapter 6: What Is a .env File
+7:547 minutes, 54 secondscalled an env file. It's called an environment file. This is a secretive file where you can put your API keys so that no one else sees them. It's a very
+8:028 minutes, 2 secondsimportant document and it will actually open up the document in your computer as well as what it's done for me. It opened up my API keys uh page on Anthropic
+8:128 minutes, 12 secondsbecause we're going to need the API key from Anthropic. So, the first thing you want to do is come over to create a key.
+8:188 minutes, 18 secondsWe're going to come down here and call it I don't know what you might call this seven agents or whatever it is or insider trading. Then you've got an API
+8:258 minutes, 25 secondskey here. You're going to click copy key and somewhere on your computer for me it just kind of opened over here. I'm going to bring it over to you. And it does this all automatically by the way. It
+8:348 minutes, 34 secondsjust opens up these documents which I find very very helpful. So in here you can see that there's a few things that we require to make sure we have this
+8:428 minutes, 42 secondsinsider routines configured. So, the anthropic API key, we can get one at that place, but it's already opened that for us. And right after the space key,
+8:508 minutes, 50 secondswe're going to paste in the API key that we got here. The next things we're going to need are a Gmail username and a a
+8:578 minutes, 57 secondsGmail app password, but I don't want to skip ahead. I just want to say uh something here. All right, I've actually
+9:049 minutes, 4 secondsput the Anthropic API key in there already. And we'll click enter, and it should move us on to the next step. It's now checking that to make sure it looks
+9:129 minutes, 12 secondsright before moving on. And I actually just realized I haven't saved it. So I need to click save, which is just command S or whatever you're using. I've saved it. That should actually work now.
+9:219 minutes, 21 secondsAnd it's opening up Gmail's app passwords page. It says it's open. Uh so where did it open it? Oh, look at that.
+9:289 minutes, 28 secondsIt's just on my Gmail. It's just open already. So I'm going to sign in. And uh it's going to ask me to create an app name. So I'm going to say insider. Oh,
+9:369 minutes, 36 secondswhat's his name? I didn't need the insider Ross. So this is going to be Ross. And he's just going to be the one emailing me. generated me an app
+9:449 minutes, 44 secondspassword. So, I can copy that. I can come over to my ENV file and I can see my app password is there. And I just put
+9:519 minutes, 51 secondsin my email address here on the Gmail user. So, I'm going to do that now and I'm going to again just click save.
+9:579 minutes, 57 secondsRight. So, I've just done my copy and paste save. I'm going to tell the AI that I'm done. Okay. I'm done with that step. Okay. So, that should be set up
+10:0410 minutes, 4 secondsand ready to go. It's running it now just to make sure it's all working. It's validating the credentials that we've just given about the Gmail. Oh, I put
+10:1210 minutes, 12 secondsspaces in when I shouldn't have into this password. So, it's now deleted those spaces and just made it right.
+10:1810 minutes, 18 secondsIt's all wired up with leisjackgmail.com.
+10:2110 minutes, 21 secondsAnd step three is a telegram if I want to do the telegram. Now, you can look the tutorial's built into the onboarding agent, right? So, you can just go
+10:2810 minutes, 28 secondsthrough it. I don't want to use the the telegram right now, so I'm just going to say skip. And now it's setting up Janet.
+10:3410 minutes, 34 secondsThis is the portfolio drift scout. And so, we can edit the files in this document later on. Like I said, you can track your own wallet. You don't
+10:4210 minutes, 42 secondsnecessarily have to, but I think this can effectively run with six agents instead of the seven, but the seventh one is, you know, optional if you want
+10:5010 minutes, 50 secondsit. It's now doing a test. It's actually running Eddie right now. So, it's proving that everything is all linked up and the actual process works. And it is
+Chapter 7: System Live & Demo Email
+10:5910 minutes, 59 secondsnow complete. Like, the whole thing has been installed. It's incredibly easy.
+11:0311 minutes, 3 secondsLike, I I'm so I love this so much. And you know what I love as well? I love making these oneshot prompts that people can just use. The amount of times I see
+11:1011 minutes, 10 secondspeople who message me, especially in the the 01 systems community, they're like, I've never used AI before and I've just
+11:1611 minutes, 16 secondsmade this thing. I I just I love seeing that. And I urge you to go to 01 Systems as well, which you can click that link
+11:2411 minutes, 24 secondsright there and check it out. It's such a cool free little community and there's three and a half thousand people in there and I've barely talked about it, so I know it's good. So, as it stands
+11:3211 minutes, 32 secondsright now, I'm going to get my first email from Ross within a week. Sophie only fires when at least three of the five scouts agree. And that needs the
+11:4011 minutes, 40 secondsscouts to have run a few times first, which is understandable. So, I'm going to just ask it just for the sake of showing you on this video. Um, if it can
+11:4811 minutes, 48 secondsmock up get Ross to mock up an email as if there has been something uh to to email me. So, I'm going to leave him a
+11:5511 minutes, 55 secondsmessage. Can you just get Ross now to manually fire an example email to me as if signals were triggered and just to
+12:0312 minutes, 3 secondskind of see what it looks like? So, I've just headed over to my Gmail and I can see that I've got an email, an insider consensus bullish on Nvidia. So, Sophie
+12:1112 minutes, 11 secondssaid the consensus was bullish on Nvidia. Three of the five scouts agree.
+12:1512 minutes, 15 secondsEddie said this cuz uh Jensen Hang bought 25,000 shares about.2 million uh of Nvidia. Maggie said Renaissance
+12:2412 minutes, 24 secondsTechnologies added 4.1 million shares to their position in their latest 13F form.
+12:3012 minutes, 30 secondsand Frank said that Powell plus two governors are net doubbish this week. Um the rates cut back on the table for Q1
+12:3712 minutes, 37 secondsand so that's why we're bullish on Nvidia. This is as close as we're going to get to the door. We've got our ears on the door and inside they're trading
+12:4612 minutes, 46 secondstogether. They're doing insider trading in there and we've got an AI with its ear to the door listening in. This is as close as we're going to get to insider
+12:5312 minutes, 53 secondstrading. Go over to 01 systems. Get your oneshot monster prompt here. install this on your own system. I'll see you in the next one.
+
