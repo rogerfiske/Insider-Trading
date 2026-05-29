@@ -160,3 +160,14 @@ All 17 file blocks from `docs/source/original_prompt.md` have been extracted and
 - Website passwords must not be stored in `.env`. Only API keys and user-agent strings are used by the code.
 - `ETHERSCAN_ACCOUNT_EMAIL`, `ETHERSCAN_USERNAME`, `SEC_API_IO_*` fields are optional local account-reference notes only.
 - Ross remains in dry-run mode (`ROSS_DRY_RUN=true`).
+
+## CP12A Telegram Alert Preparation Notes
+
+- `.env.example` already contains empty Telegram placeholders: `TELEGRAM_BOT_TOKEN=` and `TELEGRAM_CHAT_ID=`.
+- Local `.env` has these keys present (currently blank).
+- Ross remains in dry-run mode. No Telegram messages are sent until CP12B.
+- Telegram setup requires creating a bot via `@BotFather` in Telegram and obtaining:
+  1. Bot token from `/newbot` command.
+  2. Chat ID from the Telegram API after sending a test message to the bot.
+- Do not store your personal Telegram login password in `.env` -- only the bot token and chat ID are used.
+- No Telegram password placeholders (`TELEGRAM_PASSWORD`, `TELEGRAM_2FA_PASSWORD`) are added to the repo.
