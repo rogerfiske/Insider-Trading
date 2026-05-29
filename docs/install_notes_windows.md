@@ -171,3 +171,28 @@ All 17 file blocks from `docs/source/original_prompt.md` have been extracted and
   2. Chat ID from the Telegram API after sending a test message to the bot.
 - Do not store your personal Telegram login password in `.env` -- only the bot token and chat ID are used.
 - No Telegram password placeholders (`TELEGRAM_PASSWORD`, `TELEGRAM_2FA_PASSWORD`) are added to the repo.
+
+## CP12B Telegram Live Test Notes
+
+- Telegram bot token validated and chat ID obtained: `1419071217`.
+- One controlled test message delivered successfully (Message ID: 4).
+- `scripts/telegram_setup_check.py` created for future chat ID retrieval.
+- Telegram integration validated end-to-end. Ross can now deliver Telegram alerts when dry-run is disabled.
+- Ross remains in dry-run mode (`ROSS_DRY_RUN=true`).
+
+## CP13B Generic SMTP Implementation Notes
+
+- Email delivery refactored from Gmail-specific to provider-neutral SMTP.
+- New `alerts/` module created with `smtp_email.py` for generic SMTP delivery.
+- `agents/common.py` `send_email()` function refactored to use `alerts.smtp_email`.
+- `.env.example` updated with generic SMTP placeholders:
+  - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USE_SSL`, `SMTP_USERNAME`, `SMTP_PASSWORD`
+  - `ALERT_EMAIL_FROM`, `ALERT_EMAIL_TO`
+- Legacy Gmail variables (`GMAIL_USER`, `GMAIL_APP_PASSWORD`, `GMAIL_TO`) marked deprecated in `.env.example`.
+- `scripts/smtp_test.py` created for SMTP config validation and controlled test email sending.
+- Run `python scripts\smtp_test.py` to check SMTP configuration status (SET/BLANK/MISSING).
+- Run `python scripts\smtp_test.py --send-test` to send one controlled test email.
+- Supports SMTP over SSL/TLS (port 465) and STARTTLS (port 587).
+- Works with any SMTP provider: Gmail, 4SecureMail, etc.
+- All SMTP passwords are redacted from error messages and never printed.
+- Ross remains in dry-run mode (`ROSS_DRY_RUN=true`).

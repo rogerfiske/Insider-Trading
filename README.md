@@ -4,7 +4,7 @@
 
 ## Purpose
 
-A Windows 11 implementation of the "Insider Routines" project described in Lewis Jackson's video "So My AI Agent Does Insider Trading Now." Seven AI agents read public US-government signals (SEC Form 4, 13F filings, Fed speeches, on-chain whale moves, plus portfolio drift) and deliver a Gmail alert when at least three of them agree.
+A Windows 11 implementation of the "Insider Routines" project described in Lewis Jackson's video "So My AI Agent Does Insider Trading Now." Seven AI agents read public US-government signals (SEC Form 4, 13F filings, Fed speeches, on-chain whale moves, plus portfolio drift) and deliver an email alert (via generic SMTP) when at least three of them agree.
 
 This is an informational research and alerting prototype. It surfaces public signals for human review. It never places trades.
 
@@ -33,7 +33,7 @@ This is an informational research and alerting prototype. It surfaces public sig
 
 ### Dispatcher (1)
 
-**Ross** -- when Sophie fires, Ross sends a Gmail alert (always) + a Telegram message (if configured). Never places trades. Runs daily at 18:30.
+**Ross** -- when Sophie fires, Ross sends an email alert via generic SMTP (always) + a Telegram message (if configured). Never places trades. Runs daily at 18:30.
 
 ## Source Grounding
 
@@ -65,9 +65,9 @@ All SEC EDGAR requests include a valid `User-Agent` header (set via `SEC_USER_AG
 
 ## Status
 
-**Current checkpoint: CP09 (Source Connector Implementation) -- complete, awaiting PM approval.**
+**Current checkpoint: CP13B (Generic SMTP Implementation) -- in progress.**
 
-All 4 external-facing scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Evidence schema, storage, and 64 unit tests implemented. Dry-run mode remains active.
+All 4 external-facing scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Telegram alert delivery validated end-to-end (CP12B). Generic SMTP email delivery now supports any SMTP provider (Gmail, 4SecureMail, etc.) via provider-neutral configuration. Dry-run mode remains active.
 
 ## Project Structure
 
@@ -107,6 +107,8 @@ Insider-Trading/
     run_agent.ps1           Run a named agent manually
     smoke_test_windows.ps1  Pre-flight checks (no API needed)
     init_project_windows.ps1  First-time setup helper
+    smtp_test.py            SMTP config check and test email sender
+    telegram_setup_check.py Telegram chat ID retrieval helper
   docs/
     source/                 Original prompt, transcript, handoff prompt
     source_grounding.md     Source connector architecture details

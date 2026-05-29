@@ -9,7 +9,7 @@ and Ross (dispatcher). Provides:
   - read_window()         Read the rolling 7-day window of scout signals
   - record_signal()       Write a scout signal to the state store
   - record_consensus()    Write a consensus event to the state store
-  - send_email()          Gmail SMTP via app password
+  - send_email()          Generic SMTP via provider-neutral config
   - send_telegram()       Optional Telegram bot delivery
   - log()                 Append-only log to .state/logs/
 
@@ -30,13 +30,11 @@ from __future__ import annotations
 
 import json
 import os
-import smtplib
 import sqlite3
 import sys
 import textwrap
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from email.message import EmailMessage
 from pathlib import Path
 from typing import Any
 
@@ -356,32 +354,27 @@ def is_dry_run() -> bool:
 
 
 def send_email(subject: str, body: str) -> None:
-    """Send an email via Gmail SMTP.
+    """Send an email via generic SMTP.
 
-    Requires GMAIL_USER and GMAIL_APP_PASSWORD in .env.
+    Uses provider-neutral SMTP configuration from .env:
+      SMTP_HOST, SMTP_PORT, SMTP_USE_SSL, SMTP_USERNAME, SMTP_PASSWORD,
+      ALERT_EMAIL_FROM, ALERT_EMAIL_TO
+
     Respects dry-run mode -- logs instead of sending if dry-run is active.
+
+    Raises:
+        RuntimeError: If email send fails or configuration is invalid
     """
     if is_dry_run():
         log("ross", f"[DRY-RUN] would send email: {subject}")
         return
 
-    user = os.environ.get("GMAIL_USER")
-    pw = os.environ.get("GMAIL_APP_PASSWORD")
-    to = os.environ.get("GMAIL_TO", user)
-    if not user or not pw:
-        raise RuntimeError(
-            "GMAIL_USER / GMAIL_APP_PASSWORD not set. Add them to .env"
-        )
+    # Import here to avoid circular dependency
+    from alerts.smtp_email import send_email as smtp_send
 
-    msg = EmailMessage()
-    msg["Subject"] = subject
-    msg["From"] = user
-    msg["To"] = to
-    msg.set_content(body)
-
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
-        s.login(user, pw)
-        s.send_message(msg)
+    result = smtp_send(subject, body)
+    if not result["success"]:
+        raise RuntimeError(f"Email send failed: {result['error']}")
 
 
 def send_telegram(text: str) -> bool:
