@@ -33,7 +33,16 @@ This is an informational research and alerting prototype. It surfaces public sig
 
 ### Dispatcher (1)
 
-**Ross** -- when Sophie fires, Ross sends an email alert via generic SMTP (always) + a Telegram message (if configured). Never places trades. Runs daily at 18:30.
+**Ross** -- when Sophie fires, Ross applies alert routing policy (severity classification, deduplication, channel routing) and sends alerts via email/Telegram based on policy and channel enablement. Never places trades. Runs daily at 18:30.
+
+Alert routing features:
+
+- **Severity levels**: INFO, WATCH, ACTIONABLE, URGENT (based on scout count and aggregate confidence)
+- **Alert classes**: LOG_ONLY, TELEGRAM_ONLY, EMAIL_ONLY, TELEGRAM_AND_EMAIL, SUPPRESS_DUPLICATE
+- **Deduplication**: Time-bucketed keys suppress duplicate alerts within configurable window (default 24h)
+- **Independent channels**: Telegram and email can be enabled/disabled independently
+- **Rate limiting**: Maximum alerts per run (default 3)
+- **Audit trail**: All routing decisions recorded in alert_history table
 
 ## Source Grounding
 
@@ -65,9 +74,9 @@ All SEC EDGAR requests include a valid `User-Agent` header (set via `SEC_USER_AG
 
 ## Status
 
-**Current checkpoint: CP13B (Generic SMTP Implementation) -- in progress.**
+**Current checkpoint: CP15 (Alert Routing Policy Implementation) -- dry-run only.**
 
-All 4 external-facing scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Telegram alert delivery validated end-to-end (CP12B). Generic SMTP email delivery now supports any SMTP provider (Gmail, 4SecureMail, etc.) via provider-neutral configuration. Dry-run mode remains active.
+All 4 external-facing scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Telegram alert delivery validated end-to-end (CP12B). Generic SMTP email delivery supports any SMTP provider (Gmail, 4SecureMail, etc.) via provider-neutral configuration (CP13B). Alert routing policy implemented with severity classification, deduplication, and channel routing (CP15). All alert delivery remains disabled in dry-run mode pending controlled testing.
 
 ## Project Structure
 
@@ -85,7 +94,12 @@ Insider-Trading/
     maya.py                 On-chain whale scout (grounded)
     janet.py                Portfolio drift scout
     sophie.py               Consensus engine
-    ross.py                 Dispatcher (dry-run by default)
+    ross.py                 Dispatcher with alert routing policy (dry-run by default)
+  alerts/
+    __init__.py             Alert subsystem exports
+    smtp_email.py           Generic SMTP email delivery
+    routing.py              Severity classification and alert routing
+    history.py              Deduplication and audit storage
   evidence/
     schema.py               SourceEvidence, SourceFetchResult, EvidenceBundle
     store.py                File-backed JSON evidence persistence

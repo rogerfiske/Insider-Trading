@@ -196,3 +196,26 @@ All 17 file blocks from `docs/source/original_prompt.md` have been extracted and
 - Works with any SMTP provider: Gmail, 4SecureMail, etc.
 - All SMTP passwords are redacted from error messages and never printed.
 - Ross remains in dry-run mode (`ROSS_DRY_RUN=true`).
+
+## CP15 Alert Routing Policy Implementation Notes
+
+- Alert routing policy implemented in `alerts/routing.py` and `alerts/history.py`.
+- **Severity levels**: INFO, WATCH, ACTIONABLE, URGENT (based on scout count and aggregate confidence).
+- **Alert classes**: LOG_ONLY, TELEGRAM_ONLY, EMAIL_ONLY, TELEGRAM_AND_EMAIL, SUPPRESS_DUPLICATE.
+- **Deduplication**: Time-bucketed keys (ticker:direction:time_bucket) with configurable window.
+- **Independent channel control**: `ALERT_ENABLE_TELEGRAM` and `ALERT_ENABLE_EMAIL` flags.
+- **Rate limiting**: `ALERT_MAX_PER_RUN` limits alerts per Ross run (default 3).
+- **Audit trail**: All routing decisions recorded in `alert_history` table in SQLite state DB.
+- `.env.example` updated with alert routing placeholders:
+  - `ALERT_ENABLE_TELEGRAM=false` (off by default)
+  - `ALERT_ENABLE_EMAIL=false` (off by default)
+  - `ALERT_MIN_SEVERITY=WATCH`
+  - `ALERT_DEDUP_HOURS=24`
+  - `ALERT_MAX_PER_RUN=3`
+  - `ALERT_REQUIRE_HUMAN_REVIEW=false` (reserved for future)
+- `agents/ross.py` refactored to use routing layer with dry-run mode.
+- Ross still respects `ROSS_DRY_RUN=true` (no real sends until explicitly changed).
+- All alert delivery remains disabled (`ALERT_ENABLE_TELEGRAM=false`, `ALERT_ENABLE_EMAIL=false`).
+- Comprehensive unit tests added for routing, history, and deduplication.
+- All implementation work done in dry-run mode only.
+- See `docs/alert_routing_policy.md` for complete policy documentation.
