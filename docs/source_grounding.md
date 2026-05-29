@@ -97,6 +97,16 @@ Files are named `{timestamp}_{agent}_{uuid}.json`. The `.state/` directory is gi
 - **Caching**: Responses cached under `.state/cache/` with configurable TTL (default 300s for SEC). Cache key is a SHA-256 hash of the URL.
 - **Error handling**: 403 (blocked) and 429 (rate limited) responses return `SourceFetchResult.failure()` with categorized errors. No retries to avoid further rate limit hits.
 
+## Credential and Account Policy
+
+- **Etherscan API calls** use only `ETHERSCAN_API_KEY`. The code does not need or use Etherscan website username or password.
+- **SEC EDGAR official connectors** use only `SEC_USER_AGENT` for fair-access identification. No SEC.gov login is required.
+- **sec-api.io** keys (`SEC_API_IO_API_KEY`) are documented as optional/future-use. No current connector uses them.
+- **Do not store website passwords** in `.env`, `.env.example`, or anywhere in the repository. Manage website login credentials in a password manager.
+- **Account-reference fields** (`ETHERSCAN_ACCOUNT_EMAIL`, `ETHERSCAN_USERNAME`, `SEC_API_IO_ACCOUNT_EMAIL`, `SEC_API_IO_USERNAME`) are optional local notes so you can remember which account is associated. They are not read by any connector code.
+- **Maya is on-chain oriented**, monitoring ERC-20 token transfers (WBTC, WETH, USDC, USDT) and classifying whale wallet flows. She does not research stock tickers. If company-to-token mapping is needed, that requires a separate design.
+- **Ross remains dry-run** until explicitly changed in a future checkpoint.
+
 ## Remaining Limitations
 
 1. SEC EFTS may return empty results during low-filing periods (weekends, holidays).

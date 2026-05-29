@@ -150,3 +150,13 @@ All 17 file blocks from `docs/source/original_prompt.md` have been extracted and
 - Smoke test passes 31/31 checks.
 - No scheduled tasks were changed or triggered.
 - No secrets were printed, no emails sent, no Telegram messages sent.
+
+## CP11 Etherscan / Maya Runtime Notes
+
+- `ETHERSCAN_API_KEY` configured and validated. Maya now fetches live on-chain data from Etherscan.
+- `SEC_USER_AGENT` configured with real contact information for SEC fair-access compliance.
+- `.env.example` updated with SEC and Etherscan placeholder sections. No real values in `.env.example`.
+- Maya monitors ERC-20 token transfers (WBTC, WETH, USDC, USDT) on Ethereum mainnet. She is on-chain oriented, not stock-ticker oriented.
+- Website passwords must not be stored in `.env`. Only API keys and user-agent strings are used by the code.
+- `ETHERSCAN_ACCOUNT_EMAIL`, `ETHERSCAN_USERNAME`, `SEC_API_IO_*` fields are optional local account-reference notes only.
+- Ross remains in dry-run mode (`ROSS_DRY_RUN=true`).

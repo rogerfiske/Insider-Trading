@@ -66,7 +66,7 @@ def _read_cache(url: str, max_age_seconds: int) -> str | None:
     try:
         meta = json.loads(meta_file.read_text(encoding="utf-8"))
         cached_at = float(meta.get("cached_at", 0))
-        if time.time() - cached_at > max_age_seconds:
+        if time.time() - cached_at >= max_age_seconds:
             return None
         return data_file.read_text(encoding="utf-8")
     except (json.JSONDecodeError, ValueError, OSError):
