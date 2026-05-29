@@ -219,3 +219,21 @@ All 17 file blocks from `docs/source/original_prompt.md` have been extracted and
 - Comprehensive unit tests added for routing, history, and deduplication.
 - All implementation work done in dry-run mode only.
 - See `docs/alert_routing_policy.md` for complete policy documentation.
+
+## CP16 Controlled Live Telegram Test Notes
+
+- `scripts/telegram_routing_test.py` created for controlled one-shot Telegram routing tests.
+- Script exercises full alert routing layer: severity classification, alert class determination, deduplication.
+- Process-level `ROSS_DRY_RUN` override for controlled test (does not modify `.env`).
+- Controlled test message: "Insider-Trading CP16 Telegram routing test: controlled live Telegram-only alert verified. No trading signal. Email disabled."
+- One live Telegram message successfully sent (CP16 TEST, WATCH severity, TELEGRAM_ONLY class).
+- Email remained disabled (`should_send_email=False`) throughout test.
+- Audit/history layer recorded the controlled test delivery.
+- Routing decision recorded with correct ticker (CP16_TEST), direction (SYSTEM_TEST), severity (WATCH).
+- Deduplication system functional with time-bucketed keys.
+- Run `python scripts\telegram_routing_test.py` for dry-run preview (no message sent).
+- Run `python scripts\telegram_routing_test.py --send-once` to send one controlled test message.
+- Production alert routing not enabled -- `ALERT_ENABLE_TELEGRAM` and `ALERT_ENABLE_EMAIL` remain `false` in `.env`.
+- Ross remains in dry-run mode (`ROSS_DRY_RUN=true` in `.env`).
+- Scheduled tasks unchanged and not triggered.
+- CP17 will add controlled email test.
