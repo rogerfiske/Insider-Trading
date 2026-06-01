@@ -14,6 +14,13 @@ def check_env_keys():
     keys_to_check = [
         "TELEGRAM_BOT_TOKEN",
         "TELEGRAM_CHAT_ID",
+        "SMTP_HOST",
+        "SMTP_PORT",
+        "SMTP_USE_SSL",
+        "SMTP_USERNAME",
+        "SMTP_PASSWORD",
+        "ALERT_EMAIL_FROM",
+        "ALERT_EMAIL_TO",
         "ALERT_ENABLE_TELEGRAM",
         "ALERT_ENABLE_EMAIL",
         "ROSS_DRY_RUN",

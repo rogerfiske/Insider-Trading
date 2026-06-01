@@ -237,3 +237,22 @@ All 17 file blocks from `docs/source/original_prompt.md` have been extracted and
 - Ross remains in dry-run mode (`ROSS_DRY_RUN=true` in `.env`).
 - Scheduled tasks unchanged and not triggered.
 - CP17 will add controlled email test.
+
+## CP17 Controlled Dual-Channel Test Notes
+
+- `scripts/dual_channel_routing_test.py` created for controlled one-shot dual-channel routing tests.
+- Script exercises full dual-channel routing: TELEGRAM_AND_EMAIL alert class with ACTIONABLE severity.
+- Process-level `ROSS_DRY_RUN` override for controlled test (does not modify `.env`).
+- Controlled test messages: Telegram + email with "Insider-Trading CP17 dual-channel routing test: controlled live Telegram + email alert verified. No trading signal. Production alerts remain disabled."
+- One live Telegram message successfully sent (CP17 TEST, ACTIONABLE severity, TELEGRAM_AND_EMAIL class).
+- One live email successfully sent through 4SecureMail SMTP (fiske1945@4securemail.com).
+- Both channels validated simultaneously through routing layer.
+- Audit/history layer recorded the dual-channel delivery.
+- Routing decision recorded with correct ticker (CP17_TEST), direction (SYSTEM_TEST), severity (ACTIONABLE), alert class (TELEGRAM_AND_EMAIL).
+- Deduplication system functional with time-bucketed keys for dual-channel.
+- Run `python scripts\dual_channel_routing_test.py` for dry-run preview (no messages sent).
+- Run `python scripts\dual_channel_routing_test.py --send-once` to send one controlled dual-channel test.
+- Production alert routing still not enabled -- `ALERT_ENABLE_TELEGRAM` and `ALERT_ENABLE_EMAIL` remain `false` in `.env`.
+- Ross remains in dry-run mode (`ROSS_DRY_RUN=true` in `.env`).
+- Scheduled tasks unchanged and not triggered.
+- CP18 will plan production live alert enablement strategy.
