@@ -392,14 +392,25 @@ git diff --cached --name-only | Select-String -Pattern '^\.env$|^\.venv/|^\.clau
 ## Commit Hash
 
 ```
-[To be recorded after commit]
+4ad37c2
 ```
+
+Commit message: "Validate controlled dual-channel alert routing"
+
+Changes:
+- 5 files changed
+- 758 insertions, 2 deletions
+- 2 new files created (dual_channel_routing_test.py, CP17 report)
+- 3 files modified (README.md, install_notes_windows.md, check_env_keys.py)
 
 ## Push Result
 
 ```
-[To be recorded after push]
+To https://github.com/rogerfiske/Insider-Trading.git
+   2746785..4ad37c2  main -> main
 ```
+
+**Result:** ✅ Push successful. CP17 changes now on GitHub.
 
 ## Risks/Blockers
 
