@@ -24,6 +24,10 @@ def check_env_keys():
         "ALERT_ENABLE_TELEGRAM",
         "ALERT_ENABLE_EMAIL",
         "ROSS_DRY_RUN",
+        "ALERT_MIN_SEVERITY",
+        "ALERT_DEDUP_HOURS",
+        "ALERT_MAX_PER_RUN",
+        "ALERT_REQUIRE_HUMAN_REVIEW",
     ]
 
     with open(env_path, "r") as f:

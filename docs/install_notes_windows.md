@@ -256,3 +256,28 @@ All 17 file blocks from `docs/source/original_prompt.md` have been extracted and
 - Ross remains in dry-run mode (`ROSS_DRY_RUN=true` in `.env`).
 - Scheduled tasks unchanged and not triggered.
 - CP18 will plan production live alert enablement strategy.
+
+## CP18 Production Alert Enablement Plan Notes
+
+- `docs/production_alert_enablement_plan.md` created with full staged rollout strategy.
+- `docs/alert_delivery.md` created documenting Telegram and email delivery channels.
+- **Planning checkpoint only** - no code changes, no .env changes, no live alerts sent.
+- Analyzed current production readiness: both channels validated, routing policy functional, scheduled tasks appropriate.
+- Proposed conservative four-phase rollout:
+  - **CP19:** Manual Telegram-only with PM approval gate
+  - **CP20:** Scheduled Telegram-only pilot (3-7 days)
+  - **CP21:** Email enablement planning
+  - **CP22:** Dual-channel production enablement
+- Emergency disable procedures documented for operators.
+- Monitoring checklists defined for first 24 hours, first week, and ongoing.
+- PM approval decisions identified (9 policy choices required before CP19).
+- Current safety defaults confirmed:
+  - `ROSS_DRY_RUN=SET` (true)
+  - `ALERT_ENABLE_TELEGRAM=MISSING` (defaults to false)
+  - `ALERT_ENABLE_EMAIL=MISSING` (defaults to false)
+  - `ALERT_MIN_SEVERITY=MISSING` (defaults to WATCH)
+  - `ALERT_DEDUP_HOURS=MISSING` (defaults to 24)
+  - `ALERT_MAX_PER_RUN=MISSING` (defaults to 3)
+- No code changes required for production enablement (configuration-only).
+- Scheduled tasks appropriate for production (no changes needed).
+- Production live alerts not yet enabled - awaiting PM approval for CP19.
