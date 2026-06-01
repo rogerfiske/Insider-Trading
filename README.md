@@ -74,9 +74,9 @@ All SEC EDGAR requests include a valid `User-Agent` header (set via `SEC_USER_AG
 
 ## Status
 
-**Current checkpoint: CP19 (Manual Production Telegram Pilot) -- Complete.**
+**Current checkpoint: CP20 (Scheduled Telegram Pilot) -- Active.**
 
-All 4 external-facing scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Telegram alert delivery validated end-to-end (CP12B). Generic SMTP email delivery supports any SMTP provider (Gmail, 4SecureMail, etc.) via provider-neutral configuration (CP13B). Alert routing policy implemented with severity classification, deduplication, and channel routing (CP15). Controlled Telegram-only test validated routing layer (CP16). Controlled dual-channel test validated full TELEGRAM_AND_EMAIL routing (CP17). Production enablement plan designed with staged rollout (CP18). Manual production Telegram-only pilot executed safely with 0 messages sent (no eligible ACTIONABLE+ alert existed) -- production safety controls validated (CP19). Both channels fully validated. Production live alerts ready for scheduled enablement - awaiting PM approval for CP20 scheduled Telegram pilot.
+All 4 external-facing scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Telegram alert delivery validated end-to-end (CP12B). Generic SMTP email delivery supports any SMTP provider (Gmail, 4SecureMail, etc.) via provider-neutral configuration (CP13B). Alert routing policy implemented with severity classification, deduplication, and channel routing (CP15). Controlled Telegram-only test validated routing layer (CP16). Controlled dual-channel test validated full TELEGRAM_AND_EMAIL routing (CP17). Production enablement plan designed with staged rollout (CP18). Manual production Telegram-only pilot executed safely with 0 messages sent (CP19). **Scheduled Telegram-only pilot activated (CP20)** -- system now sends ACTIONABLE+ alerts via scheduled Ross task (18:30 daily, max 1/run, 24h dedup). Email disabled. Next scheduled run: 6/1/2026 6:30 PM. Awaiting CP20B monitoring review.
 
 ## Project Structure
 

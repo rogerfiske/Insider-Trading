@@ -1,8 +1,8 @@
 # Production Alert Enablement Plan
 
-**Status:** Manual Pilot Complete (CP19)
+**Status:** Scheduled Pilot Active (CP20)
 **Last Updated:** 2026-06-01
-**Current Checkpoint:** CP19
+**Current Checkpoint:** CP20
 
 ## Executive Summary
 
@@ -164,13 +164,27 @@ ALERT_MAX_PER_RUN=1
 
 **Rollback:** Not required (no changes made to .env or scheduled tasks)
 
-### Phase 2: CP20 — Scheduled Telegram-Only Pilot
+### Phase 2: CP20 — Scheduled Telegram-Only Pilot ✅
+
+**Status:** ✅ **ACTIVATED** (2026-06-01)
 
 **Goal:** Enable Telegram for scheduled Ross runs, monitor for at least one full cycle (24 hours).
 
-**Approach:**
-- Enable Telegram for scheduled Ross only after CP19 succeeds
-- Keep email disabled
+**Outcome:**
+- **Scheduled Telegram pilot activated** successfully
+- `.env` updated with CP20 pilot profile (ROSS_DRY_RUN=false, ALERT_ENABLE_TELEGRAM=true)
+- Email disabled per policy (ALERT_ENABLE_EMAIL=false)
+- ACTIONABLE threshold enforced (ALERT_MIN_SEVERITY=ACTIONABLE)
+- Maximum 1 alert per run (ALERT_MAX_PER_RUN=1)
+- 24-hour deduplication (ALERT_DEDUP_HOURS=24)
+- No Telegram or email sent during activation
+- Scheduled tasks remain unchanged (not triggered)
+- Next scheduled Ross run: 6/1/2026 6:30:30 PM (18:30)
+- Emergency rollback procedure documented
+
+**Approach Taken:**
+- Activated scheduled Telegram after CP19 succeeded
+- Kept email disabled
 - Use existing conservative schedule (daily 18:30)
 - Monitor for at least one scheduled cycle (ideally 3-7 days)
 - Confirm no alert noise, no duplicates, no failures
