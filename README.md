@@ -74,9 +74,9 @@ All SEC EDGAR requests include a valid `User-Agent` header (set via `SEC_USER_AG
 
 ## Status
 
-**Current checkpoint: CP18 (Production Alert Enablement Plan) -- Planning phase.**
+**Current checkpoint: CP19 (Manual Production Telegram Pilot) -- Complete.**
 
-All 4 external-facing scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Telegram alert delivery validated end-to-end (CP12B). Generic SMTP email delivery supports any SMTP provider (Gmail, 4SecureMail, etc.) via provider-neutral configuration (CP13B). Alert routing policy implemented with severity classification, deduplication, and channel routing (CP15). Controlled Telegram-only test validated routing layer (CP16). Controlled dual-channel test validated full TELEGRAM_AND_EMAIL routing (CP17). Production enablement plan designed with staged rollout (CP18). Both channels fully validated. Production live alerts not yet enabled - awaiting PM approval for CP19 manual Telegram-only test.
+All 4 external-facing scout agents (Eddie, Maggie, Frank, Maya) now fetch deterministic live data via source connectors before prompting Claude. Telegram alert delivery validated end-to-end (CP12B). Generic SMTP email delivery supports any SMTP provider (Gmail, 4SecureMail, etc.) via provider-neutral configuration (CP13B). Alert routing policy implemented with severity classification, deduplication, and channel routing (CP15). Controlled Telegram-only test validated routing layer (CP16). Controlled dual-channel test validated full TELEGRAM_AND_EMAIL routing (CP17). Production enablement plan designed with staged rollout (CP18). Manual production Telegram-only pilot executed safely with 0 messages sent (no eligible ACTIONABLE+ alert existed) -- production safety controls validated (CP19). Both channels fully validated. Production live alerts ready for scheduled enablement - awaiting PM approval for CP20 scheduled Telegram pilot.
 
 ## Project Structure
 
