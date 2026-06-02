@@ -405,13 +405,23 @@ Files to be staged (if updated):
 
 ## Commit Hash
 
-**[To be determined after commit]**
+**01762d9** — "Review scheduled Telegram pilot (post-run)"
+
+Committed files:
+- README.md (updated status to CP20B complete)
+- docs/production_alert_enablement_plan.md (added CP20B monitoring status)
+- docs/checkpoints/reports/CP20B_scheduled_telegram_pilot_monitoring_report.md (this report - updated)
 
 ---
 
 ## Push Result
 
-**[To be determined after push]**
+✅ **Successfully pushed** to origin/main
+
+```
+To https://github.com/rogerfiske/Insider-Trading.git
+   030779f..01762d9  main -> main
+```
 
 ---
 
