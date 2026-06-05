@@ -1,6 +1,6 @@
 # MAIA — Manual Ticker Drilldown Diagnostic Report
 
-**Generated**: 2026-06-05T18:34:42.446747+00:00
+**Generated**: 2026-06-05T18:49:26.800585+00:00
 
 **Ticker**: MAIA
 
@@ -34,7 +34,7 @@
 **Company Name**: MAIA Biotechnology, Inc.
 **Resolution Status**: ✅ Success
 **Source**: https://www.sec.gov/files/company_tickers.json
-**Retrieved**: 2026-06-05T18:34:42.454744+00:00
+**Retrieved**: 2026-06-05T18:49:26.807585+00:00
 
 Ticker `MAIA` successfully resolved to SEC CIK `0001878313` for issuer `MAIA Biotechnology, Inc.`.
 
@@ -46,9 +46,9 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 **Ticker Resolution**: ✅ MAIA → CIK 0001878313 (MAIA Biotechnology, Inc.)
 
-**Current Status**: Ticker-to-CIK resolution is now implemented. Eddie can now filter Form 4 filings to this specific issuer CIK.
+**Current Status**: Ticker-to-CIK resolution, Form 4 XML parsing, and 13F issuer matching are now implemented. Eddie can filter and parse Form 4 transaction details. Maggie can parse 13F holdings and match by issuer name.
 
-**Remaining Limitation**: Form 4 transaction detail extraction is limited to metadata. Full XML parsing of individual transactions (share counts, prices, transaction codes) would enhance signal quality.
+**Remaining Limitations**: CUSIP not available from ticker resolution (issuer-name matching used). Historical 13F trend comparison not yet implemented.
 
 ---
 
@@ -56,8 +56,8 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 | Agent | Applicability | Evidence Status | Signal | Confidence | Reason |
 |-------|--------------|-----------------|--------|------------|--------|
-| Eddie | TICKER_RESOLVED_BUT_FORM4_DETAIL_EXTRACTION_LIMITED | CIK 0001878313 resolved | N/A | N/A | CIK resolved; Form 4 detail parsing limited |
-| Maggie | BLOCKED_BY_MISSING_CONNECTOR | Cannot filter to MAIA | N/A | N/A | Ticker-to-CUSIP resolution not implemented |
+| Eddie | APPLICABLE_NO_RECENT_FILINGS | Form 4 XML parser implemented | NEUTRAL | 1 | No recent filings in query window |
+| Maggie | APPLICABLE_WITH_LIMITED_IDENTIFIER_MATCHING | 13F parser/matcher implemented | NEUTRAL | 1 | Issuer-name matching used (CUSIP unavailable) |
 | Frank | PARTIALLY_APPLICABLE | Macro context only | NEUTRAL | 1 | Not ticker-specific |
 | Maya | NOT_APPLICABLE | Crypto/on-chain only | N/A | N/A | MAIA is a stock, not crypto |
 | Janet | NOT_APPLICABLE | Not in portfolio | N/A | N/A | MAIA not in local portfolio |
@@ -246,18 +246,18 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
    - ✅ Ticker-to-CIK mapping now implemented (sources/sec_ticker.py)
    - ✅ Eddie can now filter Form 4 filings by CIK
 
-2. **Form 4 Transaction Detail Extraction** (Still Limited):
-   - Form 4 connector fetches filing metadata but does not parse XML transaction tables
-   - Cannot extract transaction type, share count, price, or total value
-   - Eddie cannot yet generate confidence-weighted signals
+2. **~~Form 4 Transaction Detail Extraction~~** ✅ RESOLVED:
+   - ✅ Form 4 XML parser now implemented (sources/sec_form4_details.py)
+   - ✅ Eddie can now extract transaction type, share count, price, and value
+   - ✅ Eddie generates confidence-weighted signals based on insider transactions
 
 3. **Ticker-to-CUSIP Resolution** (Still Missing):
-   - 13F connector cannot map ticker to CUSIP
-   - Cannot filter institutional holdings to specific tickers
+   - CUSIP not available from SEC company_tickers.json
+   - Issuer-name matching used as conservative alternative
 
-4. **13F Individual Holdings Parsing** (Still Missing):
-   - 13F connector fetches manager-level filings
-   - Does not parse XML to extract individual security holdings
+4. **~~13F Individual Holdings Parsing~~** ✅ RESOLVED:
+   - ✅ 13F information table XML parser now implemented (sources/sec_13f_parser.py)
+   - ✅ Maggie can now parse holdings with CUSIP, issuer name, value, shares
 
 5. **Historical Comparison** (Still Missing):
    - Connectors fetch current period only
@@ -265,8 +265,8 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 ### Agent-Specific Limitations
 
-1. **Eddie**: ✅ Can now filter to CIK; still limited by Form 4 detail parsing
-2. **Maggie**: Cannot analyze ticker-specific institutional interest without CUSIP resolution and holding-level data
+1. **Eddie**: ✅ Can now filter to CIK and parse Form 4 transaction details; generates confidence-weighted signals
+2. **Maggie**: ✅ Can now parse 13F holdings and match by issuer name; limited by CUSIP unavailability and no historical trend comparison
 3. **Frank**: Intentionally macro-focused; not a limitation
 4. **Maya**: Intentionally crypto-focused; not applicable to stocks
 5. **Janet**: Requires manual portfolio configuration; not automatic
@@ -334,19 +334,19 @@ This diagnostic report demonstrates the current insider-trading framework's stru
 
 **Progress**: ✅ Ticker-to-CIK resolution is now implemented. MAIA resolves to CIK 0001878313 (MAIA Biotechnology, Inc.).
 
-**Current Capability**: Eddie can now filter Form 4 filings to this specific issuer.
+**Current Capability**: Eddie can filter and parse Form 4 transaction details. Maggie can parse 13F holdings and match by issuer name.
 
 **Next Steps**:
 1. ✅ COMPLETE: Ticker-to-CIK resolution (Priority 1)
-2. Implement Form 4 transaction detail parsing (Priority 2)
-3. Implement ticker-to-CUSIP resolution (Priority 1B)
-4. Parse 13F holdings for ticker-specific analysis (Priority 3)
+2. ✅ COMPLETE: Form 4 transaction detail parsing (Priority 2)
+3. ✅ COMPLETE: 13F holdings parsing and issuer-name matching (Priority 3)
+4. Implement historical 13F trend comparison (Priority 4)
 
-**Timeline Estimate**: Priority 2 (Form 4 detail parsing) could be implemented in 1 checkpoint, enabling confidence-weighted ticker-specific insider-trading signals.
+**Timeline Estimate**: Priority 4 (historical 13F trend comparison) could be implemented in 1 checkpoint, enabling quarter-over-quarter institutional holdings trend detection.
 
 ---
 
-**Report Generated**: 2026-06-05T18:34:42.446747+00:00
+**Report Generated**: 2026-06-05T18:49:26.800585+00:00
 
 **Generated By**: scripts/ticker_drilldown.py
 
