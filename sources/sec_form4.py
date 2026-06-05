@@ -34,11 +34,18 @@ _EFTS_SEARCH_URL = (
 class SecForm4Connector(BaseConnector):
     """Fetch recent Form 4 insider-trading filings from SEC EDGAR."""
 
-    def fetch(self) -> SourceFetchResult:
-        """Query EFTS for Form 4 filings from the last 24 hours."""
+    def fetch(self, lookback_days: int = 1) -> SourceFetchResult:
+        """Query EFTS for Form 4 filings from the specified lookback period.
+
+        Args:
+            lookback_days: Number of days to look back (default: 1 day / 24 hours)
+
+        Returns:
+            SourceFetchResult containing Form 4 filings found in the lookback window
+        """
         now = datetime.now(timezone.utc)
         end_date = now.strftime("%Y-%m-%d")
-        start_date = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+        start_date = (now - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
 
         url = _EFTS_SEARCH_URL.format(start=start_date, end=end_date)
 

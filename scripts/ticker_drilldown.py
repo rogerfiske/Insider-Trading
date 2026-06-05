@@ -34,12 +34,13 @@ from sources.sec_13f_parser import fetch_and_parse_13f_info_table
 from sources.sec_13f_matcher import match_ticker_to_13f_holdings, summarize_13f_matches_for_report
 
 
-def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
+def generate_ticker_report(ticker: str, output_path: Path | None = None, lookback_days: int = 365) -> str:
     """Generate a comprehensive ticker drilldown report.
 
     Args:
         ticker: Stock ticker symbol (e.g., "MAIA")
         output_path: Optional path to save report
+        lookback_days: Number of days to look back for Form 4 filings (default: 365)
 
     Returns:
         Report content as markdown string
@@ -53,7 +54,7 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
 
     # Fetch recent Form 4 data (all filings, not ticker-specific)
     form4_connector = SecForm4Connector()
-    form4_result = form4_connector.fetch()
+    form4_result = form4_connector.fetch(lookback_days=lookback_days)
 
     # Fetch 13F data (manager-focused, not ticker-specific)
     form13f_connector = Sec13FConnector()
@@ -66,6 +67,8 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
         f"**Generated**: {now.isoformat()}",
         "",
         "**Ticker**: " + ticker,
+        "",
+        f"**Lookback Window**: {lookback_days} days",
         "",
         "**Purpose**: Diagnostic sample report showing what each agent would contribute for this ticker.",
         "",
@@ -264,7 +267,7 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
             f"- Ticker-to-CIK resolution implemented",
             "",
             "**Current Behavior**:",
-            f"- Eddie fetches all Form 4 filings from the last 24 hours ({len(form4_result.evidence) if form4_result.ok else 0} total filings found)",
+            f"- Eddie fetches all Form 4 filings from the last {lookback_days} days ({len(form4_result.evidence) if form4_result.ok else 0} total filings found)",
             f"- Filters to CIK {ticker_resolution.cik_padded}: {len(matching_filings)} filings for {ticker}",
             f"- Parses Form 4 XML details: {len(parsed_details)} successfully parsed",
             "",
@@ -304,7 +307,7 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
             lines.append("")
             lines.append("**Evidence Status**: CIK-filtered filings found, but detail extraction limited")
         else:
-            lines.append(f"**{ticker} Form 4 Filings**: None found in last 24 hours")
+            lines.append(f"**{ticker} Form 4 Filings**: None found in {lookback_days}-day lookback window")
             lines.append("")
             lines.append("**Evidence Status**: No recent filings")
 
@@ -344,7 +347,7 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
             f"- Error Type: {ticker_resolution.error_type}",
             "",
             "**Current Behavior**:",
-            f"- Eddie fetches all Form 4 filings from the last 24 hours ({len(form4_result.evidence) if form4_result.ok else 0} filings found)",
+            f"- Eddie fetches all Form 4 filings from the last {lookback_days} days ({len(form4_result.evidence) if form4_result.ok else 0} filings found)",
             f"- Cannot filter to {ticker} without a valid CIK",
             "",
             "**Limitation**: Ticker not found in SEC company tickers mapping",
@@ -649,7 +652,7 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
     lines.extend([
         "**SEC Form 4**:",
         f"- Fetch status: {'Success' if form4_result.ok else 'Failed'}",
-        f"- Total filings retrieved: {len(form4_result.evidence) if form4_result.ok else 0} (last 24 hours)",
+        f"- Total filings retrieved: {len(form4_result.evidence) if form4_result.ok else 0} ({lookback_days}-day lookback)",
     ])
 
     if ticker_resolution.ok:
@@ -825,17 +828,32 @@ def main() -> int:
         default=Path("docs/sample_reports") / "MAIA_manual_ticker_drilldown_report.md",
         help="Output path for report (default: docs/sample_reports/MAIA_manual_ticker_drilldown_report.md)",
     )
+    parser.add_argument(
+        "--lookback-days",
+        type=int,
+        default=365,
+        help="Number of days to look back for Form 4 filings (default: 365, max: 1460)",
+    )
 
     args = parser.parse_args()
+
+    # Validate lookback-days
+    if args.lookback_days <= 0:
+        print(f"[ticker_drilldown] ERROR: --lookback-days must be positive (got {args.lookback_days})")
+        return 1
+    if args.lookback_days > 1460:
+        print(f"[ticker_drilldown] ERROR: --lookback-days cannot exceed 1460 days / 4 years (got {args.lookback_days})")
+        return 1
 
     if not args.dry_run_report:
         print("[ticker_drilldown] ERROR: Only --dry-run-report mode is currently supported")
         return 1
 
     print(f"[ticker_drilldown] Generating diagnostic report for {args.ticker.upper()}...")
+    print(f"[ticker_drilldown] Lookback window: {args.lookback_days} days")
     print("[ticker_drilldown] Mode: DRY-RUN (no alerts will be sent)")
 
-    report = generate_ticker_report(args.ticker, args.output)
+    report = generate_ticker_report(args.ticker, args.output, lookback_days=args.lookback_days)
 
     print(f"[ticker_drilldown] Report generated successfully")
     print(f"[ticker_drilldown] Length: {len(report)} characters")
