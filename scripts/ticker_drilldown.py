@@ -30,6 +30,8 @@ from sources.sec_form4 import SecForm4Connector
 from sources.sec_13f import Sec13FConnector
 from sources.sec_ticker import SecTickerResolver
 from sources.sec_form4_details import fetch_and_parse_form4, summarize_transactions_for_report
+from sources.sec_13f_parser import fetch_and_parse_13f_info_table
+from sources.sec_13f_matcher import match_ticker_to_13f_holdings, summarize_13f_matches_for_report
 
 
 def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
@@ -66,6 +68,8 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
         "**Ticker**: " + ticker,
         "",
         "**Purpose**: Diagnostic sample report showing what each agent would contribute for this ticker.",
+        "",
+        "**Mode**: DRY-RUN — No Telegram or email was sent. This report is for analysis only.",
         "",
         "**Safety Disclaimer**: This report is informational only and is not trading advice. No buy/sell/trade instructions are provided.",
         "",
@@ -362,51 +366,194 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
         "",
         "## Maggie — SEC 13F Institutional Holdings",
         "",
-        "**Applicability**: BLOCKED_BY_MISSING_CONNECTOR",
-        "",
-        "**Current Behavior**:",
-        f"- Maggie fetches 13F filings for configured institutional managers ({len(form13f_result.evidence) if form13f_result.ok else 0} filings found)",
-        "- Current connector is manager-focused, not ticker/CUSIP-focused",
-        f"- Cannot determine if selected managers hold {ticker}",
-        "",
-        "**Limitation**: Ticker-to-CUSIP resolution and holding-level filtering not implemented",
-        "",
-        "**What Would Be Needed**:",
-        "1. Implement ticker-to-CUSIP lookup",
-        "2. Parse 13F XML to extract individual holdings",
-        f"3. Filter to {ticker} holdings across all managers",
-        "4. Detect position changes (additions, increases, decreases, exits)",
-        "5. Generate ticker-specific signal",
-        "",
-        "**Evidence Status**: Cannot filter to MAIA with current connector",
-        "",
-        "**Signal**: N/A (cannot generate ticker-specific signal)",
-        "",
-        "**Confidence**: N/A",
-        "",
-        "**Reason**: Ticker-specific 13F filtering not supported",
+    ])
+
+    # Maggie section depends on ticker resolution and 13F data
+    if ticker_resolution.ok and form13f_result.ok:
+        # Parse 13F info tables and match to ticker
+        all_holdings_parsed = []
+        all_matches = []
+
+        for ev in form13f_result.evidence[:5]:  # Limit to first 5 managers
+            manager_name = ev.normalized.get("manager_name", "")
+            manager_cik = ev.normalized.get("manager_cik", "")
+            accession = ev.normalized.get("accession_number", "")
+            filing_date = ev.normalized.get("filing_date", "")
+            report_period = ev.normalized.get("report_period", "")
+            primary_doc = ev.normalized.get("primary_document", "")
+
+            if accession and manager_cik:
+                # Fetch and parse 13F info table
+                parse_result = fetch_and_parse_13f_info_table(
+                    accession_number=accession,
+                    cik=manager_cik,
+                    manager_name=manager_name,
+                    filing_date=filing_date,
+                    report_period=report_period,
+                    primary_document=primary_doc,
+                )
+
+                if parse_result.parse_status in ("success", "partial") and parse_result.holdings:
+                    all_holdings_parsed.append(parse_result)
+
+                    # Match holdings to ticker
+                    matches = match_ticker_to_13f_holdings(
+                        ticker=ticker,
+                        resolved_company_name=ticker_resolution.company_name,
+                        resolved_cik=ticker_resolution.cik_padded,
+                        holdings=parse_result.holdings,
+                        cusip=None,  # CUSIP not available from ticker resolution
+                    )
+                    all_matches.extend(matches)
+
+        # Determine Maggie's status and signal
+        if all_matches:
+            maggie_status = "APPLICABLE_WITH_13F_EVIDENCE"
+            signal = "NEUTRAL"
+            confidence = 2
+            signal_reason = f"Found {len(all_matches)} institutional holding(s) for {ticker}, but no historical trend available (static holdings only)"
+        elif all_holdings_parsed:
+            maggie_status = "APPLICABLE_NO_13F_HOLDINGS_FOUND"
+            signal = "NEUTRAL"
+            confidence = 1
+            signal_reason = f"No {ticker} holdings found among tracked managers (parsed {len(all_holdings_parsed)} 13F filing(s))"
+        else:
+            maggie_status = "APPLICABLE_WITH_LIMITED_IDENTIFIER_MATCHING"
+            signal = "NEUTRAL"
+            confidence = 1
+            signal_reason = "13F information table parsing failed or returned no holdings"
+
+        lines.extend([
+            f"**Applicability**: {maggie_status}",
+            "",
+            "**Ticker Resolution**:",
+            f"- ✅ {ticker} → CIK {ticker_resolution.cik_padded} ({ticker_resolution.company_name})",
+            "- Issuer-name matching implemented (CUSIP not available from ticker resolution)",
+            "",
+            "**Current Behavior**:",
+            f"- Maggie fetches 13F filings for configured institutional managers ({len(form13f_result.evidence)} filings found)",
+            f"- Parses 13F information table XML to extract holdings ({len(all_holdings_parsed)} successfully parsed)",
+            f"- Matches holdings to {ticker} by issuer name",
+            "",
+        ])
+
+        if all_matches:
+            summary = summarize_13f_matches_for_report(ticker, all_matches)
+
+            lines.append(f"**{ticker} Institutional Holdings Summary**:")
+            lines.append(f"- Total matching holdings: {summary['match_count']}")
+            lines.append(f"- Total position value: ${summary['total_value_usd']:,.2f}")
+            lines.append(f"- Total shares held: {summary['total_shares']:,.0f}")
+            lines.append(f"- Managers holding {ticker}: {len(summary['managers'])}")
+            lines.append("")
+
+            lines.append("**Holding Details**:")
+            for mgr in summary["managers"][:3]:  # Show top 3 managers
+                lines.append(f"- **{mgr['name']}** (Report Period: {mgr['report_period']})")
+                for match in mgr["holdings"][:2]:  # Show up to 2 holdings per manager
+                    h = match.holding
+                    lines.append(f"  - {h.shares_or_principal_amount:,.0f} {h.share_type} @ ${h.value_usd:,.2f}")
+                    lines.append(f"    CUSIP: {h.cusip}, Class: {h.title_of_class}")
+                    lines.append(f"    Match: {match.confidence}")
+            lines.append("")
+
+            lines.append("**Evidence Status**: Institutional holdings found")
+        elif all_holdings_parsed:
+            lines.append(f"**{ticker} Institutional Holdings**: None found in parsed 13F filings")
+            lines.append("")
+            lines.append("**Evidence Status**: No holdings matched")
+        else:
+            lines.append("**13F Parsing**: Failed or returned no holdings")
+            lines.append("")
+            lines.append("**Evidence Status**: Limited data extraction")
+
+        lines.extend([
+            "",
+            f"**Signal**: {signal}",
+            "",
+            f"**Confidence**: {confidence}",
+            "",
+            f"**Reason**: {signal_reason}",
+            "",
+            "**Limitation**: Historical comparison not yet implemented (static holdings only, no QoQ/YoY trend)",
+            "",
+            "**Disclaimer**: This analysis is informational only and is not trading advice. Institutional holdings are reported quarterly and may not reflect current positions.",
+        ])
+
+        if all_matches:
+            lines.append("")
+            lines.append("**Source URLs**:")
+            managers_shown = set()
+            for match in all_matches[:5]:
+                if match.holding.manager_name not in managers_shown:
+                    if match.holding.source_url:
+                        lines.append(f"- {match.holding.source_url} ({match.holding.manager_name})")
+                    managers_shown.add(match.holding.manager_name)
+        else:
+            lines.append("")
+            lines.append("**Source URLs**: N/A (no matched holdings)")
+
+    elif ticker_resolution.ok:
+        # Ticker resolved but 13F fetch failed
+        lines.extend([
+            "**Applicability**: FAILED_GRACEFULLY",
+            "",
+            "**Ticker Resolution**:",
+            f"- ✅ {ticker} → CIK {ticker_resolution.cik_padded} ({ticker_resolution.company_name})",
+            "",
+            "**Current Behavior**:",
+            "- 13F connector fetch failed",
+            "",
+            "**Evidence Status**: Cannot retrieve 13F data",
+            "",
+            "**Signal**: N/A",
+            "",
+            "**Confidence**: N/A",
+            "",
+            "**Reason**: 13F data retrieval failed",
+        ])
+    else:
+        # Ticker resolution failed
+        lines.extend([
+            "**Applicability**: TICKER_RESOLUTION_FAILED",
+            "",
+            "**Ticker Resolution**:",
+            f"- ❌ {ticker} could not be resolved to CIK",
+            f"- Error: {ticker_resolution.error_message}",
+            "",
+            "**Current Behavior**:",
+            "- Cannot match 13F holdings without ticker resolution",
+            "",
+            "**Evidence Status**: Cannot match without issuer name",
+            "",
+            "**Signal**: N/A",
+            "",
+            "**Confidence**: N/A",
+            "",
+            f"**Reason**: {ticker} not found in SEC company tickers database",
+        ])
+
+    lines.extend([
         "",
         "---",
         "",
         "## Frank — Federal Reserve / Macro Context",
         "",
-        "**Applicability**: PARTIALLY_APPLICABLE (macro context only)",
+        "**Applicability**: PARTIALLY_APPLICABLE",
         "",
         "**Current Behavior**:",
-        "- Frank monitors Federal Reserve speeches and policy signals",
-        "- Frank is intentionally macro-focused, not ticker-specific",
-        f"- Frank would NOT form a ticker-specific view on {ticker}",
+        "- Frank analyzes Federal Reserve policy and macroeconomic conditions",
+        "- Provides market-wide context, not ticker-specific analysis",
         "",
-        "**What Frank Would Provide**:",
-        "- Overall market sentiment (dovish/hawkish Fed)",
-        "- Interest rate trajectory context",
-        "- Macro risk factors",
+        "**Evidence Status**: Macro context only",
         "",
         "**Signal**: NEUTRAL",
         "",
-        "**Confidence**: 1 (macro background only)",
+        "**Confidence**: 1",
         "",
-        f"**Reason**: Frank does not analyze individual tickers like {ticker}; provides macro context only",
+        "**Reason**: Not ticker-specific",
+        "",
+        "**Disclaimer**: Macro context is informational and not tailored to individual securities.",
         "",
         "---",
         "",
@@ -415,38 +562,38 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
         "**Applicability**: NOT_APPLICABLE",
         "",
         "**Current Behavior**:",
-        "- Maya monitors crypto/blockchain wallet activity",
-        f"- {ticker} is a stock ticker, not a crypto asset",
-        "- Maya has no visibility into stock transactions",
+        "- Maya analyzes cryptocurrency and blockchain data",
+        "- Not applicable to traditional equities",
         "",
-        f"**Why Not Applicable**: {ticker} is not a cryptocurrency or blockchain-related asset",
+        "**Evidence Status**: N/A",
         "",
         "**Signal**: N/A",
         "",
         "**Confidence**: N/A",
         "",
-        f"**Reason**: Maya only analyzes crypto assets; {ticker} is a stock",
+        f"**Reason**: {ticker} is a stock, not a cryptocurrency",
+        "",
+        "**Disclaimer**: Maya only analyzes crypto assets.",
         "",
         "---",
         "",
         "## Janet — Portfolio Drift",
         "",
-        "**Applicability**: NOT_APPLICABLE (not in portfolio)",
+        "**Applicability**: NOT_APPLICABLE",
         "",
         "**Current Behavior**:",
-        "- Janet compares current portfolio holdings to target allocation",
-        "- Janet reads `config/portfolio_current.json` and `config/portfolio_target.json`",
-        f"- {ticker} is not present in local portfolio files",
+        "- Janet analyzes positions in Roger's configured portfolio",
+        f"- {ticker} is not currently in the tracked portfolio",
         "",
-        "**Evidence Status**: Not in portfolio",
+        "**Evidence Status**: N/A",
         "",
-        "**Signal**: N/A (no drift to report)",
+        "**Signal**: N/A",
         "",
         "**Confidence**: N/A",
         "",
-        f"**Reason**: {ticker} not present in local portfolio configuration",
+        f"**Reason**: {ticker} not in local portfolio configuration",
         "",
-        "**Note**: If Roger wants Janet to track MAIA, he would need to add it to portfolio configuration files",
+        "**Disclaimer**: Janet only analyzes configured portfolio holdings.",
         "",
         "---",
         "",
@@ -455,21 +602,18 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
         "**Applicability**: APPLICABLE_TO_AGENT_OUTPUTS",
         "",
         "**Current Behavior**:",
-        "- Sophie reads recent scout signals from all agents",
-        "- Sophie groups signals by ticker and direction",
-        "- Sophie applies consensus threshold (default: 2+ agents agreeing)",
+        "- Sophie aggregates signals from other agents (Eddie, Maggie, Frank, Maya, Janet)",
+        "- Requires ticker-specific signals to aggregate",
         "",
-        f"**For {ticker}**:",
-        "- **Signals collected**: 0 ticker-specific signals",
-        "- **Consensus met**: No (threshold not reached)",
-        "- **Result**: No consensus event generated",
+        "**Evidence Status**: No ticker-specific signals to aggregate",
         "",
-        "**Reason**: No agents produced ticker-specific signals due to connector limitations",
+        "**Signal**: N/A",
         "",
-        "**What Would Happen If Signals Existed**:",
-        f"- If 2+ agents signaled BULLISH on {ticker}, Sophie would generate a consensus event",
-        "- Sophie would aggregate confidence scores",
-        "- Sophie would mark consensus for Ross to route",
+        "**Confidence**: N/A",
+        "",
+        f"**Reason**: No bullish or bearish signals generated for {ticker}",
+        "",
+        "**Disclaimer**: Sophie's consensus depends on upstream agent signals.",
         "",
         "---",
         "",
@@ -478,31 +622,20 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
         "**Applicability**: DRY_RUN_ONLY",
         "",
         "**Current Behavior**:",
-        "- Ross reads pending consensus events",
-        "- Ross applies alert routing policy (severity, deduplication, channel routing)",
-        "- **DRY-RUN MODE**: No alerts actually sent",
+        "- Ross routes consensus signals to Telegram and/or email",
+        "- DRY-RUN mode: no alerts sent",
         "",
-        f"**For {ticker}**:",
-        "- **Pending consensus**: None (no signals from scouts)",
-        "- **Routing decision**: N/A (nothing to route)",
+        "**Evidence Status**: No actionable signals to route",
         "",
-        "**What Would Happen If Consensus Existed**:",
-        "1. **Severity calculation**: Based on signal count, confidence, and historical patterns",
-        "2. **Alert class determination**:",
-        "   - ACTIONABLE (if meets ACTIONABLE threshold)",
-        "   - WATCH (if interesting but below threshold)",
-        "   - LOG_ONLY (if duplicate or low confidence)",
-        "3. **Channel routing**:",
-        "   - Telegram: Yes (if ACTIONABLE in production mode)",
-        "   - Email: No (email disabled in current pilot)",
-        "4. **Deduplication**: Check 24-hour window for duplicate MAIA signals",
-        "5. **Rate limiting**: Max 1 alert per run (current pilot configuration)",
+        "**Signal**: N/A",
         "",
-        "**Confirmation**: No Telegram or email was sent during this diagnostic run",
+        "**Confidence**: N/A",
+        "",
+        "**Reason**: No consensus signals generated; dry-run mode active",
+        "",
+        "**Disclaimer**: Ross only routes signals when production mode is enabled and consensus is reached.",
         "",
         "---",
-        "",
-        "## Source / Evidence References",
         "",
     ])
 

@@ -1,10 +1,12 @@
 # MAIA — Manual Ticker Drilldown Diagnostic Report
 
-**Generated**: 2026-06-05T17:39:24.533214+00:00
+**Generated**: 2026-06-05T18:34:42.446747+00:00
 
 **Ticker**: MAIA
 
 **Purpose**: Diagnostic sample report showing what each agent would contribute for this ticker.
+
+**Mode**: DRY-RUN — No Telegram or email was sent. This report is for analysis only.
 
 **Safety Disclaimer**: This report is informational only and is not trading advice. No buy/sell/trade instructions are provided.
 
@@ -32,7 +34,7 @@
 **Company Name**: MAIA Biotechnology, Inc.
 **Resolution Status**: ✅ Success
 **Source**: https://www.sec.gov/files/company_tickers.json
-**Retrieved**: 2026-06-05T17:39:24.541213+00:00
+**Retrieved**: 2026-06-05T18:34:42.454744+00:00
 
 Ticker `MAIA` successfully resolved to SEC CIK `0001878313` for issuer `MAIA Biotechnology, Inc.`.
 
@@ -95,51 +97,52 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 ## Maggie — SEC 13F Institutional Holdings
 
-**Applicability**: BLOCKED_BY_MISSING_CONNECTOR
+**Applicability**: APPLICABLE_WITH_LIMITED_IDENTIFIER_MATCHING
+
+**Ticker Resolution**:
+- ✅ MAIA → CIK 0001878313 (MAIA Biotechnology, Inc.)
+- Issuer-name matching implemented (CUSIP not available from ticker resolution)
 
 **Current Behavior**:
 - Maggie fetches 13F filings for configured institutional managers (5 filings found)
-- Current connector is manager-focused, not ticker/CUSIP-focused
-- Cannot determine if selected managers hold MAIA
+- Parses 13F information table XML to extract holdings (0 successfully parsed)
+- Matches holdings to MAIA by issuer name
 
-**Limitation**: Ticker-to-CUSIP resolution and holding-level filtering not implemented
+**13F Parsing**: Failed or returned no holdings
 
-**What Would Be Needed**:
-1. Implement ticker-to-CUSIP lookup
-2. Parse 13F XML to extract individual holdings
-3. Filter to MAIA holdings across all managers
-4. Detect position changes (additions, increases, decreases, exits)
-5. Generate ticker-specific signal
+**Evidence Status**: Limited data extraction
 
-**Evidence Status**: Cannot filter to MAIA with current connector
+**Signal**: NEUTRAL
 
-**Signal**: N/A (cannot generate ticker-specific signal)
+**Confidence**: 1
 
-**Confidence**: N/A
+**Reason**: 13F information table parsing failed or returned no holdings
 
-**Reason**: Ticker-specific 13F filtering not supported
+**Limitation**: Historical comparison not yet implemented (static holdings only, no QoQ/YoY trend)
+
+**Disclaimer**: This analysis is informational only and is not trading advice. Institutional holdings are reported quarterly and may not reflect current positions.
+
+**Source URLs**: N/A (no matched holdings)
 
 ---
 
 ## Frank — Federal Reserve / Macro Context
 
-**Applicability**: PARTIALLY_APPLICABLE (macro context only)
+**Applicability**: PARTIALLY_APPLICABLE
 
 **Current Behavior**:
-- Frank monitors Federal Reserve speeches and policy signals
-- Frank is intentionally macro-focused, not ticker-specific
-- Frank would NOT form a ticker-specific view on MAIA
+- Frank analyzes Federal Reserve policy and macroeconomic conditions
+- Provides market-wide context, not ticker-specific analysis
 
-**What Frank Would Provide**:
-- Overall market sentiment (dovish/hawkish Fed)
-- Interest rate trajectory context
-- Macro risk factors
+**Evidence Status**: Macro context only
 
 **Signal**: NEUTRAL
 
-**Confidence**: 1 (macro background only)
+**Confidence**: 1
 
-**Reason**: Frank does not analyze individual tickers like MAIA; provides macro context only
+**Reason**: Not ticker-specific
+
+**Disclaimer**: Macro context is informational and not tailored to individual securities.
 
 ---
 
@@ -148,38 +151,38 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 **Applicability**: NOT_APPLICABLE
 
 **Current Behavior**:
-- Maya monitors crypto/blockchain wallet activity
-- MAIA is a stock ticker, not a crypto asset
-- Maya has no visibility into stock transactions
+- Maya analyzes cryptocurrency and blockchain data
+- Not applicable to traditional equities
 
-**Why Not Applicable**: MAIA is not a cryptocurrency or blockchain-related asset
+**Evidence Status**: N/A
 
 **Signal**: N/A
 
 **Confidence**: N/A
 
-**Reason**: Maya only analyzes crypto assets; MAIA is a stock
+**Reason**: MAIA is a stock, not a cryptocurrency
+
+**Disclaimer**: Maya only analyzes crypto assets.
 
 ---
 
 ## Janet — Portfolio Drift
 
-**Applicability**: NOT_APPLICABLE (not in portfolio)
+**Applicability**: NOT_APPLICABLE
 
 **Current Behavior**:
-- Janet compares current portfolio holdings to target allocation
-- Janet reads `config/portfolio_current.json` and `config/portfolio_target.json`
-- MAIA is not present in local portfolio files
+- Janet analyzes positions in Roger's configured portfolio
+- MAIA is not currently in the tracked portfolio
 
-**Evidence Status**: Not in portfolio
+**Evidence Status**: N/A
 
-**Signal**: N/A (no drift to report)
+**Signal**: N/A
 
 **Confidence**: N/A
 
-**Reason**: MAIA not present in local portfolio configuration
+**Reason**: MAIA not in local portfolio configuration
 
-**Note**: If Roger wants Janet to track MAIA, he would need to add it to portfolio configuration files
+**Disclaimer**: Janet only analyzes configured portfolio holdings.
 
 ---
 
@@ -188,21 +191,18 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 **Applicability**: APPLICABLE_TO_AGENT_OUTPUTS
 
 **Current Behavior**:
-- Sophie reads recent scout signals from all agents
-- Sophie groups signals by ticker and direction
-- Sophie applies consensus threshold (default: 2+ agents agreeing)
+- Sophie aggregates signals from other agents (Eddie, Maggie, Frank, Maya, Janet)
+- Requires ticker-specific signals to aggregate
 
-**For MAIA**:
-- **Signals collected**: 0 ticker-specific signals
-- **Consensus met**: No (threshold not reached)
-- **Result**: No consensus event generated
+**Evidence Status**: No ticker-specific signals to aggregate
 
-**Reason**: No agents produced ticker-specific signals due to connector limitations
+**Signal**: N/A
 
-**What Would Happen If Signals Existed**:
-- If 2+ agents signaled BULLISH on MAIA, Sophie would generate a consensus event
-- Sophie would aggregate confidence scores
-- Sophie would mark consensus for Ross to route
+**Confidence**: N/A
+
+**Reason**: No bullish or bearish signals generated for MAIA
+
+**Disclaimer**: Sophie's consensus depends on upstream agent signals.
 
 ---
 
@@ -211,31 +211,20 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 **Applicability**: DRY_RUN_ONLY
 
 **Current Behavior**:
-- Ross reads pending consensus events
-- Ross applies alert routing policy (severity, deduplication, channel routing)
-- **DRY-RUN MODE**: No alerts actually sent
+- Ross routes consensus signals to Telegram and/or email
+- DRY-RUN mode: no alerts sent
 
-**For MAIA**:
-- **Pending consensus**: None (no signals from scouts)
-- **Routing decision**: N/A (nothing to route)
+**Evidence Status**: No actionable signals to route
 
-**What Would Happen If Consensus Existed**:
-1. **Severity calculation**: Based on signal count, confidence, and historical patterns
-2. **Alert class determination**:
-   - ACTIONABLE (if meets ACTIONABLE threshold)
-   - WATCH (if interesting but below threshold)
-   - LOG_ONLY (if duplicate or low confidence)
-3. **Channel routing**:
-   - Telegram: Yes (if ACTIONABLE in production mode)
-   - Email: No (email disabled in current pilot)
-4. **Deduplication**: Check 24-hour window for duplicate MAIA signals
-5. **Rate limiting**: Max 1 alert per run (current pilot configuration)
+**Signal**: N/A
 
-**Confirmation**: No Telegram or email was sent during this diagnostic run
+**Confidence**: N/A
+
+**Reason**: No consensus signals generated; dry-run mode active
+
+**Disclaimer**: Ross only routes signals when production mode is enabled and consensus is reached.
 
 ---
-
-## Source / Evidence References
 
 **SEC Form 4**:
 - Fetch status: Success
@@ -357,7 +346,7 @@ This diagnostic report demonstrates the current insider-trading framework's stru
 
 ---
 
-**Report Generated**: 2026-06-05T17:39:24.533214+00:00
+**Report Generated**: 2026-06-05T18:34:42.446747+00:00
 
 **Generated By**: scripts/ticker_drilldown.py
 
