@@ -1,6 +1,6 @@
 # MAIA — Manual Ticker Drilldown Diagnostic Report
 
-**Generated**: 2026-06-05T16:30:50.662101+00:00
+**Generated**: 2026-06-05T17:04:34.539241+00:00
 
 **Ticker**: MAIA
 
@@ -24,11 +24,29 @@
 
 ---
 
+## Ticker Resolution
+
+**Ticker**: MAIA
+
+**CIK**: 0001878313 (1878313)
+**Company Name**: MAIA Biotechnology, Inc.
+**Resolution Status**: ✅ Success
+**Source**: https://www.sec.gov/files/company_tickers.json
+**Retrieved**: 2026-06-05T17:04:34.738439+00:00
+
+Ticker `MAIA` successfully resolved to SEC CIK `0001878313` for issuer `MAIA Biotechnology, Inc.`.
+
+---
+
 ## Executive Summary
 
-This report exercises the seven-agent insider-trading framework for ticker `MAIA`. Due to current connector limitations, most agents cannot filter to ticker-specific data and instead analyze all recent data or report not applicable.
+This report exercises the seven-agent insider-trading framework for ticker `MAIA`.
 
-**Key Finding**: Current connectors fetch all recent filings (e.g., all Form 4s from last 24 hours) but do not support ticker-specific filtering. To generate a true ticker-level report, ticker-to-CIK resolution and ticker-specific filtering would need to be implemented.
+**Ticker Resolution**: ✅ MAIA → CIK 0001878313 (MAIA Biotechnology, Inc.)
+
+**Current Status**: Ticker-to-CIK resolution is now implemented. Eddie can now filter Form 4 filings to this specific issuer CIK.
+
+**Remaining Limitation**: Form 4 transaction detail extraction is limited to metadata. Full XML parsing of individual transactions (share counts, prices, transaction codes) would enhance signal quality.
 
 ---
 
@@ -36,10 +54,10 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 | Agent | Applicability | Evidence Status | Signal | Confidence | Reason |
 |-------|--------------|-----------------|--------|------------|--------|
-| Eddie | BLOCKED_BY_MISSING_CONNECTOR | Cannot filter to MAIA | N/A | N/A | Ticker-to-CIK resolution not implemented |
+| Eddie | TICKER_RESOLVED_BUT_FORM4_DETAIL_EXTRACTION_LIMITED | CIK 0001878313 resolved | N/A | N/A | CIK resolved; Form 4 detail parsing limited |
 | Maggie | BLOCKED_BY_MISSING_CONNECTOR | Cannot filter to MAIA | N/A | N/A | Ticker-to-CUSIP resolution not implemented |
 | Frank | PARTIALLY_APPLICABLE | Macro context only | NEUTRAL | 1 | Not ticker-specific |
-| Maya | NOT_APPLICABLE | Crypto/on-chain only | N/A | N/A | Stock ticker not applicable |
+| Maya | NOT_APPLICABLE | Crypto/on-chain only | N/A | N/A | MAIA is a stock, not crypto |
 | Janet | NOT_APPLICABLE | Not in portfolio | N/A | N/A | MAIA not in local portfolio |
 | Sophie | APPLICABLE_TO_AGENT_OUTPUTS | Would aggregate signals | N/A | N/A | No ticker-specific signals to aggregate |
 | Ross | DRY_RUN_ONLY | Would route if signals exist | N/A | N/A | No actionable signals |
@@ -48,30 +66,29 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 ## Eddie — SEC Form 4 Insider Transactions
 
-**Applicability**: BLOCKED_BY_MISSING_CONNECTOR
+**Applicability**: TICKER_RESOLVED_BUT_FORM4_DETAIL_EXTRACTION_LIMITED
+
+**Ticker Resolution**:
+- ✅ MAIA → CIK 0001878313 (MAIA Biotechnology, Inc.)
+- Ticker-to-CIK resolution now implemented
 
 **Current Behavior**:
-- Eddie fetches all Form 4 filings from the last 24 hours (20 filings found)
-- Current connector does NOT support ticker-specific filtering
-- Cannot determine if any of the 20 filings are for MAIA
+- Eddie fetches all Form 4 filings from the last 24 hours (20 total filings found)
+- Filters to CIK 0001878313: 0 filings for MAIA
 
-**Limitation**: Ticker-to-CIK resolution not implemented
+**MAIA Form 4 Filings**: None found in last 24 hours
 
-**What Would Be Needed**:
-1. Implement ticker-to-CIK lookup (e.g., via SEC company tickers JSON)
-2. Filter Form 4 results to CIK for MAIA
-3. Analyze MAIA-specific insider transactions
-4. Generate ticker-specific signal
+**Status**: Ticker resolution works, but no recent Form 4 filings for this issuer
 
-**Evidence Status**: Cannot filter to MAIA with current connector
+**Evidence Status**: APPLICABLE_NO_RECENT_FILINGS
 
-**Signal**: N/A (cannot generate ticker-specific signal)
+**Signal**: N/A (transaction detail parsing not yet implemented)
 
 **Confidence**: N/A
 
-**Reason**: Ticker-specific filtering not supported by current Form 4 connector
+**Reason**: CIK resolution successful, but Form 4 detail extraction still limited to metadata
 
-**Source URLs**: N/A (no MAIA-specific filings identified)
+**Source URLs**: N/A (no recent filings)
 
 ---
 
@@ -221,13 +238,13 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 **SEC Form 4**:
 - Fetch status: Success
-- Filings retrieved: 20 (last 24 hours)
-- MAIA-specific filings: Cannot determine (ticker filtering not implemented)
+- Total filings retrieved: 20 (last 24 hours)
+- MAIA-specific filings: 0 (filtered by CIK 0001878313)
 
 **SEC 13F**:
 - Fetch status: Success
 - Filings retrieved: 5 (selected managers)
-- MAIA holdings: Cannot determine (ticker/CUSIP filtering not implemented)
+- MAIA holdings: Cannot determine (ticker-to-CUSIP resolution not yet implemented)
 
 ---
 
@@ -235,26 +252,31 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 ### Current Connector Limitations
 
-1. **No Ticker-to-CIK Resolution**:
-   - Form 4 connector cannot map MAIA ticker to SEC CIK
-   - Cannot filter Form 4 filings to MAIA issuer
+1. **~~Ticker-to-CIK Resolution~~** ✅ RESOLVED:
+   - ✅ Ticker-to-CIK mapping now implemented (sources/sec_ticker.py)
+   - ✅ Eddie can now filter Form 4 filings by CIK
 
-2. **No Ticker-to-CUSIP Resolution**:
-   - 13F connector cannot map MAIA ticker to CUSIP
-   - Cannot filter institutional holdings to MAIA
+2. **Form 4 Transaction Detail Extraction** (Still Limited):
+   - Form 4 connector fetches filing metadata but does not parse XML transaction tables
+   - Cannot extract transaction type, share count, price, or total value
+   - Eddie cannot yet generate confidence-weighted signals
 
-3. **No Individual Holdings Parsing**:
+3. **Ticker-to-CUSIP Resolution** (Still Missing):
+   - 13F connector cannot map ticker to CUSIP
+   - Cannot filter institutional holdings to specific tickers
+
+4. **13F Individual Holdings Parsing** (Still Missing):
    - 13F connector fetches manager-level filings
    - Does not parse XML to extract individual security holdings
 
-4. **No Historical Comparison**:
+5. **Historical Comparison** (Still Missing):
    - Connectors fetch current period only
    - Cannot detect QoQ or YoY changes in holdings
 
 ### Agent-Specific Limitations
 
-1. **Eddie**: Cannot generate ticker-specific signals without ticker-to-CIK resolution
-2. **Maggie**: Cannot analyze ticker-specific institutional interest without holding-level data
+1. **Eddie**: ✅ Can now filter to CIK; still limited by Form 4 detail parsing
+2. **Maggie**: Cannot analyze ticker-specific institutional interest without CUSIP resolution and holding-level data
 3. **Frank**: Intentionally macro-focused; not a limitation
 4. **Maya**: Intentionally crypto-focused; not applicable to stocks
 5. **Janet**: Requires manual portfolio configuration; not automatic
@@ -263,24 +285,38 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 ## Recommended Implementation Improvements
 
-### Priority 1: Ticker-to-CIK/CUSIP Resolution
+### ~~Priority 1: Ticker-to-CIK Resolution~~ ✅ COMPLETE
+
+**Status**: ✅ Implemented in sources/sec_ticker.py
+
+**Implementation Complete**:
+1. ✅ Uses SEC company tickers JSON: https://www.sec.gov/files/company_tickers.json
+2. ✅ Caches ticker mapping data in .state/cache/ (7-day cache)
+3. ✅ Implements resolve_ticker_to_cik(ticker: str) -> TickerCikResult
+4. ✅ Returns structured result with CIK, company name, source URL, timestamps
+
+**Benefit Realized**: Eddie can now filter Form 4 filings to specific issuer CIKs
+
+### Priority 1B: Ticker-to-CUSIP Resolution (Still Needed)
 
 **Implementation**:
-1. Download SEC company tickers JSON: https://www.sec.gov/files/company_tickers.json
-2. Create ticker lookup cache in .state/
-3. Implement ticker_to_cik(ticker: str) -> str | None
-4. Implement ticker_to_cusip(ticker: str) -> str | None
+1. Extend SEC ticker resolver or use additional data source
+2. Map ticker → CUSIP for 13F filtering
+3. Implement ticker_to_cusip(ticker: str) -> str | None
 
-**Benefit**: Enables Eddie and Maggie to filter to ticker-specific data
+**Benefit**: Enables Maggie to filter 13F holdings to specific tickers
 
-### Priority 2: Form 4 Ticker Filtering
+### Priority 2: Form 4 Transaction Detail Parsing
 
 **Implementation**:
-1. After fetching all Form 4 filings, filter by CIK
-2. Update SecForm4Connector.fetch() to accept optional ticker/CIK parameter
-3. Update Eddie to request ticker-specific Form 4 data
+1. Fetch individual Form 4 XML documents using accession numbers
+2. Parse XML to extract transaction table (derivativeTable and nonDerivativeTable)
+3. Extract transaction type (P=purchase, S=sale, A=award, etc.)
+4. Extract share count, price per share, total value
+5. Identify reporting person role (CEO, CFO, Director, 10% Owner, etc.)
+6. Filter to open-market purchases (code P) >= $100k by C-suite/directors
 
-**Benefit**: Eddie can generate true ticker-specific insider-trading signals
+**Benefit**: Eddie can generate confidence-weighted ticker-specific insider-trading signals
 
 ### Priority 3: 13F Holdings Parsing
 
@@ -304,19 +340,23 @@ This report exercises the seven-agent insider-trading framework for ticker `MAIA
 
 ## Conclusion
 
-This diagnostic report demonstrates the current insider-trading framework's structure and agent roles for ticker `MAIA`. While the framework is operational, current connectors do not support ticker-specific filtering.
+This diagnostic report demonstrates the current insider-trading framework's structure and agent roles for ticker `MAIA`.
+
+**Progress**: ✅ Ticker-to-CIK resolution is now implemented. MAIA resolves to CIK 0001878313 (MAIA Biotechnology, Inc.).
+
+**Current Capability**: Eddie can now filter Form 4 filings to this specific issuer.
 
 **Next Steps**:
-1. Implement ticker-to-CIK/CUSIP resolution (Priority 1)
-2. Add ticker filtering to Form 4 connector (Priority 2)
-3. Parse 13F holdings for ticker-specific analysis (Priority 3)
-4. Rerun this diagnostic after improvements to see MAIA-specific signals
+1. ✅ COMPLETE: Ticker-to-CIK resolution (Priority 1)
+2. Implement Form 4 transaction detail parsing (Priority 2)
+3. Implement ticker-to-CUSIP resolution (Priority 1B)
+4. Parse 13F holdings for ticker-specific analysis (Priority 3)
 
-**Timeline Estimate**: Priority 1-2 improvements could be implemented in 1-2 checkpoints, enabling true ticker-specific insider-trading reports.
+**Timeline Estimate**: Priority 2 (Form 4 detail parsing) could be implemented in 1 checkpoint, enabling confidence-weighted ticker-specific insider-trading signals.
 
 ---
 
-**Report Generated**: 2026-06-05T16:30:50.662101+00:00
+**Report Generated**: 2026-06-05T17:04:34.539241+00:00
 
 **Generated By**: scripts/ticker_drilldown.py
 
