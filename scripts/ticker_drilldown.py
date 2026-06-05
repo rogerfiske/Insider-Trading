@@ -29,6 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sources.sec_form4 import SecForm4Connector
 from sources.sec_13f import Sec13FConnector
 from sources.sec_ticker import SecTickerResolver
+from sources.sec_form4_details import fetch_and_parse_form4, summarize_transactions_for_report
 
 
 def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
@@ -176,58 +177,150 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None) -> str:
                 if ev.normalized.get("cik") == ticker_resolution.cik_padded.lstrip("0"):
                     matching_filings.append(ev)
 
+        # Parse Form 4 XML details for matching filings
+        parsed_details = []
+        all_purchases = []
+        all_sales = []
+        all_options = []
+        all_grants = []
+        all_owners = set()
+
+        for ev in matching_filings[:10]:  # Limit to first 10 to avoid excessive fetching
+            accession = ev.normalized.get("accession_number", "")
+            if accession:
+                details = fetch_and_parse_form4(accession, ticker_resolution.cik_padded)
+                if details.parse_status in ("success", "partial"):
+                    parsed_details.append(details)
+                    summary = summarize_transactions_for_report(details)
+
+                    # Aggregate transactions
+                    all_purchases.extend(summary.get("open_market_purchases", {}).get("transactions", []))
+                    all_sales.extend(summary.get("open_market_sales", {}).get("transactions", []))
+                    all_options.extend(summary.get("option_exercises", {}).get("transactions", []))
+                    all_grants.extend(summary.get("grants_awards", {}).get("transactions", []))
+
+                    # Track unique owners
+                    for owner in summary.get("owners", []):
+                        owner_desc = f"{owner.name}"
+                        if owner.officer_title:
+                            owner_desc += f" ({owner.officer_title})"
+                        elif owner.is_director:
+                            owner_desc += " (Director)"
+                        all_owners.add(owner_desc)
+
+        # Calculate total values
+        total_purchase_value = sum(txn.transaction_value for txn in all_purchases if txn.transaction_value)
+        total_sale_value = sum(txn.transaction_value for txn in all_sales if txn.transaction_value)
+
+        # Determine Eddie's status and signal
+        eddie_status = "APPLICABLE_NO_RECENT_FILINGS"
+        signal = "NEUTRAL"
+        confidence = 1
+        signal_reason = "No recent Form 4 filings found for this issuer"
+
+        if matching_filings:
+            if parsed_details:
+                if all_purchases:
+                    eddie_status = "APPLICABLE_WITH_EVIDENCE"
+                    # Conservative: only bullish if purchases and no significant sales
+                    if total_purchase_value > total_sale_value:
+                        signal = "BULLISH_EVIDENCE"
+                        confidence = 2
+                        signal_reason = f"Recent insider purchases detected ({len(all_purchases)} transaction(s), ${total_purchase_value:,.2f} total value)"
+                    else:
+                        signal = "NEUTRAL"
+                        confidence = 1
+                        signal_reason = "Insider purchases found but offset by sales"
+                elif all_sales:
+                    eddie_status = "APPLICABLE_WITH_EVIDENCE"
+                    signal = "BEARISH_EVIDENCE"
+                    confidence = 2
+                    signal_reason = f"Recent insider sales detected ({len(all_sales)} transaction(s), ${total_sale_value:,.2f} total value)"
+                elif all_grants or all_options:
+                    eddie_status = "APPLICABLE_WITH_EVIDENCE"
+                    signal = "NEUTRAL"
+                    confidence = 1
+                    signal_reason = "Only grants/awards or option exercises found (no open-market transactions)"
+                else:
+                    eddie_status = "APPLICABLE_WITH_LIMITED_DETAILS"
+                    signal = "NEUTRAL"
+                    confidence = 1
+                    signal_reason = "Form 4 filings parsed but no classifiable transactions found"
+            else:
+                eddie_status = "APPLICABLE_WITH_LIMITED_DETAILS"
+                signal = "NEUTRAL"
+                confidence = 1
+                signal_reason = "Form 4 filings found but XML parsing failed or returned no transactions"
+
         lines.extend([
-            "**Applicability**: TICKER_RESOLVED_BUT_FORM4_DETAIL_EXTRACTION_LIMITED",
+            f"**Applicability**: {eddie_status}",
             "",
             "**Ticker Resolution**:",
             f"- ✅ {ticker} → CIK {ticker_resolution.cik_padded} ({ticker_resolution.company_name})",
-            f"- Ticker-to-CIK resolution now implemented",
+            f"- Ticker-to-CIK resolution implemented",
             "",
             "**Current Behavior**:",
             f"- Eddie fetches all Form 4 filings from the last 24 hours ({len(form4_result.evidence) if form4_result.ok else 0} total filings found)",
             f"- Filters to CIK {ticker_resolution.cik_padded}: {len(matching_filings)} filings for {ticker}",
+            f"- Parses Form 4 XML details: {len(parsed_details)} successfully parsed",
             "",
         ])
 
-        if matching_filings:
-            lines.append(f"**{ticker} Form 4 Filings Found**:")
-            for i, ev in enumerate(matching_filings[:5], 1):
-                n = ev.normalized
-                lines.append(f"{i}. Accession: {n.get('accession_number', '?')} | Filed: {n.get('filing_date', '?')} | Filers: {', '.join(n.get('display_names', []))}")
-                if ev.source_url:
-                    lines.append(f"   URL: {ev.source_url}")
+        if parsed_details:
+            lines.append(f"**{ticker} Form 4 Transaction Summary**:")
+            lines.append(f"- Total filings parsed: {len(parsed_details)}")
+            lines.append(f"- Open-market purchases: {len(all_purchases)} transaction(s), ${total_purchase_value:,.2f}")
+            lines.append(f"- Open-market sales: {len(all_sales)} transaction(s), ${total_sale_value:,.2f}")
+            lines.append(f"- Option exercises: {len(all_options)} transaction(s)")
+            lines.append(f"- Grants/awards: {len(all_grants)} transaction(s)")
+            if all_owners:
+                lines.append(f"- Notable reporting owners: {len(all_owners)}")
+                for owner_desc in sorted(all_owners)[:5]:
+                    lines.append(f"  - {owner_desc}")
             lines.append("")
-            lines.extend([
-                "**Remaining Limitation**: Form 4 XML detail extraction is limited.",
-                "",
-                "**What's Still Missing**:",
-                "1. Parse individual Form 4 XML to extract transaction table",
-                "2. Extract transaction type (P=purchase, S=sale, etc.)",
-                "3. Extract share count, price, and total value",
-                "4. Filter to open-market purchases >= $100k by C-suite/directors",
-                "5. Generate confidence-weighted signal",
-                "",
-                "**Evidence Status**: CIK-filtered filings found, transaction details not yet parsed",
-            ])
+
+            # Show sample transactions
+            if all_purchases:
+                lines.append("**Sample Open-Market Purchases**:")
+                for i, txn in enumerate(all_purchases[:3], 1):
+                    value_str = f"${txn.transaction_value:,.2f}" if txn.transaction_value else "N/A"
+                    lines.append(f"{i}. {txn.transaction_date}: {txn.shares:,.0f} shares @ ${txn.price_per_share:.2f} = {value_str}")
+                lines.append("")
+
+            if all_sales:
+                lines.append("**Sample Open-Market Sales**:")
+                for i, txn in enumerate(all_sales[:3], 1):
+                    value_str = f"${txn.transaction_value:,.2f}" if txn.transaction_value else "N/A"
+                    lines.append(f"{i}. {txn.transaction_date}: {txn.shares:,.0f} shares @ ${txn.price_per_share:.2f} = {value_str}")
+                lines.append("")
+
+            lines.append("**Evidence Status**: Form 4 XML details parsed successfully")
+        elif matching_filings:
+            lines.append(f"**{ticker} Form 4 Filings**: {len(matching_filings)} found, but XML parsing failed or returned no transactions")
+            lines.append("")
+            lines.append("**Evidence Status**: CIK-filtered filings found, but detail extraction limited")
         else:
-            lines.extend([
-                f"**{ticker} Form 4 Filings**: None found in last 24 hours",
-                "",
-                "**Status**: Ticker resolution works, but no recent Form 4 filings for this issuer",
-                "",
-                "**Evidence Status**: APPLICABLE_NO_RECENT_FILINGS",
-            ])
+            lines.append(f"**{ticker} Form 4 Filings**: None found in last 24 hours")
+            lines.append("")
+            lines.append("**Evidence Status**: No recent filings")
 
         lines.extend([
             "",
-            "**Signal**: N/A (transaction detail parsing not yet implemented)",
+            f"**Signal**: {signal}",
             "",
-            "**Confidence**: N/A",
+            f"**Confidence**: {confidence}",
             "",
-            "**Reason**: CIK resolution successful, but Form 4 detail extraction still limited to metadata",
+            f"**Reason**: {signal_reason}",
+            "",
+            "**Disclaimer**: This analysis is informational only and is not trading advice. Insider transactions can occur for many reasons unrelated to stock price expectations.",
         ])
 
-        if matching_filings:
+        if parsed_details:
+            lines.append("")
+            lines.append("**Source URLs**:")
+            for details in parsed_details[:5]:
+                lines.append(f"- {details.source_url} (Accession: {details.accession_number})")
+        elif matching_filings:
             lines.append("")
             lines.append("**Source URLs**:")
             for ev in matching_filings[:5]:
