@@ -40,7 +40,10 @@ function Register-InsiderTask {
     param(
         [string]$Name,
         [string]$Script,
-        [Microsoft.Management.Infrastructure.CimInstance]$Trigger
+        [Parameter(Mandatory=$false)]
+        [Microsoft.Management.Infrastructure.CimInstance]$Trigger,
+        [Parameter(Mandatory=$false)]
+        [Microsoft.Management.Infrastructure.CimInstance[]]$Triggers
     )
 
     $taskPath = "$Folder\"
@@ -63,13 +66,24 @@ function Register-InsiderTask {
         -StartWhenAvailable `
         -ExecutionTimeLimit (New-TimeSpan -Minutes 30)
 
-    Register-ScheduledTask `
-        -TaskName $taskName `
-        -TaskPath $taskPath `
-        -Action $action `
-        -Trigger $Trigger `
-        -Settings $settings `
-        -Description "Insider Routines - $Name" | Out-Null
+    # Support both single trigger and multiple triggers
+    if ($Triggers) {
+        Register-ScheduledTask `
+            -TaskName $taskName `
+            -TaskPath $taskPath `
+            -Action $action `
+            -Trigger $Triggers `
+            -Settings $settings `
+            -Description "Insider Routines - $Name" | Out-Null
+    } else {
+        Register-ScheduledTask `
+            -TaskName $taskName `
+            -TaskPath $taskPath `
+            -Action $action `
+            -Trigger $Trigger `
+            -Settings $settings `
+            -Description "Insider Routines - $Name" | Out-Null
+    }
 
     Write-Host "  OK   $taskPath$taskName"
 }
@@ -100,9 +114,31 @@ Register-InsiderTask -Name "janet" -Script "janet.py" `
 Register-InsiderTask -Name "sophie" -Script "sophie.py" `
     -Trigger (New-ScheduledTaskTrigger -Daily -At 18:00)
 
-# Ross -- daily 18:30 (original design: every 30 min; conservative for initial install)
+# Ross -- morning startup schedule (CP20D)
+# Trigger 1: Weekday 08:00 fallback (primary for non-admin install)
+# Trigger 2: At user logon with 3-minute delay (requires admin - see note below)
+# Removed: Previous 18:30 trigger (for initial morning rollout)
+#
+# NOTE: Logon triggers require administrator privileges to register.
+# To add the logon trigger after this script runs, open PowerShell as Administrator and run:
+#   $task = Get-ScheduledTask -TaskName "Insider-ross" -TaskPath "\InsiderRoutines\"
+#   $logonTrigger = New-ScheduledTaskTrigger -AtLogon
+#   $logonTrigger.Delay = "PT3M"
+#   $task.Triggers += $logonTrigger
+#   $task | Set-ScheduledTask
+$rossFallbackTrigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday,Tuesday,Wednesday,Thursday,Friday -At 08:00
+
 Register-InsiderTask -Name "ross" -Script "ross.py" `
-    -Trigger (New-ScheduledTaskTrigger -Daily -At 18:30)
+    -Trigger $rossFallbackTrigger
+
+Write-Host ""
+Write-Host "NOTE: Ross logon trigger requires admin privileges."
+Write-Host "To add logon trigger, run PowerShell as Administrator and execute:"
+Write-Host "  `$task = Get-ScheduledTask -TaskName 'Insider-ross' -TaskPath '\InsiderRoutines\'"
+Write-Host "  `$logonTrigger = New-ScheduledTaskTrigger -AtLogon"
+Write-Host "  `$logonTrigger.Delay = 'PT3M'"
+Write-Host "  `$task.Triggers += `$logonTrigger"
+Write-Host "  `$task | Set-ScheduledTask"
 
 Write-Host ""
 Write-Host "All 7 agents registered. Logs -> $Logs"

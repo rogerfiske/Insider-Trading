@@ -2,9 +2,17 @@
 Insider-Trading alert delivery subsystem.
 
 Provides email and Telegram delivery channels for consensus alerts,
-plus routing policy, severity classification, and deduplication.
+plus routing policy, severity classification, deduplication, and
+once-daily guard for Ross production runs.
 """
 
+from alerts.daily_guard import (
+    check_daily_guard,
+    detect_trigger_source,
+    get_recent_runs,
+    record_daily_run,
+    should_bypass_guard,
+)
 from alerts.history import (
     check_duplicate,
     get_duplicate_count,
@@ -35,4 +43,9 @@ __all__ = [
     "record_routing_decision",
     "get_recent_alerts",
     "get_duplicate_count",
+    "check_daily_guard",
+    "should_bypass_guard",
+    "record_daily_run",
+    "detect_trigger_source",
+    "get_recent_runs",
 ]
