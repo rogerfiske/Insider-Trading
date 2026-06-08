@@ -35,13 +35,19 @@ from sources.sec_13f_matcher import match_ticker_to_13f_holdings, summarize_13f_
 from sources.sec_submissions import get_form4_filings_for_cik
 
 
-def generate_ticker_report(ticker: str, output_path: Path | None = None, lookback_days: int = 365) -> str:
+def generate_ticker_report(
+    ticker: str,
+    output_path: Path | None = None,
+    lookback_days: int = 365,
+    max_form4_filings: int = 0,
+) -> str:
     """Generate a comprehensive ticker drilldown report.
 
     Args:
         ticker: Stock ticker symbol (e.g., "MAIA")
         output_path: Optional path to save report
         lookback_days: Number of days to look back for Form 4 filings (default: 365)
+        max_form4_filings: Maximum number of Form 4 filings to parse (0 = unlimited, default: 0)
 
     Returns:
         Report content as markdown string
@@ -59,6 +65,85 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
         issuer_form4_filings = get_form4_filings_for_cik(ticker_resolution.cik_padded, lookback_days)
     else:
         issuer_form4_filings = []
+
+    # Parse Form 4 filings early to determine Eddie status for summary table
+    # This section computes eddie_status, signal, confidence, and signal_reason
+    parsed_details = []
+    all_purchases = []
+    all_sales = []
+    all_options = []
+    all_grants = []
+    all_owners = set()
+    eddie_status = "APPLICABLE_NO_RECENT_FILINGS"
+    signal = "NEUTRAL"
+    confidence = 1
+    signal_reason = "No recent Form 4 filings found for this issuer"
+
+    if ticker_resolution.ok and issuer_form4_filings:
+        # Apply max_form4_filings limit: 0 means unlimited
+        filings_to_parse = issuer_form4_filings if max_form4_filings == 0 else issuer_form4_filings[:max_form4_filings]
+
+        for filing in filings_to_parse:
+            accession = filing.accession_number
+            primary_doc = filing.primary_document
+            if accession:
+                details = fetch_and_parse_form4(accession, ticker_resolution.cik_padded, primary_doc)
+                if details.parse_status in ("success", "partial"):
+                    parsed_details.append(details)
+                    summary = summarize_transactions_for_report(details)
+
+                    # Aggregate transactions
+                    all_purchases.extend(summary.get("open_market_purchases", {}).get("transactions", []))
+                    all_sales.extend(summary.get("open_market_sales", {}).get("transactions", []))
+                    all_options.extend(summary.get("option_exercises", {}).get("transactions", []))
+                    all_grants.extend(summary.get("grants_awards", {}).get("transactions", []))
+
+                    # Track unique owners
+                    for owner in details.owners:
+                        owner_desc = f"{owner.name}"
+                        if owner.officer_title:
+                            owner_desc += f" ({owner.officer_title})"
+                        elif owner.is_director:
+                            owner_desc += " (Director)"
+                        all_owners.add(owner_desc)
+
+        # Calculate total values
+        total_purchase_value = sum(txn.transaction_value for txn in all_purchases if txn.transaction_value)
+        total_sale_value = sum(txn.transaction_value for txn in all_sales if txn.transaction_value)
+
+        # Determine Eddie's status and signal based on parsed results
+        if parsed_details:
+            if all_purchases:
+                eddie_status = "APPLICABLE_WITH_EVIDENCE"
+                # Conservative: only bullish if purchases and no significant sales
+                if total_purchase_value > total_sale_value:
+                    signal = "BULLISH_EVIDENCE"
+                    confidence = 2
+                    signal_reason = f"Recent insider purchases detected ({len(all_purchases)} transaction(s), ${total_purchase_value:,.2f} total value)"
+                else:
+                    signal = "NEUTRAL"
+                    confidence = 1
+                    signal_reason = "Insider purchases found but offset by sales"
+            elif all_sales:
+                eddie_status = "APPLICABLE_WITH_EVIDENCE"
+                signal = "BEARISH_EVIDENCE"
+                confidence = 2
+                signal_reason = f"Recent insider sales detected ({len(all_sales)} transaction(s), ${total_sale_value:,.2f} total value)"
+            elif all_grants or all_options:
+                eddie_status = "APPLICABLE_WITH_EVIDENCE"
+                signal = "NEUTRAL"
+                confidence = 1
+                signal_reason = "Only grants/awards or option exercises found (no open-market transactions)"
+            else:
+                eddie_status = "APPLICABLE_WITH_LIMITED_DETAILS"
+                signal = "NEUTRAL"
+                confidence = 1
+                signal_reason = "Form 4 filings parsed but no classifiable transactions found"
+        else:
+            eddie_status = "APPLICABLE_WITH_LIMITED_DETAILS"
+            signal = "NEUTRAL"
+            confidence = 1
+            signal_reason = "Form 4 filings found but XML parsing failed or returned no transactions"
 
     # Fetch 13F data (manager-focused, not ticker-specific)
     form13f_connector = Sec13FConnector()
@@ -159,9 +244,13 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
         "|-------|--------------|-----------------|--------|------------|--------|",
     ])
 
-    # Eddie row depends on ticker resolution success
+    # Eddie row depends on ticker resolution success and uses computed status
     if ticker_resolution.ok:
-        lines.append(f"| Eddie | APPLICABLE_NO_RECENT_FILINGS | Form 4 XML parser implemented | NEUTRAL | 1 | No recent filings in query window |")
+        # Use computed eddie_status, signal, confidence, signal_reason from Form 4 parsing
+        evidence_status = "Form 4 XML parser implemented"
+        if parsed_details:
+            evidence_status = f"Parsed {len(parsed_details)} Form 4 filing(s) with {len(all_purchases) + len(all_sales) + len(all_grants) + len(all_options)} transaction(s)"
+        lines.append(f"| Eddie | {eddie_status} | {evidence_status} | {signal} | {confidence} | {signal_reason} |")
     else:
         lines.append(f"| Eddie | TICKER_RESOLUTION_FAILED | Cannot resolve {ticker} to CIK | N/A | N/A | Ticker not found in SEC mapping |")
 
@@ -180,86 +269,8 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
     ])
 
     # Eddie section depends on ticker resolution success
+    # Note: Form 4 parsing already completed earlier to populate eddie_status
     if ticker_resolution.ok:
-        # Use issuer-specific Form 4 filings from SEC submissions API
-        # issuer_form4_filings already filtered by lookback window
-
-        # Parse Form 4 XML details for issuer-specific filings
-        parsed_details = []
-        all_purchases = []
-        all_sales = []
-        all_options = []
-        all_grants = []
-        all_owners = set()
-
-        for filing in issuer_form4_filings[:10]:  # Limit to first 10 to avoid excessive fetching
-            accession = filing.accession_number
-            primary_doc = filing.primary_document
-            if accession:
-                details = fetch_and_parse_form4(accession, ticker_resolution.cik_padded, primary_doc)
-                if details.parse_status in ("success", "partial"):
-                    parsed_details.append(details)
-                    summary = summarize_transactions_for_report(details)
-
-                    # Aggregate transactions
-                    all_purchases.extend(summary.get("open_market_purchases", {}).get("transactions", []))
-                    all_sales.extend(summary.get("open_market_sales", {}).get("transactions", []))
-                    all_options.extend(summary.get("option_exercises", {}).get("transactions", []))
-                    all_grants.extend(summary.get("grants_awards", {}).get("transactions", []))
-
-                    # Track unique owners
-                    for owner in summary.get("owners", []):
-                        owner_desc = f"{owner.name}"
-                        if owner.officer_title:
-                            owner_desc += f" ({owner.officer_title})"
-                        elif owner.is_director:
-                            owner_desc += " (Director)"
-                        all_owners.add(owner_desc)
-
-        # Calculate total values
-        total_purchase_value = sum(txn.transaction_value for txn in all_purchases if txn.transaction_value)
-        total_sale_value = sum(txn.transaction_value for txn in all_sales if txn.transaction_value)
-
-        # Determine Eddie's status and signal
-        eddie_status = "APPLICABLE_NO_RECENT_FILINGS"
-        signal = "NEUTRAL"
-        confidence = 1
-        signal_reason = "No recent Form 4 filings found for this issuer"
-
-        if issuer_form4_filings:
-            if parsed_details:
-                if all_purchases:
-                    eddie_status = "APPLICABLE_WITH_EVIDENCE"
-                    # Conservative: only bullish if purchases and no significant sales
-                    if total_purchase_value > total_sale_value:
-                        signal = "BULLISH_EVIDENCE"
-                        confidence = 2
-                        signal_reason = f"Recent insider purchases detected ({len(all_purchases)} transaction(s), ${total_purchase_value:,.2f} total value)"
-                    else:
-                        signal = "NEUTRAL"
-                        confidence = 1
-                        signal_reason = "Insider purchases found but offset by sales"
-                elif all_sales:
-                    eddie_status = "APPLICABLE_WITH_EVIDENCE"
-                    signal = "BEARISH_EVIDENCE"
-                    confidence = 2
-                    signal_reason = f"Recent insider sales detected ({len(all_sales)} transaction(s), ${total_sale_value:,.2f} total value)"
-                elif all_grants or all_options:
-                    eddie_status = "APPLICABLE_WITH_EVIDENCE"
-                    signal = "NEUTRAL"
-                    confidence = 1
-                    signal_reason = "Only grants/awards or option exercises found (no open-market transactions)"
-                else:
-                    eddie_status = "APPLICABLE_WITH_LIMITED_DETAILS"
-                    signal = "NEUTRAL"
-                    confidence = 1
-                    signal_reason = "Form 4 filings parsed but no classifiable transactions found"
-            else:
-                eddie_status = "APPLICABLE_WITH_LIMITED_DETAILS"
-                signal = "NEUTRAL"
-                confidence = 1
-                signal_reason = "Form 4 filings found but XML parsing failed or returned no transactions"
-
         lines.extend([
             f"**Applicability**: {eddie_status}",
             "",
@@ -832,6 +843,12 @@ def main() -> int:
         default=365,
         help="Number of days to look back for Form 4 filings (default: 365, max: 1460)",
     )
+    parser.add_argument(
+        "--max-form4-filings",
+        type=int,
+        default=0,
+        help="Maximum number of Form 4 filings to parse (0 = unlimited, default: 0)",
+    )
 
     args = parser.parse_args()
 
@@ -843,15 +860,29 @@ def main() -> int:
         print(f"[ticker_drilldown] ERROR: --lookback-days cannot exceed 1460 days / 4 years (got {args.lookback_days})")
         return 1
 
+    # Validate max-form4-filings
+    if args.max_form4_filings < 0:
+        print(f"[ticker_drilldown] ERROR: --max-form4-filings must be non-negative (got {args.max_form4_filings})")
+        return 1
+
     if not args.dry_run_report:
         print("[ticker_drilldown] ERROR: Only --dry-run-report mode is currently supported")
         return 1
 
     print(f"[ticker_drilldown] Generating diagnostic report for {args.ticker.upper()}...")
     print(f"[ticker_drilldown] Lookback window: {args.lookback_days} days")
+    if args.max_form4_filings == 0:
+        print("[ticker_drilldown] Form 4 parsing limit: unlimited")
+    else:
+        print(f"[ticker_drilldown] Form 4 parsing limit: {args.max_form4_filings} filings")
     print("[ticker_drilldown] Mode: DRY-RUN (no alerts will be sent)")
 
-    report = generate_ticker_report(args.ticker, args.output, lookback_days=args.lookback_days)
+    report = generate_ticker_report(
+        args.ticker,
+        args.output,
+        lookback_days=args.lookback_days,
+        max_form4_filings=args.max_form4_filings,
+    )
 
     print(f"[ticker_drilldown] Report generated successfully")
     print(f"[ticker_drilldown] Length: {len(report)} characters")
