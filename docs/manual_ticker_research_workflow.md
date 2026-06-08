@@ -188,6 +188,151 @@ Both single ticker and watchlist modes enforce strict safety boundaries:
 
 ---
 
+## Persistent Watchlist Tracking
+
+The watchlist workflow supports persistent local history tracking, allowing you to build an audit trail of repeated small-cap/penny-stock research over time.
+
+### Purpose
+
+Track how insider buying activity evolves across multiple research runs:
+- **Trend Detection**: See if insider purchases are increasing or decreasing
+- **New Activity**: Identify when new Form 4 filings appear
+- **Signal Changes**: Track changes in Eddie/Maggie signals over time
+- **Historical Context**: Build a longitudinal view of research targets
+
+### Database Location
+
+History is stored in a local SQLite database:
+
+```text
+.state/watchlist_history.db
+```
+
+**Git Safety**: This database is **gitignored** and never committed. It stays local to your machine.
+
+### Saving a Run
+
+Add the `--save-history` flag to save the run to local history:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py --tickers MAIA ABCD --save-history --dry-run-report
+```
+
+**Default Behavior**: History is **not saved** unless you explicitly add `--save-history`. This prevents accidental database growth.
+
+### Comparing with Previous Runs
+
+Add the `--compare-previous` flag to compute deltas against the most recent prior run for each ticker:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py --tickers MAIA ABCD --save-history --compare-previous --dry-run-report
+```
+
+This generates a delta table showing:
+- Purchase value change
+- Purchase count change
+- Sale value change
+- Sale count change
+- Signal changes
+- Confidence changes
+
+### Example: Repeated MAIA Research
+
+**First Run** (establishes baseline):
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py --tickers MAIA --lookback-days 1460 --save-history --dry-run-report
+```
+
+Output:
+```text
+[ticker_watchlist] Run ID: 59e70e5d-3ad5-4509-ab38-e66b703d77bc
+[ticker_watchlist]   MAIA: First run - no prior data
+```
+
+**Second Run** (compares to first):
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py --tickers MAIA --lookback-days 1460 --save-history --compare-previous --dry-run-report
+```
+
+Output:
+```text
+[ticker_watchlist] Run ID: 8a74a6e2-5462-426a-afcf-e2da8b0d8611
+[ticker_watchlist]   MAIA: No purchase value change
+```
+
+If new insider purchases appeared between runs:
+```text
+[ticker_watchlist]   MAIA: +$50,000.00 purchases; Signal changed: NEUTRAL → BULLISH_EVIDENCE
+```
+
+### History Summary Report
+
+When `--save-history` is used, a history summary is generated:
+
+```text
+docs/sample_reports/watchlist/manual_watchlist_history_summary.md
+```
+
+This report includes:
+- Run ID and timestamp
+- Current ranked results
+- Delta comparison table (if `--compare-previous` was used)
+- Safety confirmations
+
+### What Deltas Mean
+
+| Delta | Interpretation |
+|-------|----------------|
+| **Purchase value increased** | More insider buying detected in this run |
+| **Purchase count increased** | More purchase transactions filed |
+| **Sale value increased** | Insider selling detected (may indicate reduced confidence) |
+| **Signal changed** | Eddie's assessment changed (e.g., NEUTRAL → BULLISH_EVIDENCE) |
+| **Zero deltas** | No change since prior run (data stable) |
+
+**Important**: Deltas show changes in **SEC filing data**, not stock price movements. Insider activity can increase while price drops, or vice versa.
+
+### Resetting/Deleting Local History
+
+To reset your research history:
+
+1. **Delete the entire database**:
+   ```powershell
+   Remove-Item .state/watchlist_history.db
+   ```
+
+2. **Or use SQL to delete specific tickers** (advanced):
+   ```powershell
+   sqlite3 .state/watchlist_history.db
+   DELETE FROM watchlist_ticker_results WHERE ticker = 'MAIA';
+   DELETE FROM watchlist_ticker_deltas WHERE ticker = 'MAIA';
+   ```
+
+The database will be recreated automatically on the next `--save-history` run.
+
+### Safety Boundaries
+
+Persistent watchlist tracking maintains all safety constraints:
+
+- ✅ **Local database only** — never synced or committed to Git
+- ✅ **No alerts sent** — dry-run mode enforced
+- ✅ **No production guard consumed** — Ross daily limit not affected
+- ✅ **SEC data only** — no spreadsheets required
+- ✅ **Informational only** — not trading advice
+
+### CLI Options Summary
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--save-history` | Not enabled | Save this run to history database |
+| `--no-save-history` | Default | Do not save history (explicit opt-out) |
+| `--compare-previous` | Not enabled | Compare each ticker with most recent prior run |
+| `--history-db PATH` | `.state/watchlist_history.db` | Custom database path |
+| `--history-summary-output PATH` | `docs/sample_reports/watchlist/manual_watchlist_history_summary.md` | Custom history summary path |
+
+---
+
 ## Recommended Lookback Windows
 
 | Use Case | Lookback Days | Rationale |

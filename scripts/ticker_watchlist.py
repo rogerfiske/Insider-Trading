@@ -38,6 +38,7 @@ os.environ["ALERT_ENABLE_EMAIL"] = "false"
 from scripts.ticker_drilldown import generate_ticker_report
 from sources.sec_ticker import SecTickerResolver
 from sources.sec_common import utcnow_iso
+from watchlist.history_store import WatchlistHistoryStore
 
 
 def normalize_tickers(tickers: list[str]) -> list[str]:
@@ -386,6 +387,192 @@ def generate_json_output(
     }
 
 
+def generate_history_summary(
+    run_id: str,
+    ticker_metrics: list[dict[str, Any]],
+    deltas: list[dict[str, Any]],
+    lookback_days: int,
+    max_form4_filings: int,
+    tickers_requested: int,
+    tickers_resolved: int,
+    tickers_failed: int,
+    history_db_path: Path,
+    compare_previous: bool,
+) -> str:
+    """Generate history summary markdown report.
+
+    Args:
+        run_id: Unique run identifier
+        ticker_metrics: List of ticker metric dicts
+        deltas: List of delta dicts for each ticker
+        lookback_days: Lookback window in days
+        max_form4_filings: Form 4 filing limit
+        tickers_requested: Total tickers requested
+        tickers_resolved: Tickers successfully resolved
+        tickers_failed: Tickers that failed
+        history_db_path: Path to history database
+        compare_previous: Whether deltas were computed
+
+    Returns:
+        Markdown formatted history summary
+    """
+    lines = []
+    lines.append("# Manual Ticker Watchlist History Summary")
+    lines.append("")
+    lines.append(f"**Generated**: {utcnow_iso()}")
+    lines.append(f"**Run ID**: `{run_id}`")
+    lines.append(
+        "**Mode**: DRY-RUN — No Telegram or email was sent. This is research history only."
+    )
+    lines.append("")
+
+    # Configuration
+    lines.append("## Configuration")
+    lines.append("")
+    lines.append(f"- **History Database**: `{history_db_path}`")
+    lines.append(f"- **Lookback Days**: {lookback_days}")
+    lines.append(
+        f"- **Max Form 4 Filings**: {'Unlimited' if max_form4_filings == 0 else max_form4_filings}"
+    )
+    lines.append(f"- **Tickers Requested**: {tickers_requested}")
+    lines.append(f"- **Tickers Resolved**: {tickers_resolved}")
+    lines.append(f"- **Tickers Failed**: {tickers_failed}")
+    lines.append(f"- **Compared with Prior Runs**: {'Yes' if compare_previous else 'No'}")
+    lines.append("")
+
+    # Data sources
+    lines.append("## Data Sources")
+    lines.append("")
+    lines.append("- SEC EDGAR API")
+    lines.append("- Project connectors (SEC Form 4, SEC 13F)")
+    lines.append("- **Roger's OpenInsider spreadsheet was not used**")
+    lines.append("")
+
+    # Current run results
+    lines.append("## Current Run Results")
+    lines.append("")
+    lines.append("Tickers ranked by insider buying evidence strength:")
+    lines.append("")
+    lines.append(
+        "| Rank | Ticker | Company | Eddie Signal | Confidence | Purchases | Purchase Value | Sales | Net Value |"
+    )
+    lines.append(
+        "|------|--------|---------|--------------|------------|-----------|----------------|-------|-----------"
+    )
+
+    for rank, m in enumerate(ticker_metrics, 1):
+        lines.append(
+            f"| {rank} | {m['ticker']} | {m['company_name'][:30]} | "
+            f"{m['eddie_signal']} | {m['eddie_confidence']} | "
+            f"{m['purchase_count']} | ${m['purchase_value']:,.2f} | "
+            f"{m['sale_count']} | ${m['net_purchase_value']:,.2f} |"
+        )
+
+    lines.append("")
+
+    # Delta comparison
+    if compare_previous and deltas:
+        lines.append("## Comparison with Prior Runs")
+        lines.append("")
+        lines.append(
+            "Changes since most recent prior run for each ticker:"
+        )
+        lines.append("")
+        lines.append(
+            "| Ticker | Prior Run Date | Purchase Value Δ | Purchase Count Δ | Sale Value Δ | Sale Count Δ | Signal Changed | Note |"
+        )
+        lines.append(
+            "|--------|----------------|------------------|------------------|--------------|--------------|----------------|------|"
+        )
+
+        for item in deltas:
+            ticker = item["ticker"]
+            delta = item["delta"]
+
+            if delta["has_prior"]:
+                prior_date = delta["prior_created_at"][:10] if delta["prior_created_at"] else "N/A"
+                pv_delta = delta["purchase_value_delta"]
+                pv_delta_str = f"${pv_delta:,.2f}" if pv_delta is not None else "N/A"
+                if pv_delta and pv_delta > 0:
+                    pv_delta_str = f"+{pv_delta_str}"
+
+                pc_delta = delta["purchase_count_delta"]
+                pc_delta_str = str(pc_delta) if pc_delta is not None else "N/A"
+                if pc_delta and pc_delta > 0:
+                    pc_delta_str = f"+{pc_delta_str}"
+
+                sv_delta = delta["sale_value_delta"]
+                sv_delta_str = f"${sv_delta:,.2f}" if sv_delta is not None else "N/A"
+                if sv_delta and sv_delta > 0:
+                    sv_delta_str = f"+{sv_delta_str}"
+
+                sc_delta = delta["sale_count_delta"]
+                sc_delta_str = str(sc_delta) if sc_delta is not None else "N/A"
+                if sc_delta and sc_delta > 0:
+                    sc_delta_str = f"+{sc_delta_str}"
+
+                signal_changed = "Yes" if delta["signal_changed"] else "No"
+                summary = delta["summary"]
+
+                lines.append(
+                    f"| {ticker} | {prior_date} | {pv_delta_str} | {pc_delta_str} | "
+                    f"{sv_delta_str} | {sc_delta_str} | {signal_changed} | {summary} |"
+                )
+            else:
+                lines.append(
+                    f"| {ticker} | N/A | N/A | N/A | N/A | N/A | N/A | First run - no prior data |"
+                )
+
+        lines.append("")
+    elif compare_previous and not deltas:
+        lines.append("## Comparison with Prior Runs")
+        lines.append("")
+        lines.append("No prior runs found for comparison.")
+        lines.append("")
+
+    # Per-ticker reports
+    lines.append("## Per-Ticker Reports")
+    lines.append("")
+    for m in ticker_metrics:
+        lines.append(
+            f"- [{m['ticker']}](./{m['ticker']}_manual_ticker_report.md)"
+        )
+    lines.append("")
+
+    # Limitations
+    lines.append("## Limitations")
+    lines.append("")
+    lines.append("- This is manual research history only, not trading advice")
+    lines.append("- Deltas show changes in SEC filing data, not price movements")
+    lines.append("- Insider transactions can occur for many reasons unrelated to expectations")
+    lines.append("- Historical comparison requires multiple saved runs over time")
+    lines.append("")
+
+    # Safety confirmations
+    lines.append("## Safety Confirmations")
+    lines.append("")
+    lines.append("- ✅ No Telegram messages sent")
+    lines.append("- ✅ No email sent")
+    lines.append("- ✅ Roger's OpenInsider spreadsheet not used")
+    lines.append("- ✅ Data sourced from SEC EDGAR only")
+    lines.append("- ✅ History database is local and gitignored")
+    lines.append("")
+
+    # Disclaimer
+    lines.append("## Disclaimer")
+    lines.append("")
+    lines.append("**This analysis is informational only and is not trading advice.**")
+    lines.append("")
+    lines.append(
+        "Insider transactions can occur for many reasons unrelated to stock price expectations. "
+        "This report presents SEC filing data for research purposes only. "
+        "Do not use this information as the sole basis for investment decisions."
+    )
+    lines.append("")
+
+    return "\n".join(lines)
+
+
 def main():
     """Main watchlist execution."""
     parser = argparse.ArgumentParser(
@@ -440,6 +627,35 @@ def main():
         "--dry-run-report",
         action="store_true",
         help="Dry-run mode (always enabled for watchlist, for compatibility)",
+    )
+
+    # History tracking options
+    parser.add_argument(
+        "--save-history",
+        action="store_true",
+        help="Save this run to local history database for tracking over time",
+    )
+    parser.add_argument(
+        "--no-save-history",
+        action="store_true",
+        help="Do not save history (default behavior)",
+    )
+    parser.add_argument(
+        "--history-db",
+        type=Path,
+        default=Path(".state/watchlist_history.db"),
+        help="Path to SQLite history database (default: .state/watchlist_history.db)",
+    )
+    parser.add_argument(
+        "--history-summary-output",
+        type=Path,
+        default=Path("docs/sample_reports/watchlist/manual_watchlist_history_summary.md"),
+        help="Path for history summary markdown",
+    )
+    parser.add_argument(
+        "--compare-previous",
+        action="store_true",
+        help="Compare current results with most recent prior run for each ticker",
     )
 
     args = parser.parse_args()
@@ -527,6 +743,97 @@ def main():
         encoding="utf-8",
     )
     print(f"[ticker_watchlist] JSON saved: {args.json_output}")
+
+    # History tracking and delta computation
+    run_id = None
+    deltas = []
+    if args.save_history and not args.no_save_history:
+        print()
+        print("[ticker_watchlist] Saving run to history database...")
+
+        store = WatchlistHistoryStore(args.history_db)
+
+        # Get current git commit if available
+        git_commit = None
+        try:
+            import subprocess
+            result = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=5,
+            )
+            if result.returncode == 0:
+                git_commit = result.stdout.strip()[:8]
+        except Exception:
+            pass
+
+        # Save run metadata
+        run_id = store.save_run(
+            mode="manual_watchlist_dry_run",
+            tickers_requested=len(tickers),
+            tickers_resolved=tickers_resolved,
+            lookback_days=args.lookback_days,
+            max_form4_filings=args.max_form4_filings,
+            git_commit=git_commit,
+            notes="CP21H persistent watchlist tracking",
+        )
+
+        print(f"[ticker_watchlist] Run ID: {run_id}")
+
+        # Save ticker results and compute deltas
+        for metrics in ticker_metrics:
+            ticker = metrics["ticker"]
+
+            # Find prior result if --compare-previous
+            prior_result = None
+            if args.compare_previous:
+                prior_result = store.get_most_recent_result_for_ticker(
+                    ticker, exclude_run_id=run_id
+                )
+
+            # Compute delta
+            delta = store.compute_delta(metrics, prior_result)
+            deltas.append({"ticker": ticker, "delta": delta})
+
+            # Save ticker result
+            store.save_ticker_result(
+                run_id=run_id,
+                ticker=ticker,
+                metrics=metrics,
+                json_blob=metrics,
+            )
+
+            # Save delta
+            store.save_delta(
+                run_id=run_id,
+                ticker=ticker,
+                delta=delta,
+            )
+
+            if delta["has_prior"]:
+                print(f"[ticker_watchlist]   {ticker}: {delta['summary']}")
+            else:
+                print(f"[ticker_watchlist]   {ticker}: First run - no prior data")
+
+        # Generate history summary report
+        history_summary = generate_history_summary(
+            run_id=run_id,
+            ticker_metrics=ticker_metrics,
+            deltas=deltas,
+            lookback_days=args.lookback_days,
+            max_form4_filings=args.max_form4_filings,
+            tickers_requested=len(tickers),
+            tickers_resolved=tickers_resolved,
+            tickers_failed=tickers_failed,
+            history_db_path=args.history_db,
+            compare_previous=args.compare_previous,
+        )
+
+        args.history_summary_output.parent.mkdir(parents=True, exist_ok=True)
+        args.history_summary_output.write_text(history_summary, encoding="utf-8")
+        print(f"[ticker_watchlist] History summary saved: {args.history_summary_output}")
 
     # Console summary
     print()
