@@ -19,12 +19,19 @@ Safety:
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+# SAFETY: Force dry-run mode for manual ticker research
+# This ensures ticker drilldown can never send Telegram/email
+os.environ["ROSS_DRY_RUN"] = "true"
+os.environ["ALERT_ENABLE_TELEGRAM"] = "false"
+os.environ["ALERT_ENABLE_EMAIL"] = "false"
 
 from sources.sec_form4 import SecForm4Connector
 from sources.sec_13f import Sec13FConnector
@@ -33,6 +40,8 @@ from sources.sec_form4_details import fetch_and_parse_form4, summarize_transacti
 from sources.sec_13f_parser import fetch_and_parse_13f_info_table
 from sources.sec_13f_matcher import match_ticker_to_13f_holdings, summarize_13f_matches_for_report
 from sources.sec_submissions import get_form4_filings_for_cik
+from sources.ticker_research_results import EddieTickerResult, MaggieTickerResult, TickerResearchReport
+from sources.sec_common import utcnow_iso
 
 
 def generate_ticker_report(

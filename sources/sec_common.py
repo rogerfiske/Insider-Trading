@@ -30,6 +30,8 @@ _DEFAULT_USER_AGENT = (
 _MIN_REQUEST_INTERVAL = 0.2  # 200ms -> max 5 req/sec (conservative)
 _REQUEST_TIMEOUT = 30  # seconds
 _CACHE_DIR_NAME = "cache"
+_MAX_RETRIES = 3  # Maximum retry attempts for transient failures
+_RETRY_BACKOFF_BASE = 1.0  # Initial backoff delay in seconds
 
 # Module-level state for rate limiting
 _last_request_time: float = 0.0
@@ -97,33 +99,23 @@ def _rate_limit() -> None:
     _last_request_time = time.time()
 
 
-def sec_fetch(
+def _is_retryable_error(status: int, error: str | None) -> bool:
+    """Determine if an error is transient and should be retried."""
+    # Retry on rate limiting, server errors, and network failures
+    if status in (429, 500, 502, 503, 504):
+        return True
+    if status == 0:  # Network error or timeout
+        return True
+    return False
+
+
+def _sec_fetch_once(
     url: str,
     *,
-    cache_max_age: int = 3600,
     timeout: int = _REQUEST_TIMEOUT,
     accept: str = "application/json",
 ) -> dict[str, Any]:
-    """Fetch a URL from SEC with rate limiting, caching, and error handling.
-
-    Returns a dict with keys:
-        ok: bool
-        status: int
-        body: str
-        error: str | None
-        from_cache: bool
-    """
-    # Try cache first
-    cached = _read_cache(url, cache_max_age)
-    if cached is not None:
-        return {
-            "ok": True,
-            "status": 200,
-            "body": cached,
-            "error": None,
-            "from_cache": True,
-        }
-
+    """Single SEC fetch attempt without retry logic."""
     # Rate limit
     _rate_limit()
 
@@ -162,7 +154,6 @@ def sec_fetch(
         }
 
     if 200 <= status < 300:
-        _write_cache(url, body)
         return {
             "ok": True,
             "status": status,
@@ -177,6 +168,77 @@ def sec_fetch(
         "body": body,
         "error": f"HTTP {status}",
         "from_cache": False,
+    }
+
+
+def sec_fetch(
+    url: str,
+    *,
+    cache_max_age: int = 3600,
+    timeout: int = _REQUEST_TIMEOUT,
+    accept: str = "application/json",
+    max_retries: int = _MAX_RETRIES,
+) -> dict[str, Any]:
+    """Fetch a URL from SEC with rate limiting, caching, retry logic, and error handling.
+
+    Returns a dict with keys:
+        ok: bool
+        status: int
+        body: str
+        error: str | None
+        from_cache: bool
+        retry_count: int (number of retries attempted)
+    """
+    # Try cache first
+    cached = _read_cache(url, cache_max_age)
+    if cached is not None:
+        return {
+            "ok": True,
+            "status": 200,
+            "body": cached,
+            "error": None,
+            "from_cache": True,
+            "retry_count": 0,
+        }
+
+    # Attempt fetch with exponential backoff retry
+    last_error = None
+    for attempt in range(max_retries + 1):
+        result = _sec_fetch_once(url, timeout=timeout, accept=accept)
+
+        if result["ok"]:
+            # Success - write to cache and return
+            _write_cache(url, result["body"])
+            result["retry_count"] = attempt
+            return result
+
+        # Check if error is retryable
+        if not _is_retryable_error(result["status"], result.get("error")):
+            # Non-retryable error - return immediately
+            result["retry_count"] = attempt
+            return result
+
+        last_error = result
+
+        # If we have more retries, wait with exponential backoff
+        if attempt < max_retries:
+            backoff_delay = _RETRY_BACKOFF_BASE * (2 ** attempt)
+            time.sleep(backoff_delay)
+
+    # All retries exhausted
+    if last_error:
+        last_error["retry_count"] = max_retries
+        last_error["error"] = f"{last_error.get('error', 'Unknown error')} (after {max_retries} retries)"
+        return last_error
+
+    # Should not reach here, but return a safe failure
+    return {
+        "ok": False,
+        "status": 0,
+        "body": "",
+        "error": f"Failed after {max_retries} retries",
+        "from_cache": False,
+        "retry_count": max_retries,
     }
 
 
