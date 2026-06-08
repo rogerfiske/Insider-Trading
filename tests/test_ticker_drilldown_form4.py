@@ -28,6 +28,9 @@ def test_ticker_drilldown_includes_form4_detail_section():
         or "No matching Form 4 filings" in report
         or "Form 4 filings found" in report
         or "MAIA Form 4 Filings" in report
+        or "filings successfully" in report
+        or "Transaction Summary" in report
+        or "Parsed:" in report  # New format: "Parsed: N filings successfully"
     )
     assert has_transaction_info
 

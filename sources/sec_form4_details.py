@@ -15,6 +15,7 @@ Example:
 
 from __future__ import annotations
 
+import re
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from typing import Any
@@ -377,8 +378,31 @@ def parse_form4_xml(xml_content: str, accession_number: str, source_url: str) ->
     )
 
 
+def _extract_xml_from_submission(submission_text: str) -> str | None:
+    """Extract XML ownership document from SEC submission text file.
+
+    SEC Form 4 filings often embed the raw XML ownership document within <XML>...</XML>
+    tags in the submission text file (.txt).
+
+    Args:
+        submission_text: Content of submission text file
+
+    Returns:
+        Extracted XML content or None if not found
+    """
+    match = re.search(r'<XML>(.*?)</XML>', submission_text, re.DOTALL | re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+    return None
+
+
 def fetch_and_parse_form4(accession_number: str, cik: str, primary_document: str | None = None) -> Form4FilingDetails:
     """Fetch and parse a Form 4 XML document from SEC EDGAR.
+
+    Tries multiple strategies to locate the raw XML ownership document:
+    1. Fetch submission text file and extract <XML>...</XML> block
+    2. Fallback: Try primary document URL if provided
+    3. Fallback: Try accession-based XML path
 
     Args:
         accession_number: SEC accession number (e.g., "0001878313-26-000012")
@@ -392,35 +416,47 @@ def fetch_and_parse_form4(accession_number: str, cik: str, primary_document: str
     accession_clean = accession_number.replace("-", "")
     cik_clean = cik.lstrip("0")  # Remove leading zeros for URL
 
-    # Build Form 4 XML URL
+    source_url = f"https://www.sec.gov/cgi-bin/viewer?action=view&cik={cik_clean}&accession_number={accession_clean}&xbrl_type=v"
+
+    # Strategy 1: Try submission text file (most reliable for recent Form 4 filings)
+    txt_url = f"https://www.sec.gov/Archives/edgar/data/{cik_clean}/{accession_clean}/{accession_number}.txt"
+    resp = sec_fetch(txt_url, cache_max_age=3600)
+
+    if resp["ok"]:
+        xml_content = _extract_xml_from_submission(resp["body"])
+        if xml_content:
+            # Successfully extracted XML from submission text
+            return parse_form4_xml(xml_content, accession_number, source_url)
+
+    # Strategy 2: Try primary document URL if provided
     if primary_document:
-        # Use primary document from SEC submissions API
         xml_url = f"https://www.sec.gov/Archives/edgar/data/{cik_clean}/{accession_clean}/{primary_document}"
-    else:
-        # Fallback: try standard accession-based path
-        xml_url = f"https://www.sec.gov/Archives/edgar/data/{cik_clean}/{accession_clean}/{accession_number}.xml"
+        resp = sec_fetch(xml_url, cache_max_age=3600, accept="application/xml")
+        if resp["ok"]:
+            # Check if it's actually XML (not HTML from XSLT transform)
+            if resp["body"].strip().startswith("<?xml") or resp["body"].strip().startswith("<ownershipDocument"):
+                return parse_form4_xml(resp["body"], accession_number, source_url)
 
-    source_url = f"https://www.sec.gov/cgi-bin/viewer?action=view&cik={cik_clean}&accession_number={accession_number.replace('-', '')}&xbrl_type=v"
-
-    # Fetch XML with 1-hour cache (Form 4 filings don't change)
+    # Strategy 3: Try standard accession-based XML path
+    xml_url = f"https://www.sec.gov/Archives/edgar/data/{cik_clean}/{accession_clean}/{accession_number}.xml"
     resp = sec_fetch(xml_url, cache_max_age=3600, accept="application/xml")
 
-    if not resp["ok"]:
-        return Form4FilingDetails(
-            issuer_cik=cik,
-            issuer_name="",
-            ticker=None,
-            accession_number=accession_number,
-            filing_date="",
-            period_of_report="",
-            source_url=source_url,
-            parse_status="failed",
-            error_type="fetch_failed",
-            error_message=resp["error"] or "Failed to fetch Form 4 XML",
-        )
+    if resp["ok"]:
+        return parse_form4_xml(resp["body"], accession_number, source_url)
 
-    # Parse the XML
-    return parse_form4_xml(resp["body"], accession_number, source_url)
+    # All strategies failed
+    return Form4FilingDetails(
+        issuer_cik=cik,
+        issuer_name="",
+        ticker=None,
+        accession_number=accession_number,
+        filing_date="",
+        period_of_report="",
+        source_url=source_url,
+        parse_status="failed",
+        error_type="document_not_found",
+        error_message=f"Could not locate XML ownership document. Tried: submission text, primary document ({primary_document if primary_document else 'N/A'}), accession-based XML",
+    )
 
 
 def summarize_transactions_for_report(details: Form4FilingDetails) -> dict[str, Any]:
