@@ -20,12 +20,14 @@ def test_ticker_drilldown_includes_form4_detail_section():
     assert "Form 4" in report
 
     # Should include transaction information if any filings exist
-    # (Either transaction details or explicit "No recent Form 4 filings" message)
+    # (Either transaction details or explicit filing status message)
     has_transaction_info = (
         "Parsed Form 4 Filings" in report
         or "Recent Transactions" in report
         or "No recent Form 4 filings" in report
         or "No matching Form 4 filings" in report
+        or "Form 4 filings found" in report
+        or "MAIA Form 4 Filings" in report
     )
     assert has_transaction_info
 

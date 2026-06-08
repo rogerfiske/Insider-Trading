@@ -235,8 +235,10 @@ def test_manual_report_lookback_configuration():
     assert "**Lookback Window**: 30 days" in content_30
     assert "**Lookback Window**: 1460 days" in content_1460
 
-    assert "Eddie fetches all Form 4 filings from the last 30 days" in content_30
-    assert "Eddie fetches all Form 4 filings from the last 1460 days" in content_1460
+    assert "Eddie fetches issuer-specific Form 4 filings from SEC submissions API" in content_30
+    assert "Lookback: 30 days" in content_30
+    assert "Eddie fetches issuer-specific Form 4 filings from SEC submissions API" in content_1460
+    assert "Lookback: 1460 days" in content_1460
 
     # Cleanup
     report_30_path.unlink()

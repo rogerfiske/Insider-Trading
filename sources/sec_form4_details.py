@@ -377,26 +377,29 @@ def parse_form4_xml(xml_content: str, accession_number: str, source_url: str) ->
     )
 
 
-def fetch_and_parse_form4(accession_number: str, cik: str) -> Form4FilingDetails:
+def fetch_and_parse_form4(accession_number: str, cik: str, primary_document: str | None = None) -> Form4FilingDetails:
     """Fetch and parse a Form 4 XML document from SEC EDGAR.
 
     Args:
         accession_number: SEC accession number (e.g., "0001878313-26-000012")
         cik: Issuer CIK (zero-padded 10 digits)
+        primary_document: Optional primary document path from SEC submissions API (e.g., "xslF345X06/form4.xml")
 
     Returns:
         Form4FilingDetails with parsed data or error status
     """
-    # Build Form 4 XML URL
-    # Format: https://www.sec.gov/cgi-bin/viewer?action=view&cik=CIK&accession_number=ACC&xbrl_type=v
-    # Alternative: https://www.sec.gov/Archives/edgar/data/CIK/ACCESSION_NO_DIGITS/ACCESSION_NO.xml
-
     # Clean accession number (remove dashes for path)
     accession_clean = accession_number.replace("-", "")
     cik_clean = cik.lstrip("0")  # Remove leading zeros for URL
 
-    # Try primary XML path
-    xml_url = f"https://www.sec.gov/Archives/edgar/data/{cik_clean}/{accession_clean}/{accession_number}.xml"
+    # Build Form 4 XML URL
+    if primary_document:
+        # Use primary document from SEC submissions API
+        xml_url = f"https://www.sec.gov/Archives/edgar/data/{cik_clean}/{accession_clean}/{primary_document}"
+    else:
+        # Fallback: try standard accession-based path
+        xml_url = f"https://www.sec.gov/Archives/edgar/data/{cik_clean}/{accession_clean}/{accession_number}.xml"
+
     source_url = f"https://www.sec.gov/cgi-bin/viewer?action=view&cik={cik_clean}&accession_number={accession_number.replace('-', '')}&xbrl_type=v"
 
     # Fetch XML with 1-hour cache (Form 4 filings don't change)

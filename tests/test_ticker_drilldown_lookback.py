@@ -193,7 +193,8 @@ def test_lookback_appears_in_eddie_section():
     report_content = report_path.read_text()
 
     # Check Eddie section shows the lookback
-    assert "Eddie fetches all Form 4 filings from the last 180 days" in report_content
+    assert "Eddie fetches issuer-specific Form 4 filings from SEC submissions API" in report_content
+    assert "Lookback: 180 days" in report_content
 
     # Cleanup
     report_path.unlink()

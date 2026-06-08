@@ -32,6 +32,7 @@ from sources.sec_ticker import SecTickerResolver
 from sources.sec_form4_details import fetch_and_parse_form4, summarize_transactions_for_report
 from sources.sec_13f_parser import fetch_and_parse_13f_info_table
 from sources.sec_13f_matcher import match_ticker_to_13f_holdings, summarize_13f_matches_for_report
+from sources.sec_submissions import get_form4_filings_for_cik
 
 
 def generate_ticker_report(ticker: str, output_path: Path | None = None, lookback_days: int = 365) -> str:
@@ -52,9 +53,12 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
     ticker_resolver = SecTickerResolver()
     ticker_resolution = ticker_resolver.resolve(ticker)
 
-    # Fetch recent Form 4 data (all filings, not ticker-specific)
-    form4_connector = SecForm4Connector()
-    form4_result = form4_connector.fetch(lookback_days=lookback_days)
+    # Fetch issuer-specific Form 4 filings if ticker resolution succeeded
+    # Uses SEC submissions API: https://data.sec.gov/submissions/CIK{cik}.json
+    if ticker_resolution.ok:
+        issuer_form4_filings = get_form4_filings_for_cik(ticker_resolution.cik_padded, lookback_days)
+    else:
+        issuer_form4_filings = []
 
     # Fetch 13F data (manager-focused, not ticker-specific)
     form13f_connector = Sec13FConnector()
@@ -177,14 +181,10 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
 
     # Eddie section depends on ticker resolution success
     if ticker_resolution.ok:
-        # Count Form 4 filings for this CIK
-        matching_filings = []
-        if form4_result.ok:
-            for ev in form4_result.evidence:
-                if ev.normalized.get("cik") == ticker_resolution.cik_padded.lstrip("0"):
-                    matching_filings.append(ev)
+        # Use issuer-specific Form 4 filings from SEC submissions API
+        # issuer_form4_filings already filtered by lookback window
 
-        # Parse Form 4 XML details for matching filings
+        # Parse Form 4 XML details for issuer-specific filings
         parsed_details = []
         all_purchases = []
         all_sales = []
@@ -192,10 +192,11 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
         all_grants = []
         all_owners = set()
 
-        for ev in matching_filings[:10]:  # Limit to first 10 to avoid excessive fetching
-            accession = ev.normalized.get("accession_number", "")
+        for filing in issuer_form4_filings[:10]:  # Limit to first 10 to avoid excessive fetching
+            accession = filing.accession_number
+            primary_doc = filing.primary_document
             if accession:
-                details = fetch_and_parse_form4(accession, ticker_resolution.cik_padded)
+                details = fetch_and_parse_form4(accession, ticker_resolution.cik_padded, primary_doc)
                 if details.parse_status in ("success", "partial"):
                     parsed_details.append(details)
                     summary = summarize_transactions_for_report(details)
@@ -225,7 +226,7 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
         confidence = 1
         signal_reason = "No recent Form 4 filings found for this issuer"
 
-        if matching_filings:
+        if issuer_form4_filings:
             if parsed_details:
                 if all_purchases:
                     eddie_status = "APPLICABLE_WITH_EVIDENCE"
@@ -267,9 +268,11 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
             f"- Ticker-to-CIK resolution implemented",
             "",
             "**Current Behavior**:",
-            f"- Eddie fetches all Form 4 filings from the last {lookback_days} days ({len(form4_result.evidence) if form4_result.ok else 0} total filings found)",
-            f"- Filters to CIK {ticker_resolution.cik_padded}: {len(matching_filings)} filings for {ticker}",
-            f"- Parses Form 4 XML details: {len(parsed_details)} successfully parsed",
+            f"- Eddie fetches issuer-specific Form 4 filings from SEC submissions API",
+            f"- Source: https://data.sec.gov/submissions/CIK{ticker_resolution.cik_padded}.json",
+            f"- Lookback: {lookback_days} days (filingDate basis)",
+            f"- Found: {len(issuer_form4_filings)} Form 4 filings for CIK {ticker_resolution.cik_padded}",
+            f"- Parsed: {len(parsed_details)} filings successfully",
             "",
         ])
 
@@ -302,8 +305,8 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
                 lines.append("")
 
             lines.append("**Evidence Status**: Form 4 XML details parsed successfully")
-        elif matching_filings:
-            lines.append(f"**{ticker} Form 4 Filings**: {len(matching_filings)} found, but XML parsing failed or returned no transactions")
+        elif issuer_form4_filings:
+            lines.append(f"**{ticker} Form 4 Filings**: {len(issuer_form4_filings)} found, but XML parsing failed or returned no transactions")
             lines.append("")
             lines.append("**Evidence Status**: CIK-filtered filings found, but detail extraction limited")
         else:
@@ -327,12 +330,12 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
             lines.append("**Source URLs**:")
             for details in parsed_details[:5]:
                 lines.append(f"- {details.source_url} (Accession: {details.accession_number})")
-        elif matching_filings:
+        elif issuer_form4_filings:
             lines.append("")
             lines.append("**Source URLs**:")
-            for ev in matching_filings[:5]:
-                if ev.source_url:
-                    lines.append(f"- {ev.source_url}")
+            for filing in issuer_form4_filings[:5]:
+                if filing.primary_document_url:
+                    lines.append(f"- {filing.primary_document_url} (Accession: {filing.accession_number})")
         else:
             lines.append("")
             lines.append("**Source URLs**: N/A (no recent filings)")
@@ -347,8 +350,8 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
             f"- Error Type: {ticker_resolution.error_type}",
             "",
             "**Current Behavior**:",
-            f"- Eddie fetches all Form 4 filings from the last {lookback_days} days ({len(form4_result.evidence) if form4_result.ok else 0} filings found)",
-            f"- Cannot filter to {ticker} without a valid CIK",
+            f"- Eddie requires valid ticker-to-CIK resolution to fetch issuer-specific Form 4 filings",
+            f"- Cannot retrieve {ticker} Form 4 filings without a valid CIK",
             "",
             "**Limitation**: Ticker not found in SEC company tickers mapping",
             "",
@@ -642,21 +645,16 @@ def generate_ticker_report(ticker: str, output_path: Path | None = None, lookbac
         "",
     ])
 
-    # Count ticker-specific Form 4 filings if resolution succeeded
-    ticker_form4_count = 0
-    if ticker_resolution.ok and form4_result.ok:
-        for ev in form4_result.evidence:
-            if ev.normalized.get("cik") == ticker_resolution.cik_padded.lstrip("0"):
-                ticker_form4_count += 1
-
+    # Report issuer-specific Form 4 filing count
     lines.extend([
         "**SEC Form 4**:",
-        f"- Fetch status: {'Success' if form4_result.ok else 'Failed'}",
-        f"- Total filings retrieved: {len(form4_result.evidence) if form4_result.ok else 0} ({lookback_days}-day lookback)",
+        f"- Retrieval method: Issuer-specific (SEC submissions API)",
+        f"- Lookback: {lookback_days} days (filingDate basis)",
     ])
 
     if ticker_resolution.ok:
-        lines.append(f"- {ticker}-specific filings: {ticker_form4_count} (filtered by CIK {ticker_resolution.cik_padded})")
+        lines.append(f"- Source: https://data.sec.gov/submissions/CIK{ticker_resolution.cik_padded}.json")
+        lines.append(f"- {ticker}-specific filings found: {len(issuer_form4_filings)} (CIK {ticker_resolution.cik_padded})")
     else:
         lines.append(f"- {ticker}-specific filings: Cannot determine (CIK resolution failed)")
 
