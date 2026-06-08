@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-06-08T17:45:06.272125+00:00",
+  "mode": "manual_watchlist_dry_run",
+  "lookback_days": 1460,
+  "max_form4_filings": 0,
+  "data_sources": [
+    "SEC EDGAR",
+    "project connectors"
+  ],
+  "alerts_sent": false,
+  "tickers": [
+    {
+      "ticker": "MAIA",
+      "cik": "0001878313 (1878313)",
+      "company_name": "MAIA Biotechnology, Inc.",
+      "eddie_status": "APPLICABLE_WITH_EVIDENCE",
+      "eddie_signal": "BULLISH_EVIDENCE",
+      "eddie_confidence": 2,
+      "maggie_status": "APPLICABLE_WITH_LIMITED_IDENTIFIER_MATCHING",
+      "maggie_signal": "NEUTRAL",
+      "maggie_confidence": 1,
+      "form4_filings_found": 214,
+      "form4_filings_parsed": 0,
+      "transactions_extracted": 0,
+      "purchase_count": 134,
+      "purchase_value": 4921437.58,
+      "sale_count": 0,
+      "sale_value": 0.0,
+      "net_purchase_value": 4921437.58,
+      "report_path": "docs/sample_reports/watchlist/MAIA_manual_ticker_report.md"
+    }
+  ]
+}

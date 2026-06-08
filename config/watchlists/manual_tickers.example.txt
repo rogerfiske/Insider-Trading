@@ -1,0 +1,16 @@
+# Manual Ticker Watchlist Example
+#
+# This is an example watchlist file for manual ticker research.
+# Do not store private notes or spreadsheets here.
+#
+# Usage:
+#   python scripts/ticker_watchlist.py --tickers-file config/watchlists/manual_tickers.example.txt --dry-run-report
+#
+# Format:
+#   - One ticker per line
+#   - Lines starting with # are comments
+#   - Empty lines are ignored
+#   - Tickers are case-insensitive
+#
+# Example ticker (safe for testing):
+MAIA

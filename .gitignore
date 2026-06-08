@@ -30,6 +30,8 @@ data/cache/
 # Private portfolio/config files
 config/portfolio_target.json
 config/portfolio_current.json
+config/watchlists/*.txt
+!config/watchlists/*.example.txt
 
 # IDE / OS / tooling config
 .vscode/

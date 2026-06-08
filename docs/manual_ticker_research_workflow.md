@@ -1,18 +1,19 @@
 # Manual Ticker Research Workflow
 
-**Last Updated**: 2026-06-05
+**Last Updated**: 2026-06-08
 **Status**: Active
 
 ---
 
 ## Overview
 
-The Insider-Trading project supports two complementary workflows for analyzing insider trading activity:
+The Insider-Trading project supports three complementary workflows for analyzing insider trading activity:
 
 1. **Daily Discovery Workflow**: Scheduled agents run automatically and discover whatever they find from their configured universe
-2. **Manual Ticker Research Workflow**: On-demand, deeper ticker-specific SEC-backed reports with extended lookback windows
+2. **Single Manual Ticker Research Workflow**: On-demand, deeper ticker-specific SEC-backed reports with extended lookback windows
+3. **Manual Ticker Watchlist Workflow**: Batch processing of multiple tickers with consolidated ranking and summary
 
-This document describes the manual ticker research workflow.
+This document describes the manual ticker research workflows (single ticker and watchlist modes).
 
 ---
 
@@ -27,7 +28,7 @@ This document describes the manual ticker research workflow.
 - **Guard**: Ross enforces daily alert limit
 - **Purpose**: Real-time monitoring of insider trading across the market
 
-### Manual Ticker Research Workflow
+### Single Manual Ticker Research Workflow
 
 - **Trigger**: User runs `scripts/ticker_drilldown.py` with specific ticker
 - **Scope**: Configurable lookback window (default 365 days, max 1460 days / 4 years)
@@ -35,6 +36,15 @@ This document describes the manual ticker research workflow.
 - **Agents**: All seven agents run in dry-run mode
 - **Guard**: No production guard consumed; no alerts sent
 - **Purpose**: Deep historical analysis of specific ticker for research or validation
+
+### Manual Ticker Watchlist Workflow
+
+- **Trigger**: User runs `scripts/ticker_watchlist.py` with multiple tickers
+- **Scope**: Configurable lookback window (default 1460 days for watchlist mode)
+- **Output**: Per-ticker reports, consolidated summary, and JSON output
+- **Agents**: All seven agents run in dry-run mode (via ticker drilldown engine)
+- **Guard**: No production guard consumed; no alerts sent
+- **Purpose**: Batch analysis and ranking of multiple tickers by insider buying evidence
 
 ---
 
@@ -76,6 +86,105 @@ Use the `--output` option to save the report to a different location:
 ```powershell
 .\.venv\Scripts\python.exe .\scripts\ticker_drilldown.py --ticker MAIA --lookback-days 1460 --dry-run-report --output reports/MAIA_4year_report.md
 ```
+
+---
+
+## Running a Manual Ticker Watchlist
+
+### Purpose
+
+The watchlist workflow allows you to process multiple tickers in a single run and generate:
+1. Individual per-ticker reports (same format as single ticker mode)
+2. Consolidated summary with ranking by insider buying evidence
+3. Machine-readable JSON output for further analysis
+
+### Basic Watchlist Command (Command-Line Tickers)
+
+Process multiple tickers directly from the command line:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py --tickers MAIA ABCD XYZ --dry-run-report
+```
+
+This generates:
+- Per-ticker reports: `docs/sample_reports/watchlist/MAIA_manual_ticker_report.md`, etc.
+- Consolidated summary: `docs/sample_reports/watchlist/manual_watchlist_summary.md`
+- JSON output: `docs/sample_reports/watchlist/manual_watchlist_results.json`
+
+### Watchlist Command (File-Based Tickers)
+
+Process tickers from a file (one ticker per line, # for comments):
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py --tickers-file config/watchlists/manual_tickers.example.txt --dry-run-report
+```
+
+Example watchlist file format:
+
+```text
+# My research watchlist
+# One ticker per line
+MAIA
+ABCD
+XYZ
+```
+
+**Note**: User-created watchlist files in `config/watchlists/` (except `*.example.txt`) are automatically gitignored to keep private research private.
+
+### Watchlist with Custom Lookback Window
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py --tickers MAIA ABCD --lookback-days 1460 --dry-run-report
+```
+
+Default for watchlist mode is 1460 days (4 years) to provide comprehensive historical analysis for small-cap/penny-stock research.
+
+### Output Files Explained
+
+| File | Description |
+|------|-------------|
+| `docs/sample_reports/watchlist/{TICKER}_manual_ticker_report.md` | Individual ticker report (same format as single ticker mode) |
+| `docs/sample_reports/watchlist/manual_watchlist_summary.md` | Consolidated summary with ranked tickers and insider buying evidence |
+| `docs/sample_reports/watchlist/manual_watchlist_results.json` | Machine-readable JSON with all ticker metrics for further analysis |
+
+### Ranking Method
+
+Tickers in the consolidated summary are ranked by insider buying evidence strength:
+
+1. **Eddie Signal**: BULLISH_EVIDENCE > NEUTRAL > BEARISH_EVIDENCE
+2. **Net Purchase Value**: Higher insider buying value ranks higher
+3. **Purchase Count**: More purchase transactions rank higher
+4. **Data Completeness**: More Form 4 filings parsed ranks higher
+
+**Example Ranked Summary**:
+
+| Rank | Ticker | Company | Eddie Signal | Confidence | Purchases | Purchase Value | Net Value |
+|------|--------|---------|--------------|------------|-----------|----------------|-----------|
+| 1 | MAIA | MAIA Biotechnology, Inc. | BULLISH_EVIDENCE | 2 | 134 | $4,921,437.58 | $4,921,437.58 |
+| 2 | ABCD | Example Corp | NEUTRAL | 1 | 0 | $0.00 | $0.00 |
+
+### Single Ticker vs Watchlist Mode
+
+| Feature | Single Ticker | Watchlist |
+|---------|---------------|-----------|
+| **Command** | `ticker_drilldown.py` | `ticker_watchlist.py` |
+| **Input** | One ticker | Multiple tickers |
+| **Default Lookback** | 365 days | 1460 days |
+| **Per-Ticker Report** | ✅ | ✅ |
+| **Consolidated Summary** | ❌ | ✅ |
+| **JSON Output** | ❌ | ✅ |
+| **Ranking** | ❌ | ✅ |
+| **Use Case** | Deep-dive on specific ticker | Compare multiple small-cap tickers |
+
+### Safety Boundaries
+
+Both single ticker and watchlist modes enforce strict safety boundaries:
+
+- ✅ **No Telegram messages sent** (dry-run mode enforced)
+- ✅ **No email sent** (dry-run mode enforced)
+- ✅ **No uploaded spreadsheets used** (SEC EDGAR only)
+- ✅ **No private data committed** (private watchlist files gitignored)
+- ✅ **Not trading advice** (informational only)
 
 ---
 
@@ -242,15 +351,15 @@ Potential enhancements for the manual ticker research workflow:
 1. **Historical 13F Trend Comparison**: Track QoQ/YoY changes in institutional holdings
 2. **Transaction Date Filtering**: Filter Form 4 transactions by transaction date (not just filing date)
 3. **CUSIP Resolution**: Add ticker-to-CUSIP mapping for more reliable 13F matching
-4. **Bulk Ticker Reports**: Generate reports for multiple tickers in one run
-5. **JSON/CSV Export**: Export report data in structured formats for analysis
-6. **Insider Sentiment Scoring**: Weighted scoring based on reporting owner role, transaction size, and timing
+4. **Insider Sentiment Scoring**: Weighted scoring based on reporting owner role, transaction size, and timing
+5. **CSV Export**: Export watchlist data in CSV format for spreadsheet analysis
+6. **Watchlist Persistence**: Track watchlist results over time for trend analysis
 
 ---
 
 **For Questions or Issues**:
 - See checkpoint reports in `docs/checkpoints/reports/`
 - Check sample reports in `docs/sample_reports/`
-- Review test coverage in `tests/test_ticker_drilldown*.py`
+- Review test coverage in `tests/test_ticker_drilldown*.py` and `tests/test_ticker_watchlist*.py`
 
-**Last Checkpoint**: CP21E — Extended Lookback / Manual Ticker Research Workflow
+**Last Checkpoint**: CP21G — Manual Ticker Watchlist / Small-Cap Workflow
