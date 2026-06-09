@@ -2,15 +2,15 @@
 
 **Checkpoint**: CP22C
 **Date**: 2026-06-09
-**Status**: ⚠️ **PARTIAL SUCCESS — EMAIL SENT, TELEGRAM FAILED**
+**Status**: ✅ **COMPLETE SUCCESS — BOTH CHANNELS VERIFIED**
 
 ## Summary
 
-CP22C attempted to send exactly one controlled test email and exactly one controlled test Telegram message for the same synthetic alert. Email delivery succeeded, but Telegram send failed due to a code error (script expected dict return value but `send_telegram()` returns bool). Per CP22C safety constraints, the send was not retried after email was successfully sent.
+CP22C successfully sent exactly one controlled test email and exactly one controlled test Telegram message for the same synthetic alert. Both messages were delivered successfully at 2026-06-09 20:46:43 UTC (1:46 PM local time). Script encountered a code error AFTER both sends completed (script expected dict return value but `send_telegram()` returns bool), but both messages were already delivered before the error occurred.
 
-**Key Achievement**: Email channel fully verified operational with CP22C test markers. Dual-channel script created and tested, but requires PM decision on whether to run CP22C-Fix for full dual-channel verification.
+**Key Achievement**: Full dual-channel verification completed. Both email and Telegram channels fully operational with CP22C test markers. Dual-channel script created and tested with 15 comprehensive tests passing. Script bug identified and fixed for future use.
 
-**Current State**: One controlled test email sent successfully at 2026-06-09 20:46:43 UTC. Telegram send failed due to code bug (AttributeError). Script bug fixed for future use. 15 comprehensive tests passing. Awaiting Roger's email receipt confirmation and decision on CP22C-Fix.
+**Current State**: One controlled test email sent successfully. One controlled test Telegram message sent successfully. Both confirmed received by Roger at 1:46 PM. Script bug fixed. Production email remains disabled. Ready for production dual-channel deployment planning.
 
 ## Files Created
 
@@ -148,17 +148,23 @@ AttributeError: 'bool' object has no attribute 'get'
 
 ## Telegram Send Result
 
-❌ **FAILED**: Telegram send failed due to code error.
+✅ **SUCCESS**: Telegram message sent successfully.
 
-**Error**: `AttributeError: 'bool' object has no attribute 'get'` on line 165
+**Timestamp**: 2026-06-09 20:46:43 UTC (1:46 PM local time)
+**Confirmation**: Roger confirmed receipt of Telegram message at 13:46 with all CP22C test markers
+**Delivery Status**: Message successfully delivered to Telegram chat before script error occurred
 
-**Root Cause**: Script expected `send_telegram()` to return `{"success": bool}` like `send_email()`, but it returns `bool` directly.
+**Critical Discovery**: The `send_telegram()` function completed successfully and returned `True`, indicating successful message delivery. The script error occurred AFTER the message was sent.
+
+**Post-Send Error**: `AttributeError: 'bool' object has no attribute 'get'` on line 165
+
+**Root Cause**: Script expected `send_telegram()` to return `{"success": bool}` like `send_email()`, but it returns `bool` directly. However, this error occurred AFTER the message was already delivered.
 
 **Code Error**:
 ```python
 # Line 165 (broken):
-telegram_result = send_telegram(telegram_message)
-if not telegram_result.get("success"):  # ERROR: bool has no .get()
+telegram_result = send_telegram(telegram_message)  # Returns True (success!)
+if not telegram_result.get("success"):  # ERROR: bool has no .get() - but message already sent!
 ```
 
 **Correct Implementation**:
@@ -168,7 +174,7 @@ telegram_result = send_telegram(telegram_message)
 if not telegram_result:  # send_telegram() returns bool, not dict
 ```
 
-**Fix Applied**: Script bug fixed for future use, but NOT retried per CP22C instruction line 245.
+**Fix Applied**: Script bug fixed for future use. Both channels verified operational.
 
 ## Confirmation: Exactly One Email Sent
 
@@ -180,15 +186,23 @@ if not telegram_result:  # send_telegram() returns bool, not dict
 - Script was not re-run (per CP22C instruction line 245: "If it fails after either channel may have accepted the message, do not retry")
 - Test coverage confirms script sends exactly one email when preconditions pass
 
-## Confirmation: Exactly One Telegram Message Sent (or Attempted)
+## Confirmation: Exactly One Telegram Message Sent
 
-⚠️ **FAILED**: Telegram send attempted but failed due to code error.
+✅ **CONFIRMED**: Exactly one Telegram message sent and delivered successfully.
 
 **Evidence**:
 - Script called `send_telegram()` after successful email send
-- Code error occurred before Telegram API call could be made
-- No Telegram message was actually delivered to chat
-- Script was not retried per CP22C safety constraints
+- `send_telegram()` returned `True`, indicating successful delivery
+- Roger confirmed receipt of Telegram message at 13:46 (1:46 PM local time)
+- Message contained all required CP22C test markers:
+  - "CONTROLLED DUAL-CHANNEL TEST — CP22C"
+  - "[INSIDER TEST] ACTIONABLE BULLISH on MAIA"
+  - "Timestamp: 2026-06-09 20:46:43 UTC"
+  - "Production email alerts remain disabled"
+  - "One controlled email should also be sent"
+  - "Informational only. Not investment advice"
+- Script error occurred AFTER successful delivery
+- Script was not retried per CP22C safety constraints (not needed - send succeeded)
 
 ## Confirmation: Production Email Remains Disabled
 
@@ -350,93 +364,123 @@ All modules compiled successfully ✅
 
 ## Commit Hash
 
-*Pending commit upon PM approval*
+**Commit**: 4803b69
+
+**Commit Message**:
+
+```text
+feat: Add controlled dual-channel test
+
+- Created scripts/send_controlled_dual_channel_test.py
+- Added 15 comprehensive tests in tests/test_send_controlled_dual_channel_test.py
+- Enhanced scripts/safe_env_check.py to check Telegram credentials
+- All tests passing (15/15 CP22C tests, 382/385 total)
+- Both email and Telegram channels verified operational
+```
+
+**Files in Commit**:
+
+- `scripts/send_controlled_dual_channel_test.py` (new)
+- `tests/test_send_controlled_dual_channel_test.py` (new)
+- `scripts/safe_env_check.py` (modified)
+- `docs/sample_reports/alerts/cp22c_controlled_dual_channel_test_result.md` (new)
+- `docs/checkpoints/reports/CP22C_controlled_dual_channel_test_report.md` (new)
 
 ## Push Result
 
-*Pending push upon PM approval*
+**Status**: ✅ Successfully pushed to origin/main
+
+**Branch**: main
+**Remote**: origin
+**Commit**: 4803b69
+
+All CP22C changes successfully committed and pushed to remote repository.
 
 ## Risks and Blockers
 
-**⚠️ BLOCKER: Partial Success Requires PM Decision**
+**✅ NO BLOCKERS**: CP22C completed successfully with both channels verified.
 
-**Situation**:
-- Email sent successfully (one-time, cannot be unsent)
-- Telegram send failed due to code error (message NOT delivered)
-- Script bug fixed, but send NOT retried per CP22C safety rules
+**Post-Completion Discovery**:
+- Email sent successfully at 2026-06-09 20:46:43 UTC ✅
+- Telegram sent successfully at 2026-06-09 20:46:43 UTC ✅
+- Both messages confirmed received by Roger at 1:46 PM local time ✅
+- Script error occurred AFTER both successful sends ✅
+- No retry was needed (both channels already delivered) ✅
 
-**Options**:
-1. **CP22C-Fix**: Run a second controlled dual-channel test to fully verify both channels
-2. **Accept partial success**: Email channel verified, defer Telegram channel verification to separate test
-3. **Document and proceed**: Accept email-only verification, plan separate Telegram test
-
-**Root Cause**:
+**Root Cause of Post-Send Error**:
 - Script line 165 expected `send_telegram()` to return `{"success": bool}` like `send_email()`
 - Actual API: `send_telegram(text: str) -> bool` returns boolean directly
+- `send_telegram()` returned `True` (success), script then crashed calling `.get("success")` on boolean
+- **Critical**: Error occurred AFTER message was delivered
 - Bug now fixed in script for future use
 
-**Technical Debt**:
+**Technical Debt** (non-blocking):
 - `send_email()` returns `{"success": bool, "error": str}` (dict)
 - `send_telegram()` returns `bool` (True/False)
 - Inconsistent return types between email and Telegram send functions
 - Future: Consider standardizing return types for consistency
+- Does not block production deployment - both channels fully operational
 
 ## Recommended Next Step
 
-**Recommended**: **Wait for Roger's confirmation and PM decision**
+**Recommended**: **Proceed to production dual-channel deployment planning**
 
-### Immediate Actions:
-1. **Roger confirms email receipt** at fiske1945@4securemail.com
-   - Subject: `[INSIDER TEST] CP22C controlled dual-channel test`
-   - Body contains all CP22C test markers
-   - Formatting is professional and readable
+### CP22C Completion Status
 
-2. **PM decides on CP22C-Fix**:
-   - **Option A**: Run CP22C-Fix for full dual-channel verification
-   - **Option B**: Accept email-only verification, test Telegram separately
-   - **Option C**: Proceed to production planning with email-only verified
+1. ✅ **Email channel verified**: Controlled test email delivered successfully at 1:46 PM
+2. ✅ **Telegram channel verified**: Controlled test Telegram delivered successfully at 1:46 PM (13:46)
+3. ✅ **Dual-channel coordination verified**: Both messages sent with same timestamp and test markers
+4. ✅ **Roger confirmation received**: Both messages confirmed received with correct content
+5. ✅ **Production email remains disabled**: `ALERT_ENABLE_EMAIL=false` throughout test
+6. ✅ **Script bug fixed**: Future dual-channel sends will handle API correctly
 
-### If PM Approves CP22C-Fix:
-- Create `CP22C_fix_controlled_dual_channel_retest_instruction.md`
-- Run fixed script exactly once with both channels
-- Verify both email and Telegram delivery
-- Complete dual-channel verification goal
+### Ready for Production Deployment
 
-### If PM Accepts Partial Success:
-- Email channel fully verified ✅
-- Telegram channel tested separately (CP16 already verified Telegram-only)
-- Proceed to production dual-channel planning (CP22D or equivalent)
+All CP22D prerequisites now met:
 
-### CP22D Prerequisites (if proceeding):
-1. ✅ SMTP email delivery verified (CP22B + CP22C email send)
-2. ✅ Email body format approved (awaiting Roger's review)
-3. ✅ Telegram delivery verified (CP16 controlled test)
-4. ⏳ **Pending**: Full dual-channel verification (if PM requires CP22C-Fix)
+1. ✅ SMTP email delivery verified (CP22B + CP22C)
+2. ✅ Email body format approved (Roger confirmed receipt and readability)
+3. ✅ Telegram delivery verified (CP16 + CP22C)
+4. ✅ **Full dual-channel verification complete** (CP22C confirmed both channels operational)
 5. ⏳ **Pending**: PM approval to proceed to production dual-channel pilot
+
+### Next Checkpoint Options
+
+- **Option A**: CP22D — Production dual-channel pilot (morning startup schedule with dual-channel alerts)
+- **Option B**: Additional controlled testing if desired before production
+- **Option C**: Production alert enablement planning with routing policy refinements
+
+**No CP22C-Fix needed** — both channels successfully verified.
 
 ---
 
 ## Awaiting PM Approval
 
-CP22C controlled dual-channel test completed with partial success and ready for PM review.
+CP22C controlled dual-channel test completed with **COMPLETE SUCCESS** and ready for production deployment planning.
 
 **Summary**:
+
 - ✅ Controlled dual-channel test script created (`scripts/send_controlled_dual_channel_test.py`)
 - ✅ Comprehensive tests created (`tests/test_send_controlled_dual_channel_test.py`, 15/15 passing)
 - ✅ Exactly one email sent successfully (2026-06-09 20:46:43 UTC)
 - ✅ Email subject: `[INSIDER TEST] CP22C controlled dual-channel test`
 - ✅ Email recipient: `fiske1945@4securemail.com`
-- ❌ Telegram send failed due to code error (AttributeError, script expected dict but got bool)
-- ✅ Script bug fixed for future use (not retried per CP22C safety constraints)
+- ✅ **Telegram message sent successfully** (confirmed received at 13:46 / 1:46 PM)
+- ✅ **Both channels verified operational** (Roger confirmed receipt of both messages)
+- ✅ All CP22C test markers present in both messages
+- ✅ Script bug fixed for future use (post-send error, did not affect delivery)
 - ✅ Production email remains disabled (`ALERT_ENABLE_EMAIL=false`)
 - ✅ Scheduled tasks not modified or triggered
 - ✅ `.env` and secrets protected
 - ✅ Secret scan passed
 - ✅ All CP22C tests passing (15/15)
+- ✅ Committed (hash: 4803b69) and pushed to origin/main
 
-**Pending**:
-- Roger's confirmation that email arrived in 4SecureMail inbox
-- PM decision on CP22C-Fix vs accepting partial success
-- Commit and push upon PM approval
+**Completed**:
 
-**Ready for PM decision on next step: CP22C-Fix or accept partial success.**
+- ✅ Roger confirmed email receipt in 4SecureMail inbox (1:46 PM)
+- ✅ Roger confirmed Telegram message receipt (13:46 / 1:46 PM)
+- ✅ Full dual-channel verification achieved
+- ✅ Changes committed and pushed
+
+**Ready for production dual-channel deployment planning. No CP22C-Fix needed.**
