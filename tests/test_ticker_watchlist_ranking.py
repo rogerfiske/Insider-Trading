@@ -62,55 +62,59 @@ def test_rank_by_net_purchase_value():
 
 
 def test_rank_by_purchase_count():
-    """Test that higher purchase count ranks higher when values are equal."""
+    """Test that total_score is primary ranking criterion (not purchase_count)."""
     ticker_metrics = [
         {
-            "ticker": "FEW_PURCHASES",
+            "ticker": "LOW_SCORE",
             "eddie_signal": "BULLISH_EVIDENCE",
             "net_purchase_value": 1000000.0,
-            "purchase_count": 5,
+            "purchase_count": 100,  # More purchases
             "form4_filings_parsed": 50,
+            "total_score": 40.0,  # Lower score
         },
         {
-            "ticker": "MANY_PURCHASES",
+            "ticker": "HIGH_SCORE",
             "eddie_signal": "BULLISH_EVIDENCE",
             "net_purchase_value": 1000000.0,
-            "purchase_count": 100,
+            "purchase_count": 5,  # Fewer purchases
             "form4_filings_parsed": 50,
+            "total_score": 75.0,  # Higher score
         },
     ]
 
     ranked = rank_tickers(ticker_metrics)
 
-    # More purchases should rank first
-    assert ranked[0]["ticker"] == "MANY_PURCHASES"
-    assert ranked[1]["ticker"] == "FEW_PURCHASES"
+    # Higher score should rank first (regardless of purchase count)
+    assert ranked[0]["ticker"] == "HIGH_SCORE"
+    assert ranked[1]["ticker"] == "LOW_SCORE"
 
 
 def test_rank_by_data_completeness():
-    """Test that more Form 4 filings parsed ranks higher when other metrics equal."""
+    """Test that total_score is primary ranking criterion (not form4_filings_parsed)."""
     ticker_metrics = [
         {
-            "ticker": "LESS_DATA",
+            "ticker": "LOW_SCORE_MORE_DATA",
             "eddie_signal": "BULLISH_EVIDENCE",
             "net_purchase_value": 1000000.0,
             "purchase_count": 10,
-            "form4_filings_parsed": 10,
+            "form4_filings_parsed": 200,  # More data
+            "total_score": 42.0,  # Lower score
         },
         {
-            "ticker": "MORE_DATA",
+            "ticker": "HIGH_SCORE_LESS_DATA",
             "eddie_signal": "BULLISH_EVIDENCE",
             "net_purchase_value": 1000000.0,
             "purchase_count": 10,
-            "form4_filings_parsed": 200,
+            "form4_filings_parsed": 10,  # Less data
+            "total_score": 68.0,  # Higher score
         },
     ]
 
     ranked = rank_tickers(ticker_metrics)
 
-    # More data should rank first
-    assert ranked[0]["ticker"] == "MORE_DATA"
-    assert ranked[1]["ticker"] == "LESS_DATA"
+    # Higher score should rank first (regardless of data completeness)
+    assert ranked[0]["ticker"] == "HIGH_SCORE_LESS_DATA"
+    assert ranked[1]["ticker"] == "LOW_SCORE_MORE_DATA"
 
 
 def test_rank_bearish_below_neutral():

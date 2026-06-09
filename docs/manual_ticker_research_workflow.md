@@ -147,21 +147,159 @@ Default for watchlist mode is 1460 days (4 years) to provide comprehensive histo
 | `docs/sample_reports/watchlist/manual_watchlist_summary.md` | Consolidated summary with ranked tickers and insider buying evidence |
 | `docs/sample_reports/watchlist/manual_watchlist_results.json` | Machine-readable JSON with all ticker metrics for further analysis |
 
-### Ranking Method
+### Insider Evidence Scoring
 
-Tickers in the consolidated summary are ranked by insider buying evidence strength:
+**Added in CP21I** — The watchlist workflow now includes a transparent 0-100 point scoring system to rank tickers by insider buying evidence strength.
 
-1. **Eddie Signal**: BULLISH_EVIDENCE > NEUTRAL > BEARISH_EVIDENCE
-2. **Net Purchase Value**: Higher insider buying value ranks higher
-3. **Purchase Count**: More purchase transactions rank higher
-4. **Data Completeness**: More Form 4 filings parsed ranks higher
+#### Scoring Components (7 Total)
 
-**Example Ranked Summary**:
+Each ticker receives a total score (0-100 points) based on seven weighted components:
 
-| Rank | Ticker | Company | Eddie Signal | Confidence | Purchases | Purchase Value | Net Value |
-|------|--------|---------|--------------|------------|-----------|----------------|-----------|
-| 1 | MAIA | MAIA Biotechnology, Inc. | BULLISH_EVIDENCE | 2 | 134 | $4,921,437.58 | $4,921,437.58 |
-| 2 | ABCD | Example Corp | NEUTRAL | 1 | 0 | $0.00 | $0.00 |
+| Component | Max Points | Description |
+|-----------|-----------|-------------|
+| **Net Buying Value** | 25 pts | Purchase value minus sale value |
+| **Buy/Sell Imbalance** | 20 pts | Rewards strong buying with little/no selling |
+| **Buyer Breadth** | 15 pts | Number of distinct insider buyers |
+| **Recency** | 15 pts | How recently insiders purchased |
+| **Role Quality** | 10 pts | CEO/CFO/Director purchases weighted higher |
+| **Persistence** | 10 pts | Purchases across multiple months |
+| **Data Quality** | 5 pts | Form 4 parsing completeness |
+
+#### Net Buying Value (0-25 pts)
+
+| Net Value | Points |
+|-----------|--------|
+| > $1M | 25 pts |
+| $500k - $1M | 20 pts |
+| $100k - $500k | 15 pts |
+| $25k - $100k | 10 pts |
+| $1 - $25k | 5 pts |
+| ≤ $0 | 0 pts |
+
+#### Buy/Sell Imbalance (0-20 pts)
+
+| Pattern | Points |
+|---------|--------|
+| Purchases with no sales | 20 pts |
+| ≥ 5:1 purchase-to-sale ratio | 15 pts |
+| Net buying but < 5:1 ratio | 10 pts |
+| Sales ≥ purchases | 0 pts |
+
+#### Buyer Breadth (0-15 pts)
+
+| Distinct Buyers | Points |
+|----------------|--------|
+| 5+ | 15 pts |
+| 3-4 | 12 pts |
+| 2 | 8 pts |
+| 1 | 5 pts |
+| 0 | 0 pts |
+
+#### Recency (0-15 pts)
+
+| Latest Purchase | Points |
+|----------------|--------|
+| ≤ 30 days ago | 15 pts |
+| 31-90 days ago | 12 pts |
+| 91-180 days ago | 8 pts |
+| 181-365 days ago | 5 pts |
+| > 365 days ago | 0 pts |
+
+#### Role Quality (0-10 pts)
+
+| Buyer Role | Points |
+|-----------|--------|
+| CEO, CFO, President | 10 pts |
+| Director, 10% Owner | 7 pts |
+| Other insider | 3 pts |
+| No role data | 0 pts |
+
+#### Persistence (0-10 pts)
+
+| Purchase Months | Points |
+|----------------|--------|
+| 3+ distinct months | 10 pts |
+| 2 distinct months | 6 pts |
+| 1 month | 3 pts |
+| No purchases | 0 pts |
+
+#### Data Quality (0-5 pts)
+
+| Form 4 Parsing Rate | Points |
+|--------------------|--------|
+| ≥ 95% parsed | 5 pts |
+| 80-94% parsed | 3 pts |
+| 50-79% parsed | 1 pt |
+| < 50% parsed | 0 pts |
+
+#### Rating Labels
+
+Total scores map to five rating tiers:
+
+| Score Range | Rating Label |
+|-------------|-------------|
+| 80-100 | **Very Strong Insider Buying Evidence** |
+| 60-79 | **Strong Insider Buying Evidence** |
+| 40-59 | **Moderate Insider Buying Evidence** |
+| 20-39 | **Weak Insider Buying Evidence** |
+| 0-19 | **Little/No Insider Buying Evidence** |
+
+#### Ranking Method
+
+Tickers in the consolidated summary are ranked by:
+
+1. **Primary**: Insider Evidence Score (0-100 points)
+2. **Secondary**: Eddie Signal (BULLISH_EVIDENCE > NEUTRAL > BEARISH_EVIDENCE)
+3. **Tertiary**: Net Purchase Value (higher ranks higher)
+
+**Example Ranked Summary with Scoring**:
+
+| Rank | Ticker | Company | Score | Rating | Eddie Signal | Purchase Value | Net Value | Buyers |
+|------|--------|---------|-------|--------|--------------|----------------|-----------|--------|
+| 1 | MAIA | MAIA Biotechnology, Inc. | 45.0 | Moderate Insider Buy | BULLISH_EVIDENCE | $4,921,438 | $4,921,438 | 0 |
+| 2 | ABCD | Example Corp | 18.0 | Little/No Insider Buy | NEUTRAL | $0 | $0 | 0 |
+
+#### Score Interpretation Guidelines
+
+**Very Strong (80-100)**: Exceptional insider buying pattern
+- Large net buying value (>$1M typical)
+- Multiple high-level insiders (CEO/CFO/Directors)
+- Recent purchases (within 30-90 days)
+- Sustained buying over multiple months
+- High data quality (>95% Form 4 parsing success)
+
+**Strong (60-79)**: Compelling insider buying pattern
+- Significant net buying value ($500k-$1M+)
+- Several insider buyers, including executives
+- Purchases within the last quarter
+- Some buying persistence
+
+**Moderate (40-59)**: Notable insider buying pattern
+- Moderate net buying value ($100k-$500k)
+- Some insider buying activity detected
+- May lack recency, breadth, or persistence
+
+**Weak (20-39)**: Limited insider buying pattern
+- Small net buying value ($25k-$100k)
+- Single buyer or sporadic activity
+- Older purchases (6+ months ago)
+
+**Little/No (0-19)**: Minimal or no insider buying
+- Very low/zero net buying value
+- No recent buying activity
+- May have insider selling
+
+#### Graceful Degradation
+
+Scoring handles missing data gracefully:
+- If a component's data is unavailable, it scores 0 for that component
+- Warnings are included in the JSON output
+- Partial scores are still computed from available components
+
+**Example**: If only purchase/sale values are available (but no buyer details, dates, or months), the ticker can still score up to 45 points from:
+- Net buying value: 0-25 pts
+- Buy/sell imbalance: 0-20 pts
+- Data quality: 0-5 pts (based on Form 4 parsing rate)
 
 ### Single Ticker vs Watchlist Mode
 

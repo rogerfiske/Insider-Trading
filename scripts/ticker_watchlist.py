@@ -39,6 +39,7 @@ from scripts.ticker_drilldown import generate_ticker_report
 from sources.sec_ticker import SecTickerResolver
 from sources.sec_common import utcnow_iso
 from watchlist.history_store import WatchlistHistoryStore
+from watchlist.scoring import compute_insider_evidence_score
 
 
 def normalize_tickers(tickers: list[str]) -> list[str]:
@@ -125,8 +126,10 @@ def extract_ticker_metrics(report_content: str, ticker: str) -> dict[str, Any]:
         "sale_count": 0,
         "sale_value": 0.0,
         "net_purchase_value": 0.0,
-        "distinct_buyers": 0,
+        "distinct_buyers": None,
         "latest_purchase_date": None,
+        "buyer_roles": None,
+        "purchase_months": None,
     }
 
     # Extract CIK from report (format: "CIK: 0001878313")
@@ -205,10 +208,9 @@ def rank_tickers(ticker_metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Rank tickers by insider evidence strength.
 
     Ranking priority:
-    1. Eddie signal (BULLISH_EVIDENCE > NEUTRAL > BEARISH_EVIDENCE)
-    2. Net purchase value (higher is better)
-    3. Purchase count (higher is better)
-    4. Latest purchase date (more recent is better)
+    1. Insider evidence total score (0-100, higher is better)
+    2. Eddie signal (BULLISH_EVIDENCE > NEUTRAL > BEARISH_EVIDENCE)
+    3. Net purchase value (higher is better)
 
     Args:
         ticker_metrics: List of ticker metric dictionaries
@@ -230,10 +232,9 @@ def rank_tickers(ticker_metrics: list[dict[str, Any]]) -> list[dict[str, Any]]:
     def rank_key(metrics: dict[str, Any]) -> tuple:
         """Generate sort key for ranking."""
         return (
-            -signal_score(metrics["eddie_signal"]),  # Negate for descending
-            -metrics["net_purchase_value"],  # Higher is better
-            -metrics["purchase_count"],  # Higher is better
-            -metrics["form4_filings_parsed"],  # More data is better
+            -metrics.get("total_score", 0),  # Primary: insider evidence score
+            -signal_score(metrics["eddie_signal"]),  # Secondary: Eddie signal
+            -metrics["net_purchase_value"],  # Tertiary: net purchase value
         )
 
     return sorted(ticker_metrics, key=rank_key)
@@ -284,19 +285,25 @@ def generate_markdown_summary(
         "",
         "## Ranked Watchlist",
         "",
-        "Tickers ranked by insider buying evidence strength:",
+        "Tickers ranked by insider buying evidence strength (score 0-100):",
         "",
-        "| Rank | Ticker | Company | Eddie Signal | Confidence | Purchases | Purchase Value | Sales | Net Value |",
-        "|------|--------|---------|--------------|------------|-----------|----------------|-------|-----------|",
+        "| Rank | Ticker | Company | Score | Rating | Eddie Signal | Purchase Value | Net Value | Buyers |",
+        "|------|--------|---------|-------|--------|--------------|----------------|-----------|--------|",
     ]
 
     for rank, metrics in enumerate(ticker_metrics, 1):
-        company_short = (metrics["company_name"] or "Unknown")[:30]
+        company_short = (metrics["company_name"] or "Unknown")[:25]
+        score = metrics.get("total_score", 0)
+        rating = (metrics.get("rating_label", "Unknown") or "Unknown")[:20]
+        distinct_buyers = metrics.get("distinct_buyers", 0) or 0
+
         summary.append(
             f"| {rank} | {metrics['ticker']} | {company_short} | "
-            f"{metrics['eddie_signal']} | {metrics['eddie_confidence']} | "
-            f"{metrics['purchase_count']} | ${metrics['purchase_value']:,.2f} | "
-            f"{metrics['sale_count']} | ${metrics['net_purchase_value']:,.2f} |"
+            f"{score:.1f} | {rating} | "
+            f"{metrics['eddie_signal']} | "
+            f"${metrics['purchase_value']:,.0f} | "
+            f"${metrics['net_purchase_value']:,.0f} | "
+            f"{distinct_buyers} |"
         )
 
     summary.extend([
@@ -312,12 +319,27 @@ def generate_markdown_summary(
         "",
         "## Ranking Method",
         "",
-        "Tickers are ranked by:",
+        "Tickers are ranked by **Insider Evidence Score** (0-100 points):",
         "",
-        "1. **Eddie Signal**: BULLISH_EVIDENCE > NEUTRAL > BEARISH_EVIDENCE",
-        "2. **Net Purchase Value**: Higher insider buying value ranks higher",
-        "3. **Purchase Count**: More purchase transactions rank higher",
-        "4. **Data Completeness**: More Form 4 filings parsed ranks higher",
+        "### Scoring Components",
+        "",
+        "1. **Net Insider Buying Value** (0-25 pts): Purchase value minus sale value",
+        "2. **Buy/Sell Imbalance** (0-20 pts): Reward strong buying with little/no selling",
+        "3. **Distinct Buyer Breadth** (0-15 pts): More distinct insider buyers",
+        "4. **Recency** (0-15 pts): How recently insiders purchased",
+        "5. **Role Quality** (0-10 pts): CEO/CFO/Director purchases weighted higher",
+        "6. **Persistence** (0-10 pts): Purchases across multiple months",
+        "7. **Data Quality** (0-5 pts): Form 4 parsing completeness",
+        "",
+        "### Rating Labels",
+        "",
+        "- **80-100**: Very Strong Insider Buying Evidence",
+        "- **60-79**: Strong Insider Buying Evidence",
+        "- **40-59**: Moderate Insider Buying Evidence",
+        "- **20-39**: Weak Insider Buying Evidence",
+        "- **0-19**: Little/No Insider Buying Evidence",
+        "",
+        "**Note**: Scores are for ranking/research only. Not trading recommendations.",
         "",
         "## Safety Confirmations",
         "",
@@ -380,6 +402,11 @@ def generate_json_output(
                 "sale_count": m["sale_count"],
                 "sale_value": m["sale_value"],
                 "net_purchase_value": m["net_purchase_value"],
+                "distinct_buyers": m.get("distinct_buyers"),
+                "latest_purchase_date": m.get("latest_purchase_date"),
+                "buyer_roles": m.get("buyer_roles"),
+                "purchase_months": m.get("purchase_months"),
+                "scoring": m.get("scoring"),
                 "report_path": f"docs/sample_reports/watchlist/{m['ticker']}_manual_ticker_report.md",
             }
             for m in ticker_metrics
@@ -702,6 +729,13 @@ def main():
             # Extract metrics for ranking
             metrics = extract_ticker_metrics(report_content, ticker)
             metrics["report_path"] = str(output_path)
+
+            # Compute insider evidence score
+            score = compute_insider_evidence_score(ticker, metrics)
+            metrics["scoring"] = score.to_dict()
+            metrics["total_score"] = score.total_score
+            metrics["rating_label"] = score.rating_label
+
             ticker_metrics.append(metrics)
 
             tickers_resolved += 1
