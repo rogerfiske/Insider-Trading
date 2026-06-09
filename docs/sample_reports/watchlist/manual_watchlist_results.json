@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-08T18:33:09.685739+00:00",
+  "generated_at": "2026-06-09T17:50:07.440595+00:00",
   "mode": "manual_watchlist_dry_run",
   "lookback_days": 1460,
   "max_form4_filings": 0,
@@ -20,13 +20,69 @@
       "maggie_signal": "NEUTRAL",
       "maggie_confidence": 1,
       "form4_filings_found": 214,
-      "form4_filings_parsed": 0,
-      "transactions_extracted": 0,
+      "form4_filings_parsed": 214,
+      "transactions_extracted": 134,
       "purchase_count": 134,
-      "purchase_value": 4921437.58,
+      "purchase_value": 4921437.581700001,
       "sale_count": 0,
       "sale_value": 0.0,
-      "net_purchase_value": 4921437.58,
+      "net_purchase_value": 4921437.581700001,
+      "distinct_buyers": 10,
+      "latest_purchase_date": "2026-06-01",
+      "buyer_roles": [
+        "Chief Executive Officer",
+        "Chief Financial Officer",
+        "Chief Medical Officer",
+        "Chief Scientific Officer",
+        "Director"
+      ],
+      "purchase_months": [
+        "2022-07",
+        "2022-08",
+        "2022-09",
+        "2022-12",
+        "2023-01",
+        "2023-02",
+        "2023-03",
+        "2023-04",
+        "2023-05",
+        "2024-03",
+        "2024-04",
+        "2024-11",
+        "2024-12",
+        "2025-02",
+        "2025-03",
+        "2025-05",
+        "2025-06",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-06"
+      ],
+      "scoring": {
+        "ticker": "MAIA",
+        "total_score": 100.0,
+        "rating_label": "Very Strong Insider Buying Evidence",
+        "component_scores": {
+          "net_buying_value": 25.0,
+          "buy_sell_imbalance": 20.0,
+          "buyer_breadth": 15.0,
+          "recency": 15.0,
+          "role_quality": 10.0,
+          "persistence": 10.0,
+          "data_quality": 5.0
+        },
+        "component_explanations": {
+          "net_buying_value": "Net value $4,921,437.58 (>$1M tier)",
+          "buy_sell_imbalance": "134 purchases, no sales (perfect buying pattern)",
+          "buyer_breadth": "10 distinct buyers (broad participation)",
+          "recency": "Latest purchase 8 days ago (<= 30 days)",
+          "role_quality": "Executive purchase detected (CEO/CFO/President)",
+          "persistence": "Purchases in 21 distinct months (persistent buying)",
+          "data_quality": "214/214 filings parsed (>= 95%)"
+        },
+        "warnings": []
+      },
       "report_path": "docs/sample_reports/watchlist/MAIA_manual_ticker_report.md"
     }
   ]

@@ -112,8 +112,35 @@ def test_generate_json_output_schema():
     assert "report_path" in ticker
 
 
-def test_extract_ticker_metrics_from_report():
+def test_extract_ticker_metrics_from_report(monkeypatch):
     """Test extracting metrics from ticker report markdown."""
+    # Mock the structured extraction to avoid SEC network calls in unit tests
+    def mock_extract_structured(ticker, lookback_days, max_form4_filings):
+        return {
+            "form4_filings_found": 214,
+            "form4_filings_parsed": 214,
+            "transactions_extracted": 136,
+            "purchase_count": 134,
+            "purchase_value": 4921437.58,
+            "sale_count": 0,
+            "sale_value": 0.0,
+            "distinct_buyers": 10,
+            "distinct_buyer_names": ["Buyer 1", "Buyer 2"],
+            "distinct_sellers": 0,
+            "distinct_seller_names": [],
+            "latest_purchase_date": "2026-06-01",
+            "latest_sale_date": None,
+            "buyer_roles": ["CEO", "CFO"],
+            "seller_roles": [],
+            "purchase_months": ["2022-07", "2023-01"],
+            "sale_months": [],
+        }
+
+    monkeypatch.setattr(
+        "scripts.ticker_watchlist.extract_structured_transaction_metrics",
+        mock_extract_structured,
+    )
+
     # Sample report content (simplified)
     report_content = """
 **CIK**: 0001878313
@@ -129,7 +156,7 @@ def test_extract_ticker_metrics_from_report():
 - Open-market sales: 0 transaction(s), $0.00
 """
 
-    metrics = extract_ticker_metrics(report_content, "MAIA")
+    metrics = extract_ticker_metrics(report_content, "MAIA", lookback_days=365, max_form4_filings=0)
 
     assert metrics["ticker"] == "MAIA"
     assert metrics["cik"] == "0001878313"

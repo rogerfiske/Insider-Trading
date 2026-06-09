@@ -35,7 +35,7 @@ os.environ["ROSS_DRY_RUN"] = "true"
 os.environ["ALERT_ENABLE_TELEGRAM"] = "false"
 os.environ["ALERT_ENABLE_EMAIL"] = "false"
 
-from scripts.ticker_drilldown import generate_ticker_report
+from scripts.ticker_drilldown import generate_ticker_report, extract_structured_transaction_metrics
 from sources.sec_ticker import SecTickerResolver
 from sources.sec_common import utcnow_iso
 from watchlist.history_store import WatchlistHistoryStore
@@ -96,18 +96,24 @@ def load_tickers_from_file(file_path: Path) -> list[str]:
     return tickers
 
 
-def extract_ticker_metrics(report_content: str, ticker: str) -> dict[str, Any]:
+def extract_ticker_metrics(
+    report_content: str,
+    ticker: str,
+    lookback_days: int = 365,
+    max_form4_filings: int = 0,
+) -> dict[str, Any]:
     """Extract key metrics from ticker report for JSON output.
 
     Args:
         report_content: Markdown report content
         ticker: Ticker symbol
+        lookback_days: Number of days to look back for Form 4 filings
+        max_form4_filings: Maximum number of Form 4 filings to parse (0 = unlimited)
 
     Returns:
-        Dictionary of metrics
+        Dictionary of metrics including structured transaction details for scoring
     """
-    # Parse key metrics from report
-    # This is a simple extraction - in production you'd use the structured results
+    # Parse key metrics from report (for fields not available via structured extraction)
     metrics = {
         "ticker": ticker,
         "cik": None,
@@ -127,9 +133,15 @@ def extract_ticker_metrics(report_content: str, ticker: str) -> dict[str, Any]:
         "sale_value": 0.0,
         "net_purchase_value": 0.0,
         "distinct_buyers": None,
+        "distinct_buyer_names": None,
+        "distinct_sellers": None,
+        "distinct_seller_names": None,
         "latest_purchase_date": None,
+        "latest_sale_date": None,
         "buyer_roles": None,
+        "seller_roles": None,
         "purchase_months": None,
+        "sale_months": None,
     }
 
     # Extract CIK from report (format: "CIK: 0001878313")
@@ -200,6 +212,37 @@ def extract_ticker_metrics(report_content: str, ticker: str) -> dict[str, Any]:
                     metrics["net_purchase_value"] = metrics["purchase_value"] - metrics["sale_value"]
             except (ValueError, IndexError):
                 pass
+
+    # Extract structured transaction details for scoring inputs
+    # This provides transaction-level data (buyer names, roles, dates, months) that markdown parsing cannot provide
+    structured_metrics = extract_structured_transaction_metrics(
+        ticker=ticker,
+        lookback_days=lookback_days,
+        max_form4_filings=max_form4_filings,
+    )
+
+    # Merge structured metrics into result
+    # Structured metrics have higher fidelity than markdown parsing, so they override where present
+    metrics.update({
+        "form4_filings_found": structured_metrics["form4_filings_found"],
+        "form4_filings_parsed": structured_metrics["form4_filings_parsed"],
+        "transactions_extracted": structured_metrics["transactions_extracted"],
+        "purchase_count": structured_metrics["purchase_count"],
+        "purchase_value": structured_metrics["purchase_value"],
+        "sale_count": structured_metrics["sale_count"],
+        "sale_value": structured_metrics["sale_value"],
+        "net_purchase_value": structured_metrics["purchase_value"] - structured_metrics["sale_value"],
+        "distinct_buyers": structured_metrics["distinct_buyers"],
+        "distinct_buyer_names": structured_metrics["distinct_buyer_names"],
+        "distinct_sellers": structured_metrics["distinct_sellers"],
+        "distinct_seller_names": structured_metrics["distinct_seller_names"],
+        "latest_purchase_date": structured_metrics["latest_purchase_date"],
+        "latest_sale_date": structured_metrics["latest_sale_date"],
+        "buyer_roles": structured_metrics["buyer_roles"],
+        "seller_roles": structured_metrics["seller_roles"],
+        "purchase_months": structured_metrics["purchase_months"],
+        "sale_months": structured_metrics["sale_months"],
+    })
 
     return metrics
 
@@ -726,8 +769,13 @@ def main():
                 max_form4_filings=args.max_form4_filings,
             )
 
-            # Extract metrics for ranking
-            metrics = extract_ticker_metrics(report_content, ticker)
+            # Extract metrics for ranking (including structured transaction details for scoring)
+            metrics = extract_ticker_metrics(
+                report_content=report_content,
+                ticker=ticker,
+                lookback_days=args.lookback_days,
+                max_form4_filings=args.max_form4_filings,
+            )
             metrics["report_path"] = str(output_path)
 
             # Compute insider evidence score

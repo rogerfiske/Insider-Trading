@@ -256,7 +256,7 @@ Tickers in the consolidated summary are ranked by:
 
 | Rank | Ticker | Company | Score | Rating | Eddie Signal | Purchase Value | Net Value | Buyers |
 |------|--------|---------|-------|--------|--------------|----------------|-----------|--------|
-| 1 | MAIA | MAIA Biotechnology, Inc. | 45.0 | Moderate Insider Buy | BULLISH_EVIDENCE | $4,921,438 | $4,921,438 | 0 |
+| 1 | MAIA | MAIA Biotechnology, Inc. | 100.0 | Very Strong Insider | BULLISH_EVIDENCE | $4,921,438 | $4,921,438 | 10 |
 | 2 | ABCD | Example Corp | 18.0 | Little/No Insider Buy | NEUTRAL | $0 | $0 | 0 |
 
 #### Score Interpretation Guidelines
@@ -300,6 +300,27 @@ Scoring handles missing data gracefully:
 - Net buying value: 0-25 pts
 - Buy/sell imbalance: 0-20 pts
 - Data quality: 0-5 pts (based on Form 4 parsing rate)
+
+#### Form 4 Transaction Detail Integration
+
+**Added in CP21I-Fix** — The scoring system now automatically populates transaction-level details from SEC Form 4 XML parsing.
+
+**Populated Fields**:
+- **Distinct Buyers/Sellers**: Count and names of unique reporting owners from filings with purchases/sales
+- **Latest Purchase/Sale Date**: Most recent transaction date (YYYY-MM-DD format)
+- **Buyer/Seller Roles**: Officer titles extracted from owner relationship fields (CEO, CFO, Director, etc.)
+- **Purchase/Sale Months**: Distinct months (YYYY-MM format) when transactions occurred
+- **Form 4 Filings Parsed**: Count of successfully parsed filings vs. total found
+
+**Data Source**: All transaction details come from SEC EDGAR Form 4 XML filings via the project's `sec_form4_details.py` parser. Owner names, officer titles, transaction dates, and transaction codes are extracted directly from SEC submissions.
+
+**Graceful Handling**: If Form 4 parsing fails or transaction details are unavailable, the affected components (buyer breadth, recency, role quality, persistence) gracefully degrade to 0 points while still computing scores from aggregate metrics (net buying value, buy/sell imbalance).
+
+**Data Quality Component**: The data quality score (0-5 pts) now correctly uses the Form 4 parsing success rate (filings parsed / filings found) instead of defaulting to 0.
+
+**Example Impact**: Before CP21I-Fix, a ticker like MAIA with 214 Form 4 filings parsed but no populated transaction details would score ~45/100. After CP21I-Fix, with all transaction details populated (10 distinct buyers, CEO/CFO/CSO/Director roles, 21 months of purchases, latest purchase 8 days ago), the same ticker scores 100/100.
+
+**Important**: Scores are informational only and not investment advice. Insider transactions occur for many reasons unrelated to stock price expectations.
 
 ### Single Ticker vs Watchlist Mode
 

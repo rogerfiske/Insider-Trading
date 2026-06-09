@@ -1,6 +1,6 @@
 # Manual Ticker Watchlist Summary
 
-**Generated**: 2026-06-08T18:33:09.685739+00:00
+**Generated**: 2026-06-09T17:50:07.439593+00:00
 **Mode**: DRY-RUN — No Telegram or email was sent. This report is for analysis only.
 
 ## Configuration
@@ -19,11 +19,11 @@
 
 ## Ranked Watchlist
 
-Tickers ranked by insider buying evidence strength:
+Tickers ranked by insider buying evidence strength (score 0-100):
 
-| Rank | Ticker | Company | Eddie Signal | Confidence | Purchases | Purchase Value | Sales | Net Value |
-|------|--------|---------|--------------|------------|-----------|----------------|-------|-----------|
-| 1 | MAIA | MAIA Biotechnology, Inc. | BULLISH_EVIDENCE | 2 | 134 | $4,921,437.58 | 0 | $4,921,437.58 |
+| Rank | Ticker | Company | Score | Rating | Eddie Signal | Purchase Value | Net Value | Buyers |
+|------|--------|---------|-------|--------|--------------|----------------|-----------|--------|
+| 1 | MAIA | MAIA Biotechnology, Inc. | 100.0 | Very Strong Insider  | BULLISH_EVIDENCE | $4,921,438 | $4,921,438 | 10 |
 
 ## Per-Ticker Reports
 
@@ -31,12 +31,27 @@ Tickers ranked by insider buying evidence strength:
 
 ## Ranking Method
 
-Tickers are ranked by:
+Tickers are ranked by **Insider Evidence Score** (0-100 points):
 
-1. **Eddie Signal**: BULLISH_EVIDENCE > NEUTRAL > BEARISH_EVIDENCE
-2. **Net Purchase Value**: Higher insider buying value ranks higher
-3. **Purchase Count**: More purchase transactions rank higher
-4. **Data Completeness**: More Form 4 filings parsed ranks higher
+### Scoring Components
+
+1. **Net Insider Buying Value** (0-25 pts): Purchase value minus sale value
+2. **Buy/Sell Imbalance** (0-20 pts): Reward strong buying with little/no selling
+3. **Distinct Buyer Breadth** (0-15 pts): More distinct insider buyers
+4. **Recency** (0-15 pts): How recently insiders purchased
+5. **Role Quality** (0-10 pts): CEO/CFO/Director purchases weighted higher
+6. **Persistence** (0-10 pts): Purchases across multiple months
+7. **Data Quality** (0-5 pts): Form 4 parsing completeness
+
+### Rating Labels
+
+- **80-100**: Very Strong Insider Buying Evidence
+- **60-79**: Strong Insider Buying Evidence
+- **40-59**: Moderate Insider Buying Evidence
+- **20-39**: Weak Insider Buying Evidence
+- **0-19**: Little/No Insider Buying Evidence
+
+**Note**: Scores are for ranking/research only. Not trading recommendations.
 
 ## Safety Confirmations
 

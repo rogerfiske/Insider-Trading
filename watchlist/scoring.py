@@ -169,7 +169,11 @@ def compute_recency_score(latest_purchase_date: str | None) -> tuple[float, str]
         return 0.0, "No purchase date available"
 
     try:
+        # Parse date string (YYYY-MM-DD format from Form 4 transactions)
+        # Make timezone-aware by assuming UTC
         latest_date = datetime.fromisoformat(latest_purchase_date.replace("Z", "+00:00"))
+        if latest_date.tzinfo is None:
+            latest_date = latest_date.replace(tzinfo=timezone.utc)
         now = datetime.now(timezone.utc)
         days_ago = (now - latest_date).days
 

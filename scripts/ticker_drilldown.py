@@ -23,6 +23,7 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -823,6 +824,202 @@ def generate_ticker_report(
         print(f"[ticker_drilldown] Report saved: {output_path}")
 
     return report_content
+
+
+def extract_structured_transaction_metrics(
+    ticker: str,
+    lookback_days: int = 365,
+    max_form4_filings: int = 0,
+) -> dict[str, Any]:
+    """Extract structured transaction metrics for scoring inputs.
+
+    This function extracts the same Form 4 data as generate_ticker_report but returns
+    it in a structured format suitable for populating insider evidence scoring inputs.
+
+    Args:
+        ticker: Stock ticker symbol (e.g., "MAIA")
+        lookback_days: Number of days to look back for Form 4 filings
+        max_form4_filings: Maximum number of Form 4 filings to parse (0 = unlimited)
+
+    Returns:
+        Dictionary with structured transaction metrics including:
+        - distinct_buyers: Count of unique reporting owners in filings with purchases
+        - distinct_buyer_names: List of buyer names with titles
+        - distinct_sellers: Count of unique reporting owners in filings with sales
+        - distinct_seller_names: List of seller names with titles
+        - latest_purchase_date: Most recent purchase date (YYYY-MM-DD) or None
+        - latest_sale_date: Most recent sale date (YYYY-MM-DD) or None
+        - buyer_roles: List of officer titles from owners in purchase filings
+        - seller_roles: List of officer titles from owners in sale filings
+        - purchase_months: List of unique YYYY-MM from purchase transactions
+        - sale_months: List of unique YYYY-MM from sale transactions
+        - form4_filings_found: Count of Form 4 filings found
+        - form4_filings_parsed: Count of Form 4 filings successfully parsed
+        - transactions_extracted: Total count of transactions extracted
+        - purchase_count: Count of purchase transactions
+        - purchase_value: Total purchase value
+        - sale_count: Count of sale transactions
+        - sale_value: Total sale value
+    """
+    ticker = ticker.upper()
+
+    # Resolve ticker to CIK
+    ticker_resolver = SecTickerResolver()
+    ticker_resolution = ticker_resolver.resolve(ticker)
+
+    # Initialize metrics
+    metrics = {
+        "distinct_buyers": 0,
+        "distinct_buyer_names": [],
+        "distinct_sellers": 0,
+        "distinct_seller_names": [],
+        "latest_purchase_date": None,
+        "latest_sale_date": None,
+        "buyer_roles": [],
+        "seller_roles": [],
+        "purchase_months": [],
+        "sale_months": [],
+        "form4_filings_found": 0,
+        "form4_filings_parsed": 0,
+        "transactions_extracted": 0,
+        "purchase_count": 0,
+        "purchase_value": 0.0,
+        "sale_count": 0,
+        "sale_value": 0.0,
+    }
+
+    # Return empty metrics if ticker resolution failed
+    if not ticker_resolution.ok:
+        return metrics
+
+    # Fetch issuer-specific Form 4 filings
+    issuer_form4_filings = get_form4_filings_for_cik(ticker_resolution.cik_padded, lookback_days)
+    metrics["form4_filings_found"] = len(issuer_form4_filings)
+
+    if not issuer_form4_filings:
+        return metrics
+
+    # Parse Form 4 filings
+    filings_to_parse = issuer_form4_filings if max_form4_filings == 0 else issuer_form4_filings[:max_form4_filings]
+
+    parsed_details = []
+    all_purchases = []
+    all_sales = []
+    purchase_filing_owners = set()  # Owners from filings with purchases
+    sale_filing_owners = set()      # Owners from filings with sales
+
+    for filing in filings_to_parse:
+        accession = filing.accession_number
+        primary_doc = filing.primary_document
+        if accession:
+            details = fetch_and_parse_form4(accession, ticker_resolution.cik_padded, primary_doc)
+            if details.parse_status in ("success", "partial"):
+                parsed_details.append(details)
+                summary = summarize_transactions_for_report(details)
+
+                # Get transactions
+                purchases = summary.get("open_market_purchases", {}).get("transactions", [])
+                sales = summary.get("open_market_sales", {}).get("transactions", [])
+
+                all_purchases.extend(purchases)
+                all_sales.extend(sales)
+
+                # Track owners from filings with purchases
+                if purchases:
+                    for owner in details.owners:
+                        purchase_filing_owners.add((owner.name, owner.officer_title, owner.is_director))
+
+                # Track owners from filings with sales
+                if sales:
+                    for owner in details.owners:
+                        sale_filing_owners.add((owner.name, owner.officer_title, owner.is_director))
+
+    metrics["form4_filings_parsed"] = len(parsed_details)
+    metrics["transactions_extracted"] = len(all_purchases) + len(all_sales)
+
+    # Process purchase metrics
+    if all_purchases:
+        metrics["purchase_count"] = len(all_purchases)
+        metrics["purchase_value"] = sum(txn.transaction_value for txn in all_purchases if txn.transaction_value)
+
+        # Extract purchase dates
+        purchase_dates = [txn.transaction_date for txn in all_purchases if txn.transaction_date]
+        if purchase_dates:
+            metrics["latest_purchase_date"] = max(purchase_dates)
+
+            # Extract unique purchase months
+            purchase_months = set()
+            for date_str in purchase_dates:
+                if len(date_str) >= 7:  # YYYY-MM-DD format
+                    purchase_months.add(date_str[:7])  # YYYY-MM
+            metrics["purchase_months"] = sorted(list(purchase_months))
+
+    # Process sale metrics
+    if all_sales:
+        metrics["sale_count"] = len(all_sales)
+        metrics["sale_value"] = sum(txn.transaction_value for txn in all_sales if txn.transaction_value)
+
+        # Extract sale dates
+        sale_dates = [txn.transaction_date for txn in all_sales if txn.transaction_date]
+        if sale_dates:
+            metrics["latest_sale_date"] = max(sale_dates)
+
+            # Extract unique sale months
+            sale_months = set()
+            for date_str in sale_dates:
+                if len(date_str) >= 7:
+                    sale_months.add(date_str[:7])
+            metrics["sale_months"] = sorted(list(sale_months))
+
+    # Process buyer information
+    if purchase_filing_owners:
+        buyer_names = []
+        buyer_roles = []
+
+        for name, title, is_director in purchase_filing_owners:
+            # Build name with title
+            name_with_title = name
+            if title:
+                name_with_title += f" ({title})"
+            elif is_director:
+                name_with_title += " (Director)"
+            buyer_names.append(name_with_title)
+
+            # Extract role for scoring
+            if title:
+                buyer_roles.append(title)
+            elif is_director:
+                buyer_roles.append("Director")
+
+        metrics["distinct_buyers"] = len(purchase_filing_owners)
+        metrics["distinct_buyer_names"] = sorted(buyer_names)
+        metrics["buyer_roles"] = sorted(list(set(buyer_roles)))  # Deduplicate roles
+
+    # Process seller information
+    if sale_filing_owners:
+        seller_names = []
+        seller_roles = []
+
+        for name, title, is_director in sale_filing_owners:
+            # Build name with title
+            name_with_title = name
+            if title:
+                name_with_title += f" ({title})"
+            elif is_director:
+                name_with_title += " (Director)"
+            seller_names.append(name_with_title)
+
+            # Extract role
+            if title:
+                seller_roles.append(title)
+            elif is_director:
+                seller_roles.append("Director")
+
+        metrics["distinct_sellers"] = len(sale_filing_owners)
+        metrics["distinct_seller_names"] = sorted(seller_names)
+        metrics["seller_roles"] = sorted(list(set(seller_roles)))
+
+    return metrics
 
 
 def main() -> int:
