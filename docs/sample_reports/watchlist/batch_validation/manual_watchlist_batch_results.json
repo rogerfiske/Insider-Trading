@@ -1,0 +1,236 @@
+{
+  "generated_at": "2026-06-09T18:12:06.620172+00:00",
+  "mode": "manual_watchlist_dry_run",
+  "lookback_days": 1460,
+  "max_form4_filings": 100,
+  "data_sources": [
+    "SEC EDGAR",
+    "project connectors"
+  ],
+  "alerts_sent": false,
+  "tickers": [
+    {
+      "ticker": "MAIA",
+      "cik": "0001878313 (1878313)",
+      "company_name": "MAIA Biotechnology, Inc.",
+      "eddie_status": "APPLICABLE_WITH_EVIDENCE",
+      "eddie_signal": "BULLISH_EVIDENCE",
+      "eddie_confidence": 2,
+      "maggie_status": "APPLICABLE_WITH_LIMITED_IDENTIFIER_MATCHING",
+      "maggie_signal": "NEUTRAL",
+      "maggie_confidence": 1,
+      "form4_filings_found": 214,
+      "form4_filings_parsed": 100,
+      "transactions_extracted": 37,
+      "purchase_count": 37,
+      "purchase_value": 2191477.6005,
+      "sale_count": 0,
+      "sale_value": 0.0,
+      "net_purchase_value": 2191477.6005,
+      "distinct_buyers": 7,
+      "latest_purchase_date": "2026-06-01",
+      "buyer_roles": [
+        "Chief Executive Officer",
+        "Chief Scientific Officer",
+        "Director"
+      ],
+      "purchase_months": [
+        "2022-09",
+        "2024-04",
+        "2024-11",
+        "2024-12",
+        "2025-02",
+        "2025-03",
+        "2025-05",
+        "2025-06",
+        "2025-10",
+        "2025-11",
+        "2025-12",
+        "2026-06"
+      ],
+      "scoring": {
+        "ticker": "MAIA",
+        "total_score": 95.0,
+        "rating_label": "Very Strong Insider Buying Evidence",
+        "component_scores": {
+          "net_buying_value": 25.0,
+          "buy_sell_imbalance": 20.0,
+          "buyer_breadth": 15.0,
+          "recency": 15.0,
+          "role_quality": 10.0,
+          "persistence": 10.0,
+          "data_quality": 0.0
+        },
+        "component_explanations": {
+          "net_buying_value": "Net value $2,191,477.60 (>$1M tier)",
+          "buy_sell_imbalance": "37 purchases, no sales (perfect buying pattern)",
+          "buyer_breadth": "7 distinct buyers (broad participation)",
+          "recency": "Latest purchase 8 days ago (<= 30 days)",
+          "role_quality": "Executive purchase detected (CEO/CFO/President)",
+          "persistence": "Purchases in 12 distinct months (persistent buying)",
+          "data_quality": "100/214 filings parsed (< 50%)"
+        },
+        "warnings": []
+      },
+      "report_path": "docs/sample_reports/watchlist/MAIA_manual_ticker_report.md"
+    },
+    {
+      "ticker": "TSLA",
+      "cik": "0001318605 (1318605)",
+      "company_name": "Tesla, Inc.",
+      "eddie_status": "APPLICABLE_WITH_EVIDENCE",
+      "eddie_signal": "BULLISH_EVIDENCE",
+      "eddie_confidence": 2,
+      "maggie_status": "APPLICABLE_WITH_LIMITED_IDENTIFIER_MATCHING",
+      "maggie_signal": "NEUTRAL",
+      "maggie_confidence": 1,
+      "form4_filings_found": 145,
+      "form4_filings_parsed": 100,
+      "transactions_extracted": 393,
+      "purchase_count": 26,
+      "purchase_value": 1000984274.3670001,
+      "sale_count": 367,
+      "sale_value": 884299377.5412502,
+      "net_purchase_value": 116684896.82574987,
+      "distinct_buyers": 2,
+      "latest_purchase_date": "2025-09-12",
+      "buyer_roles": [
+        "CEO",
+        "Director"
+      ],
+      "purchase_months": [
+        "2025-04",
+        "2025-09"
+      ],
+      "scoring": {
+        "ticker": "TSLA",
+        "total_score": 65.0,
+        "rating_label": "Strong Insider Buying Evidence",
+        "component_scores": {
+          "net_buying_value": 25.0,
+          "buy_sell_imbalance": 10.0,
+          "buyer_breadth": 8.0,
+          "recency": 5.0,
+          "role_quality": 10.0,
+          "persistence": 6.0,
+          "data_quality": 1.0
+        },
+        "component_explanations": {
+          "net_buying_value": "Net value $116,684,896.83 (>$1M tier)",
+          "buy_sell_imbalance": "Purchases $1,000,984,274 vs sales $884,299,378 (net buying)",
+          "buyer_breadth": "2 distinct buyers",
+          "recency": "Latest purchase 270 days ago (181-365 days)",
+          "role_quality": "Executive purchase detected (CEO/CFO/President)",
+          "persistence": "Purchases in 2 distinct months",
+          "data_quality": "100/145 filings parsed (50-79%)"
+        },
+        "warnings": []
+      },
+      "report_path": "docs/sample_reports/watchlist/TSLA_manual_ticker_report.md"
+    },
+    {
+      "ticker": "AAPL",
+      "cik": "0000320193 (320193)",
+      "company_name": "Apple Inc.",
+      "eddie_status": "APPLICABLE_WITH_EVIDENCE",
+      "eddie_signal": "BEARISH_EVIDENCE",
+      "eddie_confidence": 2,
+      "maggie_status": "APPLICABLE_WITH_LIMITED_IDENTIFIER_MATCHING",
+      "maggie_signal": "NEUTRAL",
+      "maggie_confidence": 1,
+      "form4_filings_found": 167,
+      "form4_filings_parsed": 100,
+      "transactions_extracted": 82,
+      "purchase_count": 0,
+      "purchase_value": 0.0,
+      "sale_count": 82,
+      "sale_value": 546654179.8104,
+      "net_purchase_value": -546654179.8104,
+      "distinct_buyers": 0,
+      "latest_purchase_date": null,
+      "buyer_roles": [],
+      "purchase_months": [],
+      "scoring": {
+        "ticker": "AAPL",
+        "total_score": 1.0,
+        "rating_label": "Little/No Insider Buying Evidence",
+        "component_scores": {
+          "net_buying_value": 0.0,
+          "buy_sell_imbalance": 0.0,
+          "buyer_breadth": 0.0,
+          "recency": 0.0,
+          "role_quality": 0.0,
+          "persistence": 0.0,
+          "data_quality": 1.0
+        },
+        "component_explanations": {
+          "net_buying_value": "Net value $-546,654,179.81 (no net buying)",
+          "buy_sell_imbalance": "Only sales detected ($546,654,180)",
+          "buyer_breadth": "No distinct buyers detected",
+          "recency": "No purchase date available",
+          "role_quality": "No buyer role evidence",
+          "persistence": "No purchase month data",
+          "data_quality": "100/167 filings parsed (50-79%)"
+        },
+        "warnings": [
+          "latest_purchase_date field missing",
+          "buyer_roles field missing",
+          "purchase_months field missing"
+        ]
+      },
+      "report_path": "docs/sample_reports/watchlist/AAPL_manual_ticker_report.md"
+    },
+    {
+      "ticker": "ZZZINVALID123",
+      "cik": "Not found",
+      "company_name": null,
+      "eddie_status": "TICKER_RESOLUTION_FAILED",
+      "eddie_signal": "N/A",
+      "eddie_confidence": 0,
+      "maggie_status": "APPLICABLE_WITH_LIMITED_IDENTIFIER_MATCHING",
+      "maggie_signal": "NEUTRAL",
+      "maggie_confidence": 1,
+      "form4_filings_found": 0,
+      "form4_filings_parsed": 0,
+      "transactions_extracted": 0,
+      "purchase_count": 0,
+      "purchase_value": 0.0,
+      "sale_count": 0,
+      "sale_value": 0.0,
+      "net_purchase_value": 0.0,
+      "distinct_buyers": 0,
+      "latest_purchase_date": null,
+      "buyer_roles": [],
+      "purchase_months": [],
+      "scoring": {
+        "ticker": "ZZZINVALID123",
+        "total_score": 0.0,
+        "rating_label": "Little/No Insider Buying Evidence",
+        "component_scores": {
+          "net_buying_value": 0.0,
+          "buy_sell_imbalance": 0.0,
+          "buyer_breadth": 0.0,
+          "recency": 0.0,
+          "role_quality": 0.0,
+          "persistence": 0.0,
+          "data_quality": 0.0
+        },
+        "component_explanations": {
+          "net_buying_value": "Net value $0.00 (no net buying)",
+          "buy_sell_imbalance": "No transactions",
+          "buyer_breadth": "No distinct buyers detected",
+          "recency": "No purchase date available",
+          "role_quality": "No buyer role evidence",
+          "persistence": "No purchase month data",
+          "data_quality": "No Form 4 filings found"
+        },
+        "warnings": [
+          "latest_purchase_date field missing",
+          "buyer_roles field missing",
+          "purchase_months field missing"
+        ]
+      },
+      "report_path": "docs/sample_reports/watchlist/ZZZINVALID123_manual_ticker_report.md"
+    }
+  ]
+}

@@ -627,6 +627,97 @@ Insider trading analysis is provided for research purposes only. All investment 
 
 ---
 
+## Multi-Ticker Batch Validation
+
+The watchlist workflow supports batch processing of multiple tickers for comparative analysis and validation testing.
+
+### Purpose
+
+- **Comparative Analysis**: Rank multiple tickers by insider buying evidence strength
+- **Technical Validation**: Verify multi-ticker mechanics, ranking behavior, and error handling
+- **Canary Testing**: Use well-known tickers (e.g., AAPL, TSLA) to validate data pipeline
+- **Graceful Failure**: Test handling of invalid/unresolved tickers
+
+### Example Command
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py `
+  --tickers MAIA AAPL TSLA `
+  --lookback-days 1460 `
+  --max-form4-filings 100 `
+  --output-dir docs/sample_reports/watchlist/batch_validation `
+  --summary-output docs/sample_reports/watchlist/batch_validation/batch_summary.md `
+  --json-output docs/sample_reports/watchlist/batch_validation/batch_results.json `
+  --dry-run-report `
+  --no-save-history
+```
+
+### Technical Canaries
+
+**AAPL and TSLA are technical canaries only**. They validate:
+- Multi-ticker input parsing
+- Per-ticker report generation
+- Consolidated ranking and summary
+- JSON output structure
+- Large-cap vs small-cap scoring differences
+
+**They are not small-cap recommendations**. Do not present them as penny-stock picks.
+
+### Bounded Runs
+
+Use `--max-form4-filings` to limit Form 4 parsing for faster canary runs:
+- `--max-form4-filings 100`: Bounds runtime for large-cap tickers with hundreds of filings
+- `--max-form4-filings 0`: Unlimited (use for full MAIA validation)
+
+**Important**: Bounded runs may reduce data quality scores (<50% parsed) and should be used for mechanics testing only, not production analysis.
+
+### Invalid Ticker Handling
+
+Include an intentionally invalid ticker to validate graceful failure:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py `
+  --tickers MAIA ZZZINVALID123 `
+  --dry-run-report
+```
+
+Expected behavior:
+- Invalid ticker appears in output with CIK "Not found"
+- Eddie status: `TICKER_RESOLUTION_FAILED`
+- Score: 0.0 (Little/No Insider Buying Evidence)
+- No crash or exception
+
+### History Compatibility
+
+Test that history tracking works with multi-ticker runs:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\ticker_watchlist.py `
+  --tickers MAIA AAPL TSLA `
+  --lookback-days 1460 `
+  --max-form4-filings 100 `
+  --save-history `
+  --compare-previous `
+  --history-db .state/watchlist_history.db `
+  --history-summary-output batch_history_summary.md
+```
+
+This validates:
+- Multi-ticker rows saved to history database
+- Delta comparison across tickers
+- Run ID generation and tracking
+- Invalid ticker rows handled gracefully
+
+### Informational-Only Disclaimer
+
+Multi-ticker batch analysis is informational only:
+- **Not trading advice**: Do not use for buy/sell decisions
+- **Not recommendations**: AAPL/TSLA are technical canaries, not picks
+- **Research purposes**: For SEC filing data comparison only
+- **No alerts**: Dry-run mode prevents Telegram/email
+
+---
+
 ## Example: MAIA 4-Year Deep-Dive
 
 To generate a comprehensive 4-year historical analysis for MAIA:

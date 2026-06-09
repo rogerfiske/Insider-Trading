@@ -531,8 +531,10 @@ def generate_history_summary(
     )
 
     for rank, m in enumerate(ticker_metrics, 1):
+        # Handle None company_name for unresolved tickers
+        company_name = m['company_name'] if m['company_name'] else "Unknown"
         lines.append(
-            f"| {rank} | {m['ticker']} | {m['company_name'][:30]} | "
+            f"| {rank} | {m['ticker']} | {company_name[:30]} | "
             f"{m['eddie_signal']} | {m['eddie_confidence']} | "
             f"{m['purchase_count']} | ${m['purchase_value']:,.2f} | "
             f"{m['sale_count']} | ${m['net_purchase_value']:,.2f} |"
