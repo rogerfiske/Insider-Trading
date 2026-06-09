@@ -450,13 +450,14 @@ All code reviewed is working as designed.
 ## Commit Hash
 
 ```
-(To be filled after commit)
+bc3f0e1
 ```
 
 ## Push Result
 
 ```
-(To be filled after push)
+To https://github.com/rogerfiske/Insider-Trading.git
+   d5f7360..bc3f0e1  main -> main
 ```
 
 ## Risks and Blockers
