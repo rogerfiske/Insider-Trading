@@ -28,12 +28,32 @@ email_present, email_enabled = check_bool_env("ALERT_ENABLE_EMAIL")
 telegram_present, telegram_enabled = check_bool_env("ALERT_ENABLE_TELEGRAM")
 
 # SMTP credentials (check presence only, never print values)
+smtp_host_present = check_string_env("SMTP_HOST")
+smtp_port_present = check_string_env("SMTP_PORT")
+smtp_username_present = check_string_env("SMTP_USERNAME")
+smtp_password_present = check_string_env("SMTP_PASSWORD")
+smtp_from_present = check_string_env("ALERT_EMAIL_FROM")
+smtp_to_present = check_string_env("ALERT_EMAIL_TO")
+
 smtp_creds_present = (
-    check_string_env("SMTP_HOST") and
-    check_string_env("SMTP_PORT") and
-    check_string_env("SMTP_USERNAME") and
-    check_string_env("SMTP_PASSWORD")
+    smtp_host_present and
+    smtp_port_present and
+    smtp_username_present and
+    smtp_password_present and
+    smtp_from_present and
+    smtp_to_present
 )
+
+# Telegram credentials (check presence only, never print values)
+telegram_bot_token_present = check_string_env("TELEGRAM_BOT_TOKEN")
+telegram_chat_id_present = check_string_env("TELEGRAM_CHAT_ID")
+
+telegram_creds_present = telegram_bot_token_present and telegram_chat_id_present
+
+# Check recipient (safe to show email address for Roger's known test account)
+recipient = os.environ.get("ALERT_EMAIL_TO", "").strip()
+expected_recipient = "fiske1945@4securemail.com"
+recipient_is_roger = recipient == expected_recipient
 
 # Report (safe)
 print("ALERT_ENABLE_EMAIL present:", "yes" if email_present else "no")
@@ -42,4 +62,17 @@ print()
 print("ALERT_ENABLE_TELEGRAM present:", "yes" if telegram_present else "no")
 print("ALERT_ENABLE_TELEGRAM enabled:", telegram_enabled)
 print()
-print("SMTP credentials present:", "yes" if smtp_creds_present else "no")
+print("SMTP host present:", "yes" if smtp_host_present else "no")
+print("SMTP username present:", "yes" if smtp_username_present else "no")
+print("SMTP password present:", "yes" if smtp_password_present else "no")
+print("SMTP recipient present:", "yes" if smtp_to_present else "no")
+print()
+if smtp_to_present:
+    print(f"Recipient: {recipient}")
+    print(f"Expected: {expected_recipient}")
+    print(f"Recipient is Roger:", "yes" if recipient_is_roger else "no")
+else:
+    print("Recipient: [not configured]")
+print()
+print("Telegram bot token present:", "yes" if telegram_bot_token_present else "no")
+print("Telegram chat ID present:", "yes" if telegram_chat_id_present else "no")
