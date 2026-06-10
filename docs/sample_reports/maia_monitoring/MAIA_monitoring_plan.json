@@ -1,0 +1,694 @@
+{
+  "ticker": "MAIA",
+  "cik": "0001878313",
+  "company_name": "MAIA Biotechnology, Inc.",
+  "generated_at": "2026-06-10T00:00:00+00:00",
+  "checkpoint": "CP23E",
+  "based_on": "CP23D MAIA Full Synthesis Packet",
+  "baseline": {
+    "insider_activity": {
+      "open_market_purchases": 134,
+      "open_market_sales": 0,
+      "purchase_value_usd": 4921437.58,
+      "sale_value_usd": 0.0,
+      "distinct_buyers": 10,
+      "buyer_roles": ["CEO", "CFO", "CMO", "CSO", "Director"],
+      "latest_purchase_date": "2026-06-01",
+      "purchase_months_count": 21,
+      "insider_score": 100,
+      "rating": "Very Strong Insider Buying Evidence",
+      "source_checkpoint": "CP23D (CP21G/H/I/J)"
+    },
+    "capital_structure": {
+      "common_shares_outstanding": 60671491,
+      "stock_options": 13097991,
+      "warrants": 13086220,
+      "approximate_fully_diluted": 86855702,
+      "dilution_overhang_percent": 43,
+      "march_2026_offering": {
+        "date": "2026-03-04",
+        "common_shares_sold": 20000000,
+        "offering_price": 1.50,
+        "gross_proceeds": 30000000,
+        "net_proceeds_base": 28000000,
+        "net_proceeds_overallotment": 32300000
+      },
+      "source_checkpoint": "CP23D (CP23A-Fix, CP23B-Fix3A)"
+    },
+    "official_10q_financials": {
+      "period_ended": "2026-03-31",
+      "filing_date": "2026-05-11",
+      "accession": "0001493152-26-022154",
+      "cash_and_equivalents": 34413110,
+      "working_capital": 28992690,
+      "current_assets": 35315127,
+      "current_liabilities": 6322437,
+      "accumulated_deficit": -116000657,
+      "q1_2026_rd_expense": 3525097,
+      "q1_2026_ga_expense": 3424832,
+      "q1_2026_net_loss": -6369652,
+      "q1_2026_operating_cash_burn": -5311328,
+      "base_runway_months": 19.4,
+      "base_runway_from_date": "2026-03-31",
+      "source_checkpoint": "CP23D (CP23B-Fix3A)"
+    },
+    "clinical_status": {
+      "thio_104": {
+        "drug": "Ateganosine (THIO)",
+        "indication": "Advanced NSCLC (second-line+)",
+        "phase": "Phase 3 pivotal trial",
+        "fda_status": "Fast Track Designation",
+        "trial_status": "Ongoing (enrollment/completion status not disclosed)",
+        "data_timing": "NOT DISCLOSED",
+        "critical_unknown": true
+      },
+      "thio_101": {
+        "drug": "Ateganosine (THIO)",
+        "indication": "Not disclosed",
+        "phase": "Phase 2 expansion",
+        "trial_status": "Not disclosed",
+        "data_timing": "Not disclosed"
+      },
+      "source_checkpoint": "CP23D (public filings)"
+    },
+    "institutional_visibility": {
+      "form_13d_13g_filings": 0,
+      "form_144_filings": 0,
+      "13f_integration_status": "Limited - InfoTable XML matching not yet integrated",
+      "beneficial_ownership_blockers": "4.99% or 9.99% caps prevent 5%+ disclosure",
+      "source_checkpoint": "CP23D (CP23A-Fix)"
+    }
+  },
+  "monitoring_categories": [
+    {
+      "category": "Insider Activity (Form 4)",
+      "frequency": "Weekly",
+      "data_source": "SEC EDGAR Form 4 filings",
+      "baseline_values": {
+        "open_market_purchases": 134,
+        "open_market_sales": 0,
+        "distinct_buyers": 10,
+        "latest_purchase_date": "2026-06-01"
+      },
+      "track_changes": [
+        "New Form 4 purchases",
+        "New Form 4 sales",
+        "First open-market sale signal",
+        "New insider buyer count",
+        "Changes in purchase/sale imbalance"
+      ],
+      "pm_review_triggers": [
+        "First open-market sale after zero-sales baseline"
+      ],
+      "status_labels": [
+        "No change",
+        "Positive development (new purchase)",
+        "Caution development (first sale)",
+        "Requires PM review (first sale or material change)"
+      ]
+    },
+    {
+      "category": "Form 144 / Sale-Intent Monitoring",
+      "frequency": "As-filed",
+      "data_source": "SEC EDGAR Form 144 filings",
+      "baseline_values": {
+        "form_144_filings": 0
+      },
+      "track_changes": [
+        "New Form 144 filings",
+        "Seller identity and relationship",
+        "Shares proposed to be sold",
+        "Approximate sale date"
+      ],
+      "pm_review_triggers": [
+        "First Form 144 filing after zero-filings baseline",
+        "Large-scale insider sale notice (>1% of shares outstanding)"
+      ],
+      "status_labels": [
+        "No change (baseline: 0 filings)",
+        "Caution development (first Form 144)",
+        "Requires PM review (first filing or >1% shares)"
+      ]
+    },
+    {
+      "category": "13D/G Beneficial Ownership Monitoring",
+      "frequency": "As-filed",
+      "data_source": "SEC EDGAR Form 13D, 13G filings",
+      "baseline_values": {
+        "form_13d_filings": 0,
+        "form_13g_filings": 0,
+        "5_percent_holders": 0
+      },
+      "track_changes": [
+        "New 13D filings",
+        "New 13G filings",
+        "13D/G amendments",
+        "New 5% holders",
+        "Ownership percentage changes",
+        "Active vs passive holder classification"
+      ],
+      "pm_review_triggers": [
+        "First 13D/G filing after zero-filings baseline",
+        "New 5%+ holder",
+        "Reputable healthcare investor (Tiger Global, Fidelity, etc.)"
+      ],
+      "status_labels": [
+        "No change (baseline: 0 filings)",
+        "Positive development (reputable investor)",
+        "Caution development (activist investor)",
+        "Requires PM review (any new filing)"
+      ],
+      "limitations": [
+        "Beneficial ownership blockers (4.99%/9.99%) prevent most investors from reaching 5% threshold",
+        "Absence of 13D/G filings may not reflect true institutional accumulation"
+      ]
+    },
+    {
+      "category": "13F Institutional Visibility",
+      "frequency": "Quarterly",
+      "data_source": "SEC EDGAR Form 13F-HR filings",
+      "baseline_values": {
+        "13f_integration_status": "Limited - InfoTable XML matching not yet integrated"
+      },
+      "track_changes": [
+        "13F manager positions (once InfoTable XML matching is integrated)",
+        "Issuer-name matches",
+        "CUSIP confidence",
+        "Quarterly filing lag",
+        "New managers",
+        "Position increases/decreases"
+      ],
+      "pm_review_triggers": [
+        "New 13F position by reputable biotech investor",
+        "Material increase/decrease in known position"
+      ],
+      "engineering_followups": [
+        "Integrate 13F InfoTable XML matching for MAIA and other ticker workflows"
+      ],
+      "status_labels": [
+        "Not tracked (infrastructure not integrated)",
+        "Engineering follow-up required"
+      ],
+      "limitations": [
+        "13F has 45-day reporting lag from quarter-end",
+        "Most recent data is from Q1 2026 filing (due May 15, 2026)"
+      ]
+    },
+    {
+      "category": "Clinical/Regulatory Monitoring",
+      "frequency": "As-issued",
+      "data_source": "MAIA IR press releases, SEC EDGAR Form 8-K, ClinicalTrials.gov, FDA press releases",
+      "baseline_values": {
+        "thio_104_data_timing": "NOT DISCLOSED",
+        "thio_101_indication": "Not disclosed"
+      },
+      "track_changes": [
+        "THIO-104 enrollment updates",
+        "THIO-104 dosing updates",
+        "THIO-104 interim/futility disclosures",
+        "THIO-104 topline timing disclosures",
+        "THIO-101 Phase 2 expansion updates",
+        "FDA interactions",
+        "Conference abstracts/presentations",
+        "ClinicalTrials.gov status changes",
+        "MAIA IR press releases"
+      ],
+      "pm_review_triggers": [
+        "THIO-104 data timing disclosed (resolves critical unknown)",
+        "THIO-104 topline data released",
+        "Regulatory submission announced (BLA/NDA filing)",
+        "Trial halted or futility analysis disclosed"
+      ],
+      "status_labels": [
+        "No change (data timing still not disclosed)",
+        "Positive development (enrollment progress, FDA interaction)",
+        "Material uncertainty (trial halt, futility concern)",
+        "Requires PM review (data timing disclosed or topline results)"
+      ]
+    },
+    {
+      "category": "Cash Runway / Dilution Monitoring",
+      "frequency": "Quarterly (10-Q/10-K) and As-filed (financing)",
+      "data_source": "SEC EDGAR Form 10-Q, 10-K, 8-K, S-3, 424B5",
+      "baseline_values": {
+        "cash": 34413110,
+        "operating_cash_burn_quarterly": 5311328,
+        "working_capital": 28992690,
+        "base_runway_months": 19.4,
+        "common_shares_outstanding": 60671491,
+        "approximate_fully_diluted": 86855702
+      },
+      "track_changes": [
+        "New 10-Q/10-K cash",
+        "New operating cash burn",
+        "Working capital trend",
+        "New financing filings",
+        "New S-3 / 424B / ATM / private placement",
+        "Warrant exercises",
+        "Option/warrant overhang changes",
+        "Going-concern language changes"
+      ],
+      "pm_review_triggers": [
+        "Cash runway drops below 12 months",
+        "New financing filing (S-3, 424B5, private placement)",
+        "Going-concern warning appears",
+        "Burn rate increases >50% vs. Q1 2026 baseline"
+      ],
+      "status_labels": [
+        "No change (cash runway stable)",
+        "Positive development (cash runway increased, grant income)",
+        "Caution development (new financing needed)",
+        "Requires PM review (runway <12 months or new financing)"
+      ]
+    },
+    {
+      "category": "Market Confirmation Monitoring",
+      "frequency": "Weekly (manual) or Daily (if infrastructure implemented)",
+      "data_source": "Market data feed (Yahoo Finance, IEX Cloud, or similar)",
+      "baseline_values": {
+        "march_2026_offering_price": 1.50,
+        "infrastructure_status": "Not implemented"
+      },
+      "track_changes": [
+        "Stock price versus $1.50 March 2026 offering price",
+        "Volume reaction to company updates",
+        "Whether rallies are sustained or sold",
+        "Price/volume divergence from insider evidence"
+      ],
+      "pm_review_triggers": [
+        "Sustained price decline >50% from offering price",
+        "Unusual volume + price spike (potential leak before news)"
+      ],
+      "engineering_followups": [
+        "Implement market price/volume tracking for automated MAIA monitoring"
+      ],
+      "status_labels": [
+        "Not tracked (infrastructure not available)",
+        "No change",
+        "Positive development (price holding)",
+        "Caution development (price declining)",
+        "Engineering follow-up required"
+      ],
+      "limitations": [
+        "Market tracking infrastructure not yet implemented",
+        "Manual price checks recommended"
+      ]
+    },
+    {
+      "category": "Alert-Routing Separation",
+      "frequency": "Continuous",
+      "data_source": "Internal safety verification",
+      "baseline_values": {
+        "report_only": true,
+        "alerts_generated": false
+      },
+      "track_changes": [
+        "Confirm no Telegram messages sent",
+        "Confirm no email sent",
+        "Confirm scheduled tasks not modified",
+        "Confirm monitoring pack is report-only"
+      ],
+      "status_labels": [
+        "Report-only monitoring (no alerts generated)",
+        "No Telegram messages sent",
+        "No email sent",
+        "No scheduled tasks modified"
+      ]
+    }
+  ],
+  "weekly_checklist": [
+    {
+      "item": "Search SEC EDGAR for new Form 4 filings (CIK 0001878313)",
+      "category": "Insider Activity",
+      "frequency": "Weekly",
+      "data_source": "SEC EDGAR"
+    },
+    {
+      "item": "Review all new Form 4 filings and record transaction details",
+      "category": "Insider Activity",
+      "frequency": "As-filed",
+      "data_source": "SEC EDGAR"
+    },
+    {
+      "item": "Check for first open-market sale after zero-sales baseline",
+      "category": "Insider Activity",
+      "frequency": "Weekly",
+      "pm_review_trigger": true
+    },
+    {
+      "item": "Search SEC EDGAR for new Form 144 filings (CIK 0001878313)",
+      "category": "Form 144",
+      "frequency": "Weekly",
+      "data_source": "SEC EDGAR"
+    },
+    {
+      "item": "Review all new Form 144 filings and record proposed sale details",
+      "category": "Form 144",
+      "frequency": "As-filed",
+      "data_source": "SEC EDGAR"
+    },
+    {
+      "item": "Search SEC EDGAR for new Form 13D/13G filings (CIK 0001878313)",
+      "category": "13D/G Ownership",
+      "frequency": "Weekly",
+      "data_source": "SEC EDGAR"
+    },
+    {
+      "item": "Review all new 13D/13G filings and record ownership details",
+      "category": "13D/G Ownership",
+      "frequency": "As-filed",
+      "data_source": "SEC EDGAR"
+    },
+    {
+      "item": "Manual search for MAIA in 13F holdings tables (if time permits)",
+      "category": "13F Institutional",
+      "frequency": "Quarterly",
+      "data_source": "SEC EDGAR",
+      "engineering_followup": "Integrate 13F InfoTable XML matching"
+    },
+    {
+      "item": "Review MAIA IR press releases for clinical/regulatory updates",
+      "category": "Clinical/Regulatory",
+      "frequency": "As-issued",
+      "data_source": "https://ir.maiabiotech.com/"
+    },
+    {
+      "item": "Search SEC EDGAR for new Form 8-K material event filings",
+      "category": "Clinical/Regulatory",
+      "frequency": "As-filed",
+      "data_source": "SEC EDGAR"
+    },
+    {
+      "item": "Check ClinicalTrials.gov for MAIA trial status changes",
+      "category": "Clinical/Regulatory",
+      "frequency": "Weekly",
+      "data_source": "ClinicalTrials.gov"
+    },
+    {
+      "item": "Search SEC EDGAR for new Form 10-Q/10-K filings",
+      "category": "Cash Runway",
+      "frequency": "Quarterly",
+      "data_source": "SEC EDGAR"
+    },
+    {
+      "item": "Review quarterly operating cash burn vs. baseline ($5.31M)",
+      "category": "Cash Runway",
+      "frequency": "Quarterly",
+      "data_source": "SEC EDGAR Form 10-Q"
+    },
+    {
+      "item": "Check for new financing filings (S-3, 424B5, private placement)",
+      "category": "Cash Runway / Dilution",
+      "frequency": "As-filed",
+      "data_source": "SEC EDGAR",
+      "pm_review_trigger": true
+    },
+    {
+      "item": "Check cash runway vs. baseline (19.4 months from 2026-03-31)",
+      "category": "Cash Runway",
+      "frequency": "Quarterly",
+      "pm_review_trigger_condition": "Runway <12 months"
+    },
+    {
+      "item": "Manual check of MAIA stock price vs. $1.50 offering price",
+      "category": "Market Confirmation",
+      "frequency": "Weekly",
+      "data_source": "Yahoo Finance or similar",
+      "engineering_followup": "Implement market price/volume tracking"
+    },
+    {
+      "item": "Review volume on days with company announcements",
+      "category": "Market Confirmation",
+      "frequency": "As-needed",
+      "data_source": "Yahoo Finance or similar"
+    },
+    {
+      "item": "Confirm no Telegram/email sent, no scheduled tasks modified",
+      "category": "Safety",
+      "frequency": "Weekly"
+    }
+  ],
+  "event_triggers": [
+    {
+      "event": "New Form 4 filing",
+      "action": "Review transaction details, check for first sale",
+      "frequency": "As-filed",
+      "pm_review_condition": "First open-market sale after zero-sales baseline"
+    },
+    {
+      "event": "New Form 144 filing",
+      "action": "Review proposed sale details, assess materiality",
+      "frequency": "As-filed",
+      "pm_review_condition": "First Form 144 or >1% shares proposed"
+    },
+    {
+      "event": "New Form 13D/13G filing",
+      "action": "Review filer identity, ownership %, active/passive status",
+      "frequency": "As-filed",
+      "pm_review_condition": "Any new 13D/G filing (baseline: 0)"
+    },
+    {
+      "event": "New Form 8-K material event",
+      "action": "Review for clinical/regulatory disclosures",
+      "frequency": "As-filed",
+      "pm_review_condition": "THIO-104 data timing disclosed or topline results"
+    },
+    {
+      "event": "New Form 10-Q/10-K",
+      "action": "Review cash, burn rate, working capital, going-concern language",
+      "frequency": "Quarterly",
+      "pm_review_condition": "Runway <12 months or burn rate increase >50%"
+    },
+    {
+      "event": "New Form S-3 or 424B5",
+      "action": "Review financing terms, dilution impact",
+      "frequency": "As-filed",
+      "pm_review_condition": "Any new financing filing"
+    },
+    {
+      "event": "MAIA IR press release",
+      "action": "Review for clinical/regulatory updates",
+      "frequency": "As-issued",
+      "pm_review_condition": "THIO-104 data timing disclosed or material update"
+    },
+    {
+      "event": "ClinicalTrials.gov status change",
+      "action": "Review trial status, enrollment, completion",
+      "frequency": "Weekly",
+      "pm_review_condition": "THIO-104 status change to completed or terminated"
+    }
+  ],
+  "pm_review_triggers": [
+    {
+      "trigger": "First open-market insider sale",
+      "priority": "Critical (immediate PM review)",
+      "baseline": "0 sales",
+      "condition": "Any open-market sale after zero-sales baseline"
+    },
+    {
+      "trigger": "First Form 144 filing",
+      "priority": "Critical (immediate PM review)",
+      "baseline": "0 filings",
+      "condition": "Any Form 144 filing after zero-filings baseline"
+    },
+    {
+      "trigger": "THIO-104 data timing disclosed",
+      "priority": "Critical (immediate PM review)",
+      "baseline": "Not disclosed",
+      "condition": "THIO-104 data timing disclosed (resolves critical unknown)"
+    },
+    {
+      "trigger": "THIO-104 topline data released",
+      "priority": "Critical (immediate PM review)",
+      "baseline": "No data",
+      "condition": "Topline efficacy/safety data disclosed"
+    },
+    {
+      "trigger": "Regulatory submission announced",
+      "priority": "Critical (immediate PM review)",
+      "baseline": "No submission",
+      "condition": "BLA/NDA filing announced"
+    },
+    {
+      "trigger": "Trial halted or futility analysis",
+      "priority": "Critical (immediate PM review)",
+      "baseline": "Ongoing trial",
+      "condition": "THIO-104 trial halted or futility analysis disclosed"
+    },
+    {
+      "trigger": "Cash runway drops below 12 months",
+      "priority": "Critical (immediate PM review)",
+      "baseline": "19.4 months",
+      "condition": "Runway <12 months from period-end"
+    },
+    {
+      "trigger": "New financing filing",
+      "priority": "Critical (immediate PM review)",
+      "baseline": "No new financing",
+      "condition": "S-3, 424B5, or private placement filed"
+    },
+    {
+      "trigger": "Going-concern warning appears",
+      "priority": "Critical (immediate PM review)",
+      "baseline": "No going-concern warning",
+      "condition": "10-Q/10-K discloses substantial doubt about going concern"
+    },
+    {
+      "trigger": "First 13D/13G filing",
+      "priority": "High (PM review within 48 hours)",
+      "baseline": "0 filings",
+      "condition": "New 5%+ holder disclosed"
+    },
+    {
+      "trigger": "New 13F position by reputable biotech investor",
+      "priority": "High (PM review within 48 hours)",
+      "baseline": "Unknown (13F not integrated)",
+      "condition": "Reputable investor position disclosed (if 13F integrated)"
+    },
+    {
+      "trigger": "Large-scale insider sale",
+      "priority": "High (PM review within 48 hours)",
+      "baseline": "0 sales",
+      "condition": "Insider sale >1% of shares outstanding"
+    },
+    {
+      "trigger": "Burn rate increases >50%",
+      "priority": "High (PM review within 48 hours)",
+      "baseline": "$5.31M quarterly",
+      "condition": "Quarterly burn >$7.97M (150% of baseline)"
+    },
+    {
+      "trigger": "Sustained price decline >50%",
+      "priority": "High (PM review within 48 hours)",
+      "baseline": "$1.50 offering price",
+      "condition": "Price sustained below $0.75 for >5 trading days"
+    },
+    {
+      "trigger": "New insider purchases",
+      "priority": "Medium (PM review at next weekly check)",
+      "baseline": "134 purchases",
+      "condition": "Continued buying pattern"
+    },
+    {
+      "trigger": "Clinical enrollment progress disclosed",
+      "priority": "Medium (PM review at next weekly check)",
+      "baseline": "Not disclosed",
+      "condition": "Enrollment milestone or progress update"
+    },
+    {
+      "trigger": "FDA Fast Track updates",
+      "priority": "Medium (PM review at next weekly check)",
+      "baseline": "Fast Track granted",
+      "condition": "Regulatory pathway clarifications"
+    },
+    {
+      "trigger": "Price holding above offering price",
+      "priority": "Medium (PM review at next weekly check)",
+      "baseline": "$1.50 offering price",
+      "condition": "Price sustained above $1.50 with volume"
+    }
+  ],
+  "engineering_followups": [
+    {
+      "task": "Integrate 13F InfoTable XML matching",
+      "priority": "High",
+      "description": "Enable automated institutional ownership monitoring for MAIA",
+      "requirements": [
+        "CUSIP extraction for MAIA",
+        "Issuer-name matching logic",
+        "Quarterly position tracking database",
+        "Automated 13F-HR scraping"
+      ],
+      "benefit": "Reduces 13F visibility gap identified in CP23D synthesis"
+    },
+    {
+      "task": "Implement market price/volume tracking",
+      "priority": "High",
+      "description": "Enable automated price confirmation vs. insider buying",
+      "requirements": [
+        "Market data feed integration (Yahoo Finance, IEX Cloud, or similar)",
+        "Daily price/volume capture",
+        "Volume spike detection on announcement days",
+        "Price divergence alerts (report-only)"
+      ],
+      "benefit": "Reduces manual price checking burden, enables automated confirmation tracking"
+    },
+    {
+      "task": "Automate Form 4 scraping and parsing",
+      "priority": "Medium",
+      "description": "Enable real-time insider transaction tracking",
+      "requirements": [
+        "Daily automated scraping of SEC EDGAR Form 4 RSS",
+        "Form 4 XML parsing for transaction details",
+        "Change detection vs. baseline",
+        "Report-only alerts (no Telegram/email)"
+      ],
+      "benefit": "Replaces manual weekly checks with automated daily monitoring"
+    },
+    {
+      "task": "ClinicalTrials.gov integration",
+      "priority": "Medium",
+      "description": "Enable automated enrollment/completion tracking",
+      "requirements": [
+        "NCT number identification for THIO-104/THIO-101",
+        "Weekly trial status scraping",
+        "Status change detection"
+      ],
+      "benefit": "Reduces manual clinical monitoring burden"
+    },
+    {
+      "task": "Cashflow runway projections",
+      "priority": "Medium",
+      "description": "Enable automated runway recalculation on new 10-Q filings",
+      "requirements": [
+        "Quarterly 10-Q automated extraction",
+        "Runway calculation formula from CP23D",
+        "Runway-below-12-months alert trigger (report-only)"
+      ],
+      "benefit": "Automates cash runway monitoring and PM review trigger"
+    }
+  ],
+  "status_labels": [
+    {
+      "label": "No change",
+      "description": "No material changes vs. baseline"
+    },
+    {
+      "label": "Positive development",
+      "description": "Favorable change vs. baseline (new purchase, enrollment progress, etc.)"
+    },
+    {
+      "label": "Caution development",
+      "description": "Potential concern (first sale, Form 144, financing need)"
+    },
+    {
+      "label": "Material uncertainty",
+      "description": "Significant new risk (trial halt, futility analysis)"
+    },
+    {
+      "label": "Requires PM review",
+      "description": "Critical or high-priority trigger requiring immediate PM attention"
+    }
+  ],
+  "limitations": [
+    "13F institutional ownership: InfoTable XML matching not integrated - cannot track institutional positions reliably",
+    "Market price/volume: Market tracking infrastructure not implemented - cannot assess price confirmation automatically",
+    "Clinical trial progress: Enrollment/dosing updates not disclosed - cannot estimate THIO-104 data timing",
+    "Beneficial ownership blockers: 4.99%/9.99% caps hide institutional positions <5% - 13D/G absence may not reflect true ownership",
+    "Insider purchase motivation: Cannot distinguish discretionary vs. compensation-linked purchases",
+    "13F reporting lag: 45-day lag from quarter-end - most recent data is from Q1 2026 (due May 15, 2026)"
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "scheduled_tasks_triggered": false,
+    "env_printed_or_changed": false,
+    "secrets_printed": false,
+    "investment_recommendation_given": false,
+    "alert_infrastructure_invoked": false
+  }
+}
