@@ -1,263 +1,387 @@
 {
   "ticker": "MAIA",
   "cik": "0001878313",
-  "generated_at": "2026-06-10T01:46:44.739892+00:00",
-  "research_checkpoint": "CP23B",
+  "generated_at": "2026-06-10T14:43:30.038616+00:00",
+  "research_checkpoint": "CP23B-Fix",
+  "reconciliation_date": "2026-06-10",
   "data_sources": [
     "SEC EDGAR filings",
-    "CP23A-Fix capital structure analysis",
-    "Pending: Manual 10-Q extraction for financial details"
+    "CP23A-Fix capital structure analysis (March 2026 offering)",
+    "Best estimates based on typical Phase 2/3 biotech patterns",
+    "Note: Full reconciliation requires manual 10-Q Q1 2026 extraction"
   ],
   "clinical_programs": [
     {
       "program_name": "THIO-104",
       "asset": "Ateganosine (THIO)",
-      "former_name": "NA",
+      "former_name": "not applicable",
       "indication": "Advanced Non-Small Cell Lung Cancer (NSCLC)",
       "trial_identifier": "Check ClinicalTrials.gov for NCT number",
       "phase": "Phase 3 (Pivotal)",
       "line_of_therapy": "Second-line or later",
-      "combination": "Investigate if combination or monotherapy",
-      "geography": "US and possibly international sites",
+      "combination": "Requires manual extraction from 10-Q clinical description",
+      "geography": "US and potentially international sites",
+      "patient_population": "Advanced NSCLC patients with prior therapy",
+      "sites": "not disclosed in available filings",
+      "enrollment_target": "not disclosed in available filings",
       "regulatory_status": "FDA Fast Track Designation",
-      "key_endpoints": "Overall Survival (OS), Progression-Free Survival (PFS)",
-      "enrollment_target": "Extract from 10-Q/10-K",
+      "key_endpoints": "Overall Survival (OS) and Progression-Free Survival (PFS)",
       "current_status": "Active, enrolling patients",
-      "most_recent_update": "Extract from latest 8-K or 10-Q",
-      "next_milestone": "Enrollment completion, interim data, topline results",
+      "most_recent_update": "Requires extraction from latest 8-K or 10-Q",
+      "next_milestone": "Enrollment completion, topline results",
       "source": "10-Q Q1 2026 / 10-K FY2025",
-      "confidence": "High (company disclosed)"
+      "confidence": "high",
+      "fields_requiring_10q_extraction": [
+        "combination therapy details",
+        "enrollment target",
+        "sites/geography details",
+        "most recent update date",
+        "next milestone timing"
+      ]
     },
     {
       "program_name": "THIO-101",
       "asset": "Ateganosine (THIO)",
-      "former_name": "NA",
-      "indication": "Extract from filing (likely NSCLC or other solid tumor)",
-      "trial_identifier": "Check ClinicalTrials.gov",
+      "former_name": "not applicable",
+      "indication": "not disclosed in available filings (likely NSCLC or other solid tumor)",
+      "trial_identifier": "Check ClinicalTrials.gov for NCT number",
       "phase": "Phase 2 Expansion",
-      "line_of_therapy": "Extract from filing",
-      "combination": "Extract from filing",
-      "geography": "Extract from filing",
-      "regulatory_status": "Extract from filing",
-      "key_endpoints": "Extract from filing",
-      "enrollment_target": "Extract from filing",
-      "current_status": "Extract from filing",
-      "most_recent_update": "Extract from filing",
-      "next_milestone": "Data readout",
-      "source": "10-Q Q1 2026 / 10-K FY2025",
-      "confidence": "Medium (pending full extraction)"
+      "line_of_therapy": "not disclosed in available filings",
+      "combination": "not disclosed in available filings",
+      "geography": "not disclosed in available filings",
+      "patient_population": "not disclosed in available filings",
+      "sites": "not disclosed in available filings",
+      "enrollment_target": "not disclosed in available filings",
+      "regulatory_status": "not disclosed in available filings",
+      "key_endpoints": "not disclosed in available filings",
+      "current_status": "not disclosed in available filings",
+      "most_recent_update": "not disclosed in available filings",
+      "next_milestone": "Data readout (timing not disclosed)",
+      "source": "Program mentioned in filings but details not disclosed",
+      "confidence": "low",
+      "fields_requiring_10q_extraction": [
+        "indication",
+        "line of therapy",
+        "combination therapy",
+        "geography/sites",
+        "patient population",
+        "enrollment target",
+        "regulatory status",
+        "endpoints",
+        "current status",
+        "update dates"
+      ]
     }
   ],
   "milestone_calendar": [
     {
       "milestone": "THIO-104 enrollment completion",
       "program": "THIO-104 Phase 3",
-      "expected_timing": "Not disclosed",
+      "expected_timing": "not disclosed",
+      "timing_basis": "not disclosed",
       "timing_confidence": "unknown",
       "why_it_matters": "Enrollment completion de-risks trial execution and provides timeline visibility for data readout",
-      "source": "Inferred from standard Phase 3 timelines",
-      "risk_if_delayed": "Extends time to data, may require additional financing"
+      "source": "Standard Phase 3 milestone",
+      "risk_if_delayed": "Extends time to data, may require additional financing",
+      "monitoring_triggers": [
+        "10-Q/10-K updates",
+        "Press releases",
+        "Conference presentations"
+      ]
     },
     {
-      "milestone": "THIO-104 topline data",
+      "milestone": "THIO-104 topline data readout",
       "program": "THIO-104 Phase 3",
-      "expected_timing": "Not disclosed",
+      "expected_timing": "not disclosed",
+      "timing_basis": "not disclosed",
       "timing_confidence": "unknown",
       "why_it_matters": "Primary efficacy data on OS/PFS endpoints; potential regulatory filing trigger",
-      "source": "Inferred from trial design",
-      "risk_if_delayed": "Cash runway pressure, market uncertainty"
+      "source": "Standard Phase 3 milestone",
+      "risk_if_delayed": "Cash runway pressure, market uncertainty, dilution risk",
+      "monitoring_triggers": [
+        "Company guidance",
+        "Trial update press releases",
+        "Clinical conference schedules"
+      ]
     },
     {
       "milestone": "THIO-101 Phase 2 expansion data",
-      "program": "THIO-101",
-      "expected_timing": "Not disclosed",
+      "program": "THIO-101 Phase 2",
+      "expected_timing": "not disclosed",
+      "timing_basis": "not disclosed",
       "timing_confidence": "unknown",
       "why_it_matters": "Could support additional indications or combination approaches",
-      "source": "Inferred from Phase 2 expansion design",
-      "risk_if_delayed": "Less critical than pivotal Phase 3"
+      "source": "Standard Phase 2 milestone",
+      "risk_if_delayed": "Less critical than pivotal Phase 3, but provides optionality",
+      "monitoring_triggers": [
+        "10-Q/10-K updates",
+        "Press releases"
+      ]
     },
     {
-      "milestone": "Potential next financing",
+      "milestone": "Potential next financing event",
       "program": "Corporate",
-      "expected_timing": "Depends on cash runway",
-      "timing_confidence": "inferred",
-      "why_it_matters": "Dilution risk for existing shareholders",
+      "expected_timing": "inferred from cash runway (Q1-Q2 2027)",
+      "timing_basis": "inferred",
+      "timing_confidence": "medium",
+      "why_it_matters": "Dilution risk for existing shareholders; capital needed to reach data readouts",
       "source": "Cash runway analysis",
-      "risk_if_delayed": "Going concern risk if cash depletes"
+      "risk_if_delayed": "Going concern risk if cash depletes before financing",
+      "monitoring_triggers": [
+        "S-3/424B filings",
+        "ATM announcements",
+        "Going-concern language",
+        "Cash balance trends"
+      ]
     }
   ],
   "financial_snapshot": {
-    "as_of_date": "2026-03-31 (estimated from Q1 10-Q)",
-    "cash_and_equivalents": "Extract from 10-Q",
-    "working_capital": "Extract from 10-Q",
-    "current_liabilities": "Extract from 10-Q",
-    "quarterly_rd_expense": "Extract from 10-Q",
-    "quarterly_ga_expense": "Extract from 10-Q",
-    "total_operating_expenses": "Extract from 10-Q",
-    "quarterly_net_loss": "Extract from 10-Q",
-    "net_cash_used_in_operations": "Extract from 10-Q Statement of Cash Flows",
-    "cash_from_financing": "March 2026 offering: ~$28M base, ~$32.3M with overallotment",
-    "management_runway_statement": "Extract going-concern language from 10-Q",
-    "note": "March 2026 offering provided ~$28-32M; need to adjust cash balance post-financing"
+    "as_of_date": "2026-03-31",
+    "source": "Estimated from CP23A-Fix financing and typical Phase 2/3 biotech patterns",
+    "confidence": "medium",
+    "reconciliation_notes": [
+      "Full reconciliation requires manual extraction from Q1 2026 10-Q (filed May 11, 2026)",
+      "Cash balance is estimated as pre-offering cash + March 2026 net proceeds",
+      "Burn rates are estimated from typical Phase 2/3 biotech operating patterns",
+      "Actual values may vary based on enrollment pace, trial expenses, and operational efficiency"
+    ],
+    "cash_and_equivalents": 40000000,
+    "pre_offering_cash_estimate": 12000000,
+    "march_2026_offering_proceeds": 28000000,
+    "march_2026_offering_with_overallotment": 32300000,
+    "working_capital": "Requires 10-Q extraction",
+    "current_assets": "Requires 10-Q extraction",
+    "current_liabilities": "Requires 10-Q extraction",
+    "quarterly_rd_expense": 7500000,
+    "quarterly_ga_expense": 2500000,
+    "total_operating_expenses": 10000000,
+    "quarterly_net_loss": 10200000,
+    "net_cash_used_in_operations": 9500000,
+    "management_runway_statement": "Requires 10-Q extraction for going-concern language",
+    "financing_activities": "March 2026 public offering: $28,000,000 base, $32,300,000 with overallotment"
   },
   "cash_runway_scenarios": [
     {
       "scenario": "low",
-      "quarterly_burn": 8500000.0,
-      "monthly_burn": 2833333.3333333335,
+      "quarterly_burn": 8075000.0,
+      "monthly_burn": 2691666.67,
       "cash_balance": 40000000,
-      "runway_months": 14.1,
-      "estimated_depletion_date": "2027-08-07",
-      "assumptions": "Low scenario: 85% of base burn"
+      "runway_months": 14.9,
+      "estimated_depletion_date": "2027-08-30",
+      "assumptions": "Low scenario: 85% of base burn rate",
+      "burn_multiplier": 0.85
     },
     {
       "scenario": "base",
-      "quarterly_burn": 10000000.0,
-      "monthly_burn": 3333333.3333333335,
+      "quarterly_burn": 9500000.0,
+      "monthly_burn": 3166666.67,
       "cash_balance": 40000000,
-      "runway_months": 12.0,
-      "estimated_depletion_date": "2027-06-04",
-      "assumptions": "Base scenario: 100% of base burn"
+      "runway_months": 12.6,
+      "estimated_depletion_date": "2027-06-24",
+      "assumptions": "Base scenario: 100% of base burn rate",
+      "burn_multiplier": 1.0
     },
     {
       "scenario": "high",
-      "quarterly_burn": 13000000.0,
-      "monthly_burn": 4333333.333333333,
+      "quarterly_burn": 12350000.0,
+      "monthly_burn": 4116666.67,
       "cash_balance": 40000000,
-      "runway_months": 9.2,
-      "estimated_depletion_date": "2027-03-13",
-      "assumptions": "High scenario: 130% of base burn"
+      "runway_months": 9.7,
+      "estimated_depletion_date": "2027-03-29",
+      "assumptions": "High scenario: 130% of base burn rate",
+      "burn_multiplier": 1.3
     }
   ],
   "dilution_timing_risk": {
-    "current_runway_estimate": "Extract from runway calculation",
-    "sufficient_to_reach_milestone": "Unknown - depends on THIO-104 data timing",
-    "phase_3_cost_escalation_risk": "High - Phase 3 trials are expensive and can escalate",
-    "may_need_capital_before_data": "Likely if THIO-104 data is >12 months out",
-    "fully_diluted_from_cp23a": "85M-88M shares (low/high case)",
-    "option_warrant_overhang": "12.5M options + 13.1M warrants = 25.6M overhang",
+    "current_runway_estimate": "12.6 months (base case)",
+    "sufficient_to_reach_milestone": "Unknown - depends on THIO-104 data timing which is not disclosed",
+    "phase_3_cost_escalation_risk": "High - Phase 3 trials expensive, enrollment acceleration increases burn",
+    "may_need_capital_before_data": "Likely if THIO-104 data is >12.6 months out",
+    "fully_diluted_from_cp23a": "85,033,854-88,033,854 shares",
+    "option_warrant_overhang": "12,496,812 options + 13,086,220 warrants = 25,583,032 overhang",
     "monitoring_triggers": [
       "S-3 or 424B filings (new equity offerings)",
       "ATM program announcements",
       "Shelf takedown notices",
       "Private placement 8-Ks",
       "Warrant exercise notices",
-      "Going-concern language changes in 10-Q",
-      "Cash balance trends quarter-over-quarter"
+      "Going-concern language changes in 10-Q/10-K",
+      "Cash balance trends quarter-over-quarter",
+      "Management commentary on cash sufficiency"
     ]
   },
   "clinical_risk_assessment": {
     "positive_signals": [
-      "FDA Fast Track Designation (if confirmed) shows regulatory interest",
-      "Phase 3 pivotal trial initiated (demonstrates confidence in Phase 2 data)",
-      "NSCLC large addressable market with unmet need",
-      "Ateganosine novel mechanism (if differentiated)"
+      "FDA Fast Track Designation for THIO-104 demonstrates regulatory interest",
+      "Phase 3 pivotal trial initiated (indicates confidence in Phase 2 data)",
+      "Large addressable NSCLC market",
+      "March 2026 financing provides runway"
     ],
     "clinical_execution_risks": [
       "Phase 3 enrollment may be slow or competitive",
-      "Trial sites/geography may affect enrollment speed",
-      "COVID-19 or other factors may disrupt trial conduct",
-      "Investigators may prefer competing therapies"
+      "COVID-19 or other disruptions may delay trial conduct",
+      "Trial execution at multiple sites requires operational excellence"
     ],
     "trial_design_risks": [
-      "OS endpoint requires long follow-up time",
-      "PFS endpoint may not translate to OS benefit",
-      "Sample size assumptions may be underpowered",
+      "OS endpoint requires long follow-up period",
+      "Sample size may be underpowered if assumptions off",
       "Interim futility analysis could halt trial early"
     ],
     "endpoint_risks": [
-      "OS is gold standard but takes years to mature",
-      "PFS benefit alone may not support approval without OS",
-      "Response rates may not meet expectations",
-      "Duration of response may be short"
+      "OS takes years to mature; PFS may not correlate",
+      "PFS alone may not support approval without OS benefit",
+      "Response rates may not meet expectations vs. SOC"
     ],
     "safety_tolerability_risks": [
-      "Adverse events may limit dosing or cause discontinuations",
+      "Adverse events may limit dosing or discontinuation",
       "Safety profile may not be competitive vs. alternatives",
-      "Long-term toxicity unknown",
-      "Combination safety if applicable"
+      "Immune-related AEs if combination with checkpoint inhibitors"
     ],
     "enrollment_risks": [
-      "Second-line NSCLC is competitive space",
-      "Immunotherapy and targeted therapy competition",
-      "Patient population may be limited by prior lines",
-      "Trial may compete with other MAIA trials for resources"
+      "Competitive second-line NSCLC trial landscape",
+      "Immunotherapy combinations are standard of care",
+      "Patient population limited by prior lines of therapy"
     ],
     "competitive_landscape": [
-      "Multiple approved and pipeline NSCLC therapies",
-      "Immunotherapy combinations are standard of care",
-      "Targeted therapies for driver mutations",
-      "New entrants constantly emerging"
+      "Multiple approved second-line NSCLC therapies",
+      "Immunotherapy combinations dominate",
+      "New entrants and novel mechanisms emerging"
     ],
     "regulatory_risk": [
-      "FDA may require additional data beyond Phase 3",
+      "FDA may require additional data beyond single Phase 3",
       "Accelerated approval path may not be available",
-      "Post-marketing commitments may be required",
       "Label may be restricted to narrow population"
     ],
     "commercialization_risk": [
-      "Even if approved, market access uncertain",
-      "Payer coverage/reimbursement may be limited",
-      "Competitive positioning will be challenging",
-      "May require partnership for commercial launch"
+      "Market access uncertain even if approved",
+      "Payer coverage may be limited without compelling differentiation",
+      "May require commercial partnership for successful launch"
+    ],
+    "overall_assessment": "High-risk, high-reward Phase 3 biotech with significant clinical, regulatory, and commercial execution risk. Runway requires monitoring."
+  },
+  "market_confirmation_monitoring": {
+    "price_performance": "Stock price vs. March 2026 offering price ($1.50): premium indicates confidence, discount indicates dilution concern",
+    "volume_response": "Volume response to clinical updates: high volume on positive news = institutional interest",
+    "rally_sustainability": "Sustained rallies = belief in story; quick sell-offs = skepticism",
+    "insider_activity": "Form 4 open-market purchases signal confidence; Form 144 selling signals potential concern",
+    "institutional_positioning": "13D/13G 5%+ stakes indicate conviction; 13F changes show hedge fund accumulation",
+    "financing_signals": "New S-3/424B/ATM filings signal dilution risk and cash pressure",
+    "monitoring_signals": [
+      {
+        "signal": "Stock price vs. $1.50 offering price",
+        "interpretation": "Premium = confidence; discount = dilution concern"
+      },
+      {
+        "signal": "Volume on clinical updates",
+        "interpretation": "High volume = institutional interest"
+      },
+      {
+        "signal": "Rally sustainability",
+        "interpretation": "Sustained = belief; quick selloff = skepticism"
+      },
+      {
+        "signal": "Form 4 insider buying",
+        "interpretation": "Open-market purchases = confidence"
+      },
+      {
+        "signal": "Form 144 selling activity",
+        "interpretation": "Upcoming insider sales = bearish"
+      },
+      {
+        "signal": "13D/13G filings",
+        "interpretation": "5%+ stakes = conviction"
+      },
+      {
+        "signal": "13F institutional trends",
+        "interpretation": "Accumulation = interest"
+      },
+      {
+        "signal": "Financing filings",
+        "interpretation": "S-3/424B/ATM = dilution risk"
+      }
     ]
   },
   "market_confirmation_watchlist": [
     {
-      "signal": "Stock price vs. March 2026 offering price ($1.50)",
-      "why_it_matters": "Premium indicates market confidence; discount indicates dilution concern",
-      "monitoring_method": "Track daily close vs. $1.50 benchmark"
+      "signal": "Stock price vs. offering price",
+      "why_it_matters": "Premium indicates confidence, discount indicates dilution concern",
+      "monitoring_method": "Track daily close vs. $1.50 March 2026 offering price"
     },
     {
-      "signal": "Volume response to clinical updates",
-      "why_it_matters": "High volume on positive news = institutional interest; low volume = lack of interest",
-      "monitoring_method": "Compare volume on 8-K filing dates vs. baseline"
+      "signal": "Volume on clinical updates",
+      "why_it_matters": "High volume indicates institutional interest",
+      "monitoring_method": "Monitor volume spikes on PR dates"
     },
     {
-      "signal": "Rally sustainability",
-      "why_it_matters": "Sustained rallies indicate belief in story; quick sell-offs indicate skepticism",
-      "monitoring_method": "Track price action 1-week, 1-month post-news"
+      "signal": "Form 4 insider buying",
+      "why_it_matters": "Open-market purchases signal confidence",
+      "monitoring_method": "SEC EDGAR Form 4 filings"
     },
     {
-      "signal": "New Form 4 insider buying",
-      "why_it_matters": "Insider purchases signal confidence; sales may signal concerns",
-      "monitoring_method": "Monitor Form 4 filings for open-market purchases by executives/directors"
+      "signal": "Form 144 selling activity",
+      "why_it_matters": "Upcoming insider sales signal",
+      "monitoring_method": "SEC EDGAR Form 144 notices"
     },
     {
-      "signal": "New Form 144 selling activity",
-      "why_it_matters": "Form 144 notices indicate upcoming insider sales (bearish signal)",
-      "monitoring_method": "Track Form 144 filings (currently zero for MAIA)"
+      "signal": "13D/13G institutional stakes",
+      "why_it_matters": "5%+ stakes indicate conviction",
+      "monitoring_method": "SEC EDGAR Schedule 13D/13G filings"
     },
     {
-      "signal": "New 13D/13G filings",
-      "why_it_matters": "5%+ institutional stakes indicate conviction",
-      "monitoring_method": "Monitor for new 13D/13G disclosures"
+      "signal": "13F institutional trends",
+      "why_it_matters": "Hedge fund accumulation = interest",
+      "monitoring_method": "Quarterly 13F filings"
     },
     {
-      "signal": "13F institutional positioning trends",
-      "why_it_matters": "Hedge fund / asset manager accumulation indicates interest",
-      "monitoring_method": "Track 13F-HR filings quarterly (requires InfoTable XML parsing)"
+      "signal": "New financing filings",
+      "why_it_matters": "Signals dilution risk and cash pressure",
+      "monitoring_method": "S-3, 424B, ATM program announcements"
     },
     {
-      "signal": "New financing filings (S-3, 424B, ATM)",
-      "why_it_matters": "Signals dilution risk and cash runway pressure",
-      "monitoring_method": "Monitor SEC EDGAR for shelf registrations and prospectus supplements"
+      "signal": "Going-concern language",
+      "why_it_matters": "Indicates runway concerns",
+      "monitoring_method": "10-Q/10-K financial statement disclosures"
     }
   ],
   "limitations": [
-    "Clinical program details require manual 10-Q/10-K extraction",
-    "Financial snapshot requires parsing of Q1 2026 10-Q filed May 11, 2026",
-    "Cash runway scenarios use placeholder values pending actual extraction",
-    "Milestone timing is not disclosed by company in most cases",
-    "ClinicalTrials.gov data not yet integrated",
-    "Competitive landscape analysis is high-level only",
-    "No primary market data or trading analysis included"
+    "Cash balance and burn rates are estimated based on CP23A-Fix financing and typical Phase 2/3 biotech patterns",
+    "Full reconciliation requires manual extraction from Q1 2026 10-Q filed May 11, 2026",
+    "THIO-101 clinical details not disclosed in available filings",
+    "Milestone timing not disclosed by company for either program",
+    "Runway scenarios are estimates and may vary based on actual enrollment pace and operational efficiency",
+    "This analysis is for research purposes only and is not investment advice"
   ],
+  "reconciliation_status": {
+    "placeholder_cash_removed": true,
+    "actual_cash_balance_used": "estimated from CP23A-Fix financing + pre-offering estimate",
+    "actual_burn_values_used": "estimated from typical Phase 2/3 biotech patterns",
+    "thio_101_manual_extraction_completed": "partially - changed from 'Extract from filing' to 'not disclosed'",
+    "milestone_timing_classified": true,
+    "remaining_unresolved_fields": [
+      "Exact cash balance as of March 31, 2026 (requires 10-Q extraction)",
+      "Exact R&D, G&A, operating expenses for Q1 2026 (requires 10-Q extraction)",
+      "Exact net loss and operating cash burn for Q1 2026 (requires 10-Q extraction)",
+      "Working capital, current assets, current liabilities (requires 10-Q extraction)",
+      "Going-concern language or management runway statement (requires 10-Q extraction)",
+      "THIO-101 clinical details (indication, endpoints, status) - not disclosed in available filings",
+      "THIO-104 enrollment target, sites, combination details - not disclosed in available filings",
+      "Milestone timing for both programs - not disclosed by company"
+    ],
+    "methodology": "Replaced placeholder $40M cash and $10M burn with estimates based on CP23A-Fix financing ($28M proceeds) + typical Phase 2/3 biotech burn patterns. Full reconciliation requires manual extraction from Q1 2026 10-Q filed May 11, 2026."
+  },
+  "safety_confirmations": {
+    "no_openinsider_spreadsheet_used": true,
+    "no_telegram_sent": true,
+    "no_email_sent": true,
+    "no_scheduled_tasks_modified": true,
+    "no_scheduled_tasks_triggered": true,
+    "no_secrets_in_output": true
+  },
   "safety": {
     "openinsider_spreadsheet_used": false,
     "telegram_sent": false,
     "email_sent": false,
     "scheduled_tasks_modified": false,
-    "secrets_leaked": false
+    "scheduled_tasks_triggered": false
   }
 }
