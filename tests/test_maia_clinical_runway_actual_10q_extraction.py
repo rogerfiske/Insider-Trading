@@ -164,7 +164,7 @@ def test_base_runway_uses_official_burn():
 
 
 def test_working_capital_extracted():
-    """Test that working capital was extracted from 10-Q."""
+    """Test that working capital was extracted from 10-Q with official value."""
     data = load_clinical_runway_json()
 
     fs = data["financial_snapshot"]
@@ -173,6 +173,16 @@ def test_working_capital_extracted():
         "working_capital should be numeric"
     assert fs["working_capital"] != "Requires 10-Q extraction", \
         "working_capital should not require extraction (should be extracted)"
+
+    # CP23B-Fix3A: Verify official working capital value
+    assert fs["working_capital"] == 28_992_690, \
+        f"Working capital must be $28,992,690 official (got: ${fs['working_capital']:,})"
+
+    # Verify calculation: current assets - current liabilities
+    current_assets = fs["current_assets"]
+    current_liabilities = fs["current_liabilities"]
+    assert current_assets - current_liabilities == 28_992_690, \
+        "Working capital should equal current assets - current liabilities"
 
 
 def test_current_assets_liabilities_extracted():
@@ -192,6 +202,25 @@ def test_current_assets_liabilities_extracted():
         "current_assets should not require extraction"
     assert fs["current_liabilities"] != "Requires 10-Q extraction", \
         "current_liabilities should not require extraction"
+
+
+def test_net_increase_in_cash_official():
+    """Test that net increase in cash has official value (CP23B-Fix3A)."""
+    data = load_clinical_runway_json()
+
+    fs = data["financial_snapshot"]
+    assert "net_increase_in_cash" in fs, "net_increase_in_cash should be extracted"
+
+    # CP23B-Fix3A: Verify official net increase in cash value
+    assert fs["net_increase_in_cash"] == 25_755_079, \
+        f"Net increase in cash must be $25,755,079 official (got: ${fs['net_increase_in_cash']:,})"
+
+    # Verify cash flow reconciliation: beginning + net increase = ending
+    cash_beginning = fs["cash_beginning_of_period"]
+    cash_end = fs["cash_end_of_period"]
+    net_increase = fs["net_increase_in_cash"]
+    assert cash_beginning + net_increase == cash_end, \
+        f"Cash reconciliation failed: ${cash_beginning:,} + ${net_increase:,} != ${cash_end:,}"
 
 
 def test_management_runway_statement_extracted():
