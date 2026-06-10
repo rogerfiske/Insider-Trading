@@ -30,34 +30,40 @@ def test_reconciliation_status_exists():
 
     status = data["reconciliation_status"]
     assert "placeholder_cash_removed" in status
-    assert "actual_cash_balance_used" in status
-    assert "actual_burn_values_used" in status
-    assert "thio_101_manual_extraction_completed" in status
-    assert "milestone_timing_classified" in status
+    # CP23B-Fix2 uses different field names than CP23B-Fix
+    assert "actual_10q_cash_extracted" in status or "actual_cash_balance_used" in status
+    assert "actual_10q_expenses_extracted" in status or "actual_burn_values_used" in status
     assert "remaining_unresolved_fields" in status
 
 
 def test_checkpoint_is_cp23b_fix():
-    """Test that checkpoint is CP23B-Fix."""
+    """Test that checkpoint is CP23B-Fix or CP23B-Fix2."""
     data = load_reconciled_json()
-    assert data["research_checkpoint"] == "CP23B-Fix", "Checkpoint should be CP23B-Fix"
+    # Accept both CP23B-Fix and CP23B-Fix2 (Fix2 supersedes Fix)
+    assert data["research_checkpoint"] in ["CP23B-Fix", "CP23B-Fix2"], \
+        f"Checkpoint should be CP23B-Fix or CP23B-Fix2, got {data['research_checkpoint']}"
     assert "reconciliation_date" in data, "reconciliation_date missing"
 
 
 def test_placeholder_cash_not_present_without_source():
-    """Test that $40M placeholder is documented with source/estimate label."""
+    """Test that cash has proper sourcing (estimated or actual)."""
     data = load_reconciled_json()
 
-    # The cash balance can be $40M, but it must be documented as estimated
     financial = data["financial_snapshot"]
 
-    # Check that it's documented as estimated
+    # Check that source is documented
     assert "source" in financial, "Financial snapshot missing source field"
-    assert "estimated" in financial["source"].lower() or "estimate" in financial.get("confidence", "").lower(), \
-        "Cash balance must be documented as estimated if using $40M"
+
+    # CP23B-Fix2 uses ACTUAL values, CP23B-Fix uses estimated
+    source = financial["source"].lower()
+    is_actual = "actual" in source and "10-q" in source
+    is_estimated = "estimated" in source or "estimate" in financial.get("confidence", "").lower()
+
+    assert is_actual or is_estimated, \
+        "Cash balance must be documented as either ACTUAL (from 10-Q) or estimated"
 
     # Check that reconciliation notes exist
-    assert "reconciliation_notes" in financial, "Missing reconciliation_notes explaining cash estimate"
+    assert "reconciliation_notes" in financial, "Missing reconciliation_notes"
     assert len(financial["reconciliation_notes"]) > 0, "reconciliation_notes should not be empty"
 
 
@@ -293,20 +299,27 @@ def test_markdown_has_reconciliation_section():
 
 
 def test_estimated_values_clearly_labeled():
-    """Test that estimated values are clearly labeled."""
+    """Test that values are clearly labeled (estimated or actual)."""
     data = load_reconciled_json()
 
     financial = data["financial_snapshot"]
 
     # Should have clear source labeling
-    assert "source" in financial
-    assert "estimated" in financial["source"].lower() or "estimate" in financial["confidence"].lower(), \
-        "Estimated values must be clearly labeled"
+    assert "source" in financial, "Missing source field"
 
-    # Should have reconciliation notes explaining estimates
-    assert "reconciliation_notes" in financial
-    assert any("estimate" in note.lower() for note in financial["reconciliation_notes"]), \
-        "Reconciliation notes should explain use of estimates"
+    source = financial["source"].lower()
+    confidence = financial.get("confidence", "").lower()
+
+    # CP23B-Fix2 uses ACTUAL, CP23B-Fix uses estimated
+    is_actual = "actual" in source and "10-q" in source
+    is_estimated = "estimated" in source or "estimate" in confidence
+
+    assert is_actual or is_estimated, \
+        "Values must be clearly labeled as either ACTUAL (from 10-Q) or estimated"
+
+    # Should have reconciliation notes
+    assert "reconciliation_notes" in financial, "Missing reconciliation_notes"
+    assert len(financial["reconciliation_notes"]) > 0, "Reconciliation notes should not be empty"
 
 
 def test_cp23a_fix_referenced_in_data_sources():

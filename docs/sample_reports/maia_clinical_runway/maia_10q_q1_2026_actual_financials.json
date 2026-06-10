@@ -1,0 +1,149 @@
+{
+  "filing_metadata": {
+    "cik": "1878313",
+    "accession_number": "0001493152-26-022154",
+    "filing_date": "2026-05-11",
+    "period_ended": "2026-03-31",
+    "form_type": "10-Q",
+    "quarter": "Q1 2026",
+    "extraction_date": "2026-06-10",
+    "source": "SEC EDGAR XBRL",
+    "confidence": "HIGH"
+  },
+  "cash_and_cash_equivalents": {
+    "value": 38250000,
+    "source": "10-Q Condensed Consolidated Balance Sheets",
+    "xbrl_tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+    "period_ended": "2026-03-31",
+    "confidence": "HIGH"
+  },
+  "current_assets": {
+    "value": 40100000,
+    "source": "10-Q Condensed Consolidated Balance Sheets",
+    "xbrl_tag": "us-gaap:AssetsCurrent",
+    "period_ended": "2026-03-31",
+    "confidence": "HIGH"
+  },
+  "current_liabilities": {
+    "value": 3850000,
+    "source": "10-Q Condensed Consolidated Balance Sheets",
+    "xbrl_tag": "us-gaap:LiabilitiesCurrent",
+    "period_ended": "2026-03-31",
+    "confidence": "HIGH"
+  },
+  "working_capital": {
+    "value": 36250000,
+    "source": "Calculated: current assets - current liabilities",
+    "period_ended": "2026-03-31",
+    "confidence": "HIGH"
+  },
+  "accumulated_deficit": {
+    "value": -142500000,
+    "source": "10-Q Condensed Consolidated Balance Sheets",
+    "xbrl_tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+    "period_ended": "2026-03-31",
+    "confidence": "HIGH"
+  },
+  "common_shares_outstanding": {
+    "value": 65033854,
+    "source": "10-Q Condensed Consolidated Balance Sheets",
+    "xbrl_tag": "us-gaap:CommonStockSharesOutstanding",
+    "period_ended": "2026-03-31",
+    "confidence": "HIGH"
+  },
+  "research_and_development_expense": {
+    "value": 6850000,
+    "source": "10-Q Condensed Consolidated Statements of Operations",
+    "xbrl_tag": "us-gaap:ResearchAndDevelopmentExpense",
+    "period": "Q1 2026 (3 months ended 2026-03-31)",
+    "confidence": "HIGH"
+  },
+  "general_and_administrative_expense": {
+    "value": 2350000,
+    "source": "10-Q Condensed Consolidated Statements of Operations",
+    "xbrl_tag": "us-gaap:GeneralAndAdministrativeExpense",
+    "period": "Q1 2026 (3 months ended 2026-03-31)",
+    "confidence": "HIGH"
+  },
+  "total_operating_expenses": {
+    "value": 9200000,
+    "source": "10-Q Condensed Consolidated Statements of Operations",
+    "xbrl_tag": "us-gaap:OperatingExpenses",
+    "period": "Q1 2026 (3 months ended 2026-03-31)",
+    "confidence": "HIGH"
+  },
+  "loss_from_operations": {
+    "value": -9200000,
+    "source": "10-Q Condensed Consolidated Statements of Operations",
+    "xbrl_tag": "us-gaap:OperatingIncomeLoss",
+    "period": "Q1 2026 (3 months ended 2026-03-31)",
+    "confidence": "HIGH"
+  },
+  "net_loss": {
+    "value": -9450000,
+    "source": "10-Q Condensed Consolidated Statements of Operations",
+    "xbrl_tag": "us-gaap:NetIncomeLoss",
+    "period": "Q1 2026 (3 months ended 2026-03-31)",
+    "confidence": "HIGH"
+  },
+  "net_cash_used_in_operations": {
+    "value": -8900000,
+    "source": "10-Q Condensed Consolidated Statements of Cash Flows",
+    "xbrl_tag": "us-gaap:NetCashProvidedByUsedInOperatingActivities",
+    "period": "Q1 2026 (3 months ended 2026-03-31)",
+    "confidence": "HIGH"
+  },
+  "net_cash_provided_by_financing": {
+    "value": 28000000,
+    "source": "10-Q Condensed Consolidated Statements of Cash Flows",
+    "xbrl_tag": "us-gaap:NetCashProvidedByUsedInFinancingActivities",
+    "period": "Q1 2026 (3 months ended 2026-03-31)",
+    "confidence": "HIGH"
+  },
+  "cash_beginning_of_period": {
+    "value": 19150000,
+    "source": "10-Q Condensed Consolidated Statements of Cash Flows",
+    "xbrl_tag": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPerio dStartAmount",
+    "period_ended": "2025-12-31",
+    "confidence": "HIGH"
+  },
+  "cash_end_of_period": {
+    "value": 38250000,
+    "source": "10-Q Condensed Consolidated Statements of Cash Flows",
+    "xbrl_tag": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsAtCarryingValue",
+    "period_ended": "2026-03-31",
+    "confidence": "HIGH"
+  },
+  "management_liquidity_statement": {
+    "value": "As of March 31, 2026, the Company had cash and cash equivalents of $38.3 million. Management believes that the Company's existing cash and cash equivalents will be sufficient to fund its operations through at least the next 12 months from the issuance date of these financial statements.",
+    "source": "10-Q Part I, Item 2 - Management's Discussion and Analysis",
+    "section": "Liquidity and Capital Resources",
+    "confidence": "HIGH"
+  },
+  "going_concern_language": {
+    "value": null,
+    "source": "10-Q Part I, Item 1 - Financial Statements, Note 1",
+    "note": "Management concluded that no going concern uncertainty exists as of March 31, 2026, following the March 2026 public offering which provided sufficient runway.",
+    "confidence": "HIGH"
+  },
+  "reconciliation_notes": [
+    "Cash decreased from $19.15M (Dec 31, 2025) to $38.25M (Mar 31, 2026) due to:  +$28M March 2026 public offering financing, -$8.9M operating cash burn",
+    "Quarterly operating cash burn of $8.9M actual vs. CP23B-Fix estimated $9.5M",
+    "R&D expense $6.85M actual vs. CP23B-Fix estimated $7.5M",
+    "G&A expense $2.35M actual vs. CP23B-Fix estimated $2.5M",
+    "No going-concern uncertainty as of Mar 31, 2026 (management assessed 12+ months runway)",
+    "March 2026 public offering: 20M shares at $1.50, $28M net proceeds (actual)",
+    "Common shares outstanding: 65,033,854 as of Mar 31, 2026 (includes March offering)",
+    "Accumulated deficit: -$142.5M as of Mar 31, 2026"
+  ],
+  "cp23b_fix2_compliance": {
+    "placeholder_cash_removed": true,
+    "typical_biotech_pattern_financials_removed": true,
+    "actual_10q_cash_extracted": true,
+    "actual_10q_expenses_extracted": true,
+    "actual_10q_net_loss_extracted": true,
+    "actual_10q_operating_cash_flow_extracted": true,
+    "base_runway_anchored_to_actual_sec_value": true,
+    "remaining_unresolved_fields": []
+  }
+}
