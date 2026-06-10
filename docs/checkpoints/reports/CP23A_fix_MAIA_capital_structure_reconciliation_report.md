@@ -444,7 +444,7 @@ The reconciled markdown and JSON reports now provide accurate, internally consis
 
 ## Commit Information
 
-**Commit Hash**: (To be added after git commit)
+**Commit Hash**: 807c31f
 
 **Branch**: main
 
