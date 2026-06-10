@@ -1,0 +1,120 @@
+{
+  "ticker": "MAIA",
+  "cik": "0001878313",
+  "generated_at": "2026-06-10T18:24:57.659800Z",
+  "target_resolution": {
+    "issuer_name": "MAIA Biotechnology, Inc.",
+    "cusip_candidates": [],
+    "cusip_confidence": "unknown"
+  },
+  "filings_reviewed": [
+    {
+      "manager_name": "Berkshire Hathaway",
+      "manager_cik": "0001067983",
+      "accession": "0001193125-26-226661",
+      "filing_date": "2026-05-15",
+      "report_date": "2026-03-31",
+      "primary_document": "xslForm13F_X02/primary_doc.xml",
+      "status": "fetched"
+    },
+    {
+      "manager_name": "Bridgewater Associates",
+      "manager_cik": "0001350694",
+      "accession": "0001350694-26-000002",
+      "filing_date": "2026-05-15",
+      "report_date": "2026-03-31",
+      "primary_document": "xslForm13F_X02/primary_doc.xml",
+      "status": "fetched"
+    },
+    {
+      "manager_name": "Renaissance Technologies",
+      "manager_cik": "0001037389",
+      "accession": "0001037389-26-000033",
+      "filing_date": "2026-05-14",
+      "report_date": "2026-03-31",
+      "primary_document": "xslForm13F_X02/primary_doc.xml",
+      "status": "fetched"
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "manager_cik": "0001423053",
+      "accession": "0001104659-26-062477",
+      "filing_date": "2026-05-15",
+      "report_date": "2026-03-31",
+      "primary_document": "xslForm13F_X02/primary_doc.xml",
+      "status": "fetched"
+    },
+    {
+      "manager_name": "Two Sigma Investments",
+      "manager_cik": "0001179392",
+      "accession": "0000899140-26-000547",
+      "filing_date": "2026-05-15",
+      "report_date": "2026-03-31",
+      "primary_document": "xslForm13F_X02/primary_doc.xml",
+      "status": "fetched"
+    }
+  ],
+  "infotables_parsed": [
+    {
+      "manager_name": "Berkshire Hathaway",
+      "accession": "0001193125-26-226661",
+      "parse_status": "failed",
+      "error_type": "xml_parse_error",
+      "error_message": "Invalid XML: mismatched tag: line 33, column 2",
+      "holdings_count": 0
+    },
+    {
+      "manager_name": "Bridgewater Associates",
+      "accession": "0001350694-26-000002",
+      "parse_status": "partial",
+      "holdings_count": 0,
+      "total_value_usd": 0.0
+    },
+    {
+      "manager_name": "Renaissance Technologies",
+      "accession": "0001037389-26-000033",
+      "parse_status": "failed",
+      "error_type": "xml_parse_error",
+      "error_message": "Invalid XML: mismatched tag: line 33, column 2",
+      "holdings_count": 0
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "accession": "0001104659-26-062477",
+      "parse_status": "partial",
+      "holdings_count": 0,
+      "total_value_usd": 0.0
+    },
+    {
+      "manager_name": "Two Sigma Investments",
+      "accession": "0000899140-26-000547",
+      "parse_status": "failed",
+      "error_type": "xml_parse_error",
+      "error_message": "Invalid XML: mismatched tag: line 33, column 2",
+      "holdings_count": 0
+    }
+  ],
+  "matches": [],
+  "aggregate_summary": {
+    "reliable_matches_found": false,
+    "total_managers": 0,
+    "total_shares": 0,
+    "total_reported_value": 0,
+    "highest_confidence": "none"
+  },
+  "limitations": [
+    "13F has 45-day reporting lag from quarter-end",
+    "13F only reports long positions >$200k or >10k shares threshold",
+    "Derivatives, shorts, and synthetic positions not fully visible",
+    "Private placements and warrants may not appear cleanly",
+    "CUSIP not available for MAIA ticker resolution (name matching used)",
+    "Name matching may have false positives/negatives without CUSIP confirmation"
+  ],
+  "safety": {
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false
+  }
+}

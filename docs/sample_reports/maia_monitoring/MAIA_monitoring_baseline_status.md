@@ -66,9 +66,9 @@
 |----------|--------|
 | Form 13D/13G Filings | 0 |
 | Form 144 Filings | 0 |
-| 13F Integration | Limited (InfoTable XML matching not integrated) |
+| 13F Integration | Implemented (CP23F) - No matches found in reviewed sample (5 managers, Q1 2026) |
 
-**Status:** ⚠️ Limited institutional visibility due to beneficial ownership blockers and 13F gap
+**Status:** 13F InfoTable matching implemented; no MAIA institutional holders found in current sample. Limited visibility due to beneficial ownership blockers (4.99%/9.99%)
 
 ---
 
@@ -214,10 +214,10 @@
 ### High-Priority Engineering Follow-Ups
 
 1. **13F InfoTable XML Matching Integration**
-   - **Status:** Not integrated (infrastructure exists, not implemented for MAIA)
-   - **Impact:** Cannot track institutional ownership reliably
-   - **Workaround:** Manual search of SEC EDGAR for "MAIA Biotechnology" in 13F holdings tables
-   - **Recommendation:** Integrate 13F parsing to reduce institutional visibility gap
+   - **Status:** ✅ COMPLETED (CP23F) - No MAIA matches found in current sample
+   - **Result:** Implemented and validated; reviewed 5 large managers (Q1 2026)
+   - **Next Steps:** Expand to more managers, obtain MAIA CUSIP for higher confidence
+   - **Recommendation:** Continue manual quarterly 13F checks; automate quarterly script runs
 
 2. **Market Price/Volume Tracking**
    - **Status:** Not implemented

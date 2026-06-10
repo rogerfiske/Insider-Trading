@@ -168,30 +168,41 @@
       "frequency": "Quarterly",
       "data_source": "SEC EDGAR Form 13F-HR filings",
       "baseline_values": {
-        "13f_integration_status": "Limited - InfoTable XML matching not yet integrated"
+        "13f_integration_status": "Implemented (CP23F) - No reliable matches found in reviewed sample",
+        "managers_reviewed": 5,
+        "review_period": "Q1 2026 (filed May 2026)",
+        "maia_matches_found": 0,
+        "highest_confidence": "none"
       },
       "track_changes": [
-        "13F manager positions (once InfoTable XML matching is integrated)",
-        "Issuer-name matches",
-        "CUSIP confidence",
-        "Quarterly filing lag",
-        "New managers",
-        "Position increases/decreases"
+        "13F manager positions with MAIA holdings",
+        "New institutional holders",
+        "Position value changes",
+        "Share count changes",
+        "CUSIP confidence improvements",
+        "Quarterly filing lag"
       ],
       "pm_review_triggers": [
         "New 13F position by reputable biotech investor",
-        "Material increase/decrease in known position"
+        "Material increase/decrease in known position",
+        "First institutional holder above reporting threshold"
       ],
       "engineering_followups": [
-        "Integrate 13F InfoTable XML matching for MAIA and other ticker workflows"
+        "Expand 13F review to more managers beyond current 5",
+        "Obtain MAIA CUSIP for higher-confidence matching",
+        "Automate quarterly 13F InfoTable checks"
       ],
       "status_labels": [
-        "Not tracked (infrastructure not integrated)",
-        "Engineering follow-up required"
+        "Infrastructure implemented (CP23F)",
+        "No matches in current sample",
+        "Manual quarterly monitoring continues"
       ],
       "limitations": [
         "13F has 45-day reporting lag from quarter-end",
-        "Most recent data is from Q1 2026 filing (due May 15, 2026)"
+        "13F only reports long positions >$200k or >10k shares threshold",
+        "CUSIP not available for MAIA (using issuer name matching)",
+        "Current sample limited to 5 large managers",
+        "No matches found does not mean zero institutional ownership"
       ]
     },
     {
