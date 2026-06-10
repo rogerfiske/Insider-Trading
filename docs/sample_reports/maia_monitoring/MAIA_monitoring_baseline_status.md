@@ -66,9 +66,13 @@
 |----------|--------|
 | Form 13D/13G Filings | 0 |
 | Form 144 Filings | 0 |
-| 13F Integration | Implemented (CP23F) - No matches found in reviewed sample (5 managers, Q1 2026) |
+| 13F Integration | Implemented (CP23F) - Parser hardened (CP23F-Fix) |
+| 13F Parser Success Rate | 60% (3 of 5 managers parsed successfully) |
+| 13F Holdings Parsed | 21,128 total positions from 3 managers |
+| MAIA Matches Found | 0 in Q1 2026 sample |
+| 13F Parsing Failures | 2 managers (Berkshire Hathaway, Renaissance Technologies - non-standard format) |
 
-**Status:** 13F InfoTable matching implemented; no MAIA institutional holders found in current sample. Limited visibility due to beneficial ownership blockers (4.99%/9.99%)
+**Status:** 13F InfoTable parser hardened in CP23F-Fix. 3 of 5 reviewed manager InfoTables parsed successfully. No reliable MAIA matches found among successfully parsed managers. Berkshire Hathaway and Renaissance Technologies remain unresolved due to non-standard/HTML-wrapper-only InfoTable access. Institutional visibility remains partial.
 
 ---
 
@@ -90,7 +94,7 @@
 1. **Insider Activity:** ✅ ACTIVE - Weekly Form 4 monitoring for continued buying or first sale signal
 2. **Form 144:** ✅ ACTIVE - As-filed monitoring for first insider sale notice
 3. **13D/G Ownership:** ✅ ACTIVE - As-filed monitoring for first 5%+ holder
-4. **13F Institutional:** ⚠️ LIMITED - Manual checks only (automation pending)
+4. **13F Institutional:** ⚠️ PARTIAL - Parser hardened (60% success rate), manual checks continue
 5. **Clinical/Regulatory:** ✅ ACTIVE - As-issued monitoring for THIO-104 data timing disclosure
 6. **Cash Runway:** ✅ ACTIVE - Quarterly monitoring for burn rate and runway changes
 7. **Market Confirmation:** ⚠️ LIMITED - Manual price checks only (automation pending)

@@ -74,9 +74,15 @@
     "institutional_visibility": {
       "form_13d_13g_filings": 0,
       "form_144_filings": 0,
-      "13f_integration_status": "Limited - InfoTable XML matching not yet integrated",
+      "13f_integration_status": "Partial implementation - 3/5 managers parsed; no MAIA matches in parsed sample",
+      "parser_success_rate": "60%",
+      "managers_successfully_parsed": 3,
+      "managers_failed_parsing": 2,
+      "total_holdings_parsed": 21128,
+      "maia_matches_found": 0,
+      "review_period": "Q1 2026 (filed May 2026)",
       "beneficial_ownership_blockers": "4.99% or 9.99% caps prevent 5%+ disclosure",
-      "source_checkpoint": "CP23D (CP23A-Fix)"
+      "source_checkpoint": "CP23D (CP23A-Fix), CP23F-Fix (parser hardening)"
     }
   },
   "monitoring_categories": [
@@ -168,8 +174,12 @@
       "frequency": "Quarterly",
       "data_source": "SEC EDGAR Form 13F-HR filings",
       "baseline_values": {
-        "13f_integration_status": "Implemented (CP23F) - No reliable matches found in reviewed sample",
+        "13f_integration_status": "Implemented (CP23F) - Parser hardened (CP23F-Fix) - No reliable matches found in reviewed sample",
         "managers_reviewed": 5,
+        "managers_parsed_successfully": 3,
+        "managers_failed": 2,
+        "parser_success_rate": "60%",
+        "total_holdings_parsed": 21128,
         "review_period": "Q1 2026 (filed May 2026)",
         "maia_matches_found": 0,
         "highest_confidence": "none"
@@ -188,13 +198,17 @@
         "First institutional holder above reporting threshold"
       ],
       "engineering_followups": [
+        "Investigate Berkshire & Renaissance InfoTable document locations (non-standard format)",
+        "Consider PDF extraction for non-standard 13F formats",
         "Expand 13F review to more managers beyond current 5",
         "Obtain MAIA CUSIP for higher-confidence matching",
         "Automate quarterly 13F InfoTable checks"
       ],
       "status_labels": [
         "Infrastructure implemented (CP23F)",
-        "No matches in current sample",
+        "Parser hardened (CP23F-Fix) - 60% success rate",
+        "No matches in current sample (3 successfully parsed managers)",
+        "2 managers failed parsing (Berkshire, Renaissance - non-standard format)",
         "Manual quarterly monitoring continues"
       ],
       "limitations": [
@@ -202,7 +216,9 @@
         "13F only reports long positions >$200k or >10k shares threshold",
         "CUSIP not available for MAIA (using issuer name matching)",
         "Current sample limited to 5 large managers",
-        "No matches found does not mean zero institutional ownership"
+        "Parser successfully parsed 3 of 5 managers (60% success rate)",
+        "2 managers (Berkshire, Renaissance) remain unparsed due to non-standard InfoTable format",
+        "No matches found does not mean zero institutional ownership - scoped to successfully parsed managers only"
       ]
     },
     {
@@ -682,7 +698,7 @@
     }
   ],
   "limitations": [
-    "13F institutional ownership: InfoTable XML matching not integrated - cannot track institutional positions reliably",
+    "13F institutional ownership: InfoTable XML matching implemented but 60% parser success rate - 2 managers remain unparsed",
     "Market price/volume: Market tracking infrastructure not implemented - cannot assess price confirmation automatically",
     "Clinical trial progress: Enrollment/dosing updates not disclosed - cannot estimate THIO-104 data timing",
     "Beneficial ownership blockers: 4.99%/9.99% caps hide institutional positions <5% - 13D/G absence may not reflect true ownership",

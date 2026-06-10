@@ -1,7 +1,7 @@
 {
   "ticker": "MAIA",
   "cik": "0001878313",
-  "generated_at": "2026-06-10T18:24:57.659800Z",
+  "generated_at": "2026-06-10T18:51:17.053784Z",
   "target_resolution": {
     "issuer_name": "MAIA Biotechnology, Inc.",
     "cusip_candidates": [],
@@ -59,41 +59,118 @@
       "manager_name": "Berkshire Hathaway",
       "accession": "0001193125-26-226661",
       "parse_status": "failed",
-      "error_type": "xml_parse_error",
-      "error_message": "Invalid XML: mismatched tag: line 33, column 2",
+      "error_type": "all_parse_attempts_failed",
+      "error_message": "All parsing attempts failed. XML parse error: mismatched tag: line 33, column 2",
       "holdings_count": 0
     },
     {
       "manager_name": "Bridgewater Associates",
       "accession": "0001350694-26-000002",
-      "parse_status": "partial",
-      "holdings_count": 0,
-      "total_value_usd": 0.0
+      "parse_status": "fallback_namespace_success",
+      "holdings_count": 993,
+      "total_value_usd": 22404547213000.0
     },
     {
       "manager_name": "Renaissance Technologies",
       "accession": "0001037389-26-000033",
       "parse_status": "failed",
-      "error_type": "xml_parse_error",
-      "error_message": "Invalid XML: mismatched tag: line 33, column 2",
+      "error_type": "all_parse_attempts_failed",
+      "error_message": "All parsing attempts failed. XML parse error: mismatched tag: line 33, column 2",
       "holdings_count": 0
     },
     {
       "manager_name": "Citadel Advisors",
       "accession": "0001104659-26-062477",
-      "parse_status": "partial",
-      "holdings_count": 0,
-      "total_value_usd": 0.0
+      "parse_status": "fallback_namespace_success",
+      "holdings_count": 15589,
+      "total_value_usd": 618473172395000.0
     },
     {
       "manager_name": "Two Sigma Investments",
       "accession": "0000899140-26-000547",
-      "parse_status": "failed",
-      "error_type": "xml_parse_error",
-      "error_message": "Invalid XML: mismatched tag: line 33, column 2",
-      "holdings_count": 0
+      "parse_status": "fallback_namespace_success",
+      "holdings_count": 4546,
+      "total_value_usd": 123930684213000.0
     }
   ],
+  "parser_diagnostics": {
+    "managers_reviewed": 5,
+    "infotables_successfully_parsed": 3,
+    "infotables_failed": 2,
+    "fallback_successes": 3,
+    "manager_results": [
+      {
+        "manager_name": "Berkshire Hathaway",
+        "manager_cik": "0001067983",
+        "accession_number": "0001193125-26-226661",
+        "filing_date": "2026-05-15",
+        "report_period": "2026-03-31",
+        "infotable_document": "xslForm13F_X02/primary_doc.xml",
+        "document_type": "HTML",
+        "parse_status": "failed",
+        "fallback_attempts": ["strict_xml", "namespace_xml", "html_table"],
+        "holdings_parsed": 0,
+        "failure_reason": "InfoTable not available in standard XML format; document is HTML form wrapper",
+        "maia_match_count": 0
+      },
+      {
+        "manager_name": "Bridgewater Associates",
+        "manager_cik": "0001350694",
+        "accession_number": "0001350694-26-000002",
+        "filing_date": "2026-05-15",
+        "report_period": "2026-03-31",
+        "infotable_document": "infotable.xml",
+        "document_type": "XML with namespaces",
+        "parse_status": "fallback_namespace_success",
+        "fallback_attempts": ["strict_xml", "namespace_xml"],
+        "holdings_parsed": 993,
+        "total_value_usd": 22404547213000.0,
+        "maia_match_count": 0
+      },
+      {
+        "manager_name": "Renaissance Technologies",
+        "manager_cik": "0001037389",
+        "accession_number": "0001037389-26-000033",
+        "filing_date": "2026-05-14",
+        "report_period": "2026-03-31",
+        "infotable_document": "xslForm13F_X02/primary_doc.xml",
+        "document_type": "HTML",
+        "parse_status": "failed",
+        "fallback_attempts": ["strict_xml", "namespace_xml", "html_table"],
+        "holdings_parsed": 0,
+        "failure_reason": "InfoTable not available in standard XML format; document is HTML form wrapper",
+        "maia_match_count": 0
+      },
+      {
+        "manager_name": "Citadel Advisors",
+        "manager_cik": "0001423053",
+        "accession_number": "0001104659-26-062477",
+        "filing_date": "2026-05-15",
+        "report_period": "2026-03-31",
+        "infotable_document": "infotable.xml",
+        "document_type": "XML with namespaces",
+        "parse_status": "fallback_namespace_success",
+        "fallback_attempts": ["strict_xml", "namespace_xml"],
+        "holdings_parsed": 15589,
+        "total_value_usd": 618473172395000.0,
+        "maia_match_count": 0
+      },
+      {
+        "manager_name": "Two Sigma Investments",
+        "manager_cik": "0001179392",
+        "accession_number": "0000899140-26-000547",
+        "filing_date": "2026-05-15",
+        "report_period": "2026-03-31",
+        "infotable_document": "informationtable.xml",
+        "document_type": "XML with namespaces",
+        "parse_status": "fallback_namespace_success",
+        "fallback_attempts": ["strict_xml_infotable.xml", "strict_xml_informationtable.xml", "namespace_xml"],
+        "holdings_parsed": 4546,
+        "total_value_usd": 123930684213000.0,
+        "maia_match_count": 0
+      }
+    ]
+  },
   "matches": [],
   "aggregate_summary": {
     "reliable_matches_found": false,
@@ -108,7 +185,9 @@
     "Derivatives, shorts, and synthetic positions not fully visible",
     "Private placements and warrants may not appear cleanly",
     "CUSIP not available for MAIA ticker resolution (name matching used)",
-    "Name matching may have false positives/negatives without CUSIP confirmation"
+    "Name matching may have false positives/negatives without CUSIP confirmation",
+    "Parser successfully parsed 3 of 5 managers (60% success rate); no-match conclusion scoped to successfully parsed filings only",
+    "2 managers (Berkshire Hathaway, Renaissance Technologies) failed parsing due to non-standard InfoTable format"
   ],
   "safety": {
     "openinsider_spreadsheet_used": false,

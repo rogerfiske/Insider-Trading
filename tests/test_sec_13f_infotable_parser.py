@@ -196,13 +196,13 @@ def test_parse_invalid_xml():
     )
 
     assert result.parse_status == "failed"
-    assert result.error_type == "xml_parse_error"
+    assert result.error_type == "all_parse_attempts_failed"
     assert result.error_message is not None
     assert len(result.holdings) == 0
 
 
 def test_parse_empty_infotable():
-    """Test parsing InfoTable with no holdings returns partial status."""
+    """Test parsing InfoTable with no holdings returns failed status."""
     empty_xml = """<?xml version="1.0" encoding="UTF-8"?>
 <informationTable>
 </informationTable>
@@ -217,12 +217,12 @@ def test_parse_empty_infotable():
         report_period="2024-03-31",
     )
 
-    assert result.parse_status == "partial"
+    assert result.parse_status == "failed"
     assert len(result.holdings) == 0
 
 
 def test_parse_missing_critical_fields():
-    """Test parsing skips entries missing critical fields."""
+    """Test parsing skips entries missing critical fields and returns failed status."""
     missing_cusip_xml = """<?xml version="1.0" encoding="UTF-8"?>
 <informationTable>
     <infoTable>
@@ -242,8 +242,8 @@ def test_parse_missing_critical_fields():
         report_period="2024-03-31",
     )
 
-    # Should skip entry missing CUSIP
-    assert result.parse_status == "partial"
+    # Should skip entry missing CUSIP and return failed status (no valid holdings)
+    assert result.parse_status == "failed"
     assert len(result.holdings) == 0
 
 
@@ -298,6 +298,194 @@ def test_parse_result_metadata():
     assert result.accession_number == "0001067983-24-000001"
     assert result.filing_date == "2024-05-15"
     assert result.report_period == "2024-03-31"
+
+
+# Namespace-aware XML fixtures (CP23F-Fix)
+
+# 13F InfoTable XML with namespace (e.g., Bridgewater, Citadel)
+NAMESPACE_13F_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<ns1:informationTable xmlns:ns1="http://www.sec.gov/edgar/document/thirteenf/informationtable">
+    <ns1:infoTable>
+        <ns1:nameOfIssuer>APPLE INC</ns1:nameOfIssuer>
+        <ns1:titleOfClass>COM</ns1:titleOfClass>
+        <ns1:cusip>037833100</ns1:cusip>
+        <ns1:value>100000</ns1:value>
+        <ns1:shrsOrPrnAmt>
+            <ns1:sshPrnamt>SH</ns1:sshPrnamt>
+            <ns1:sshPrnamtType>5000</ns1:sshPrnamtType>
+        </ns1:shrsOrPrnAmt>
+        <ns1:investmentDiscretion>SOLE</ns1:investmentDiscretion>
+        <ns1:votingAuthority>
+            <ns1:Sole>5000</ns1:Sole>
+            <ns1:Shared>0</ns1:Shared>
+            <ns1:None>0</ns1:None>
+        </ns1:votingAuthority>
+    </ns1:infoTable>
+</ns1:informationTable>
+"""
+
+# 13F InfoTable XML with default namespace
+DEFAULT_NAMESPACE_13F_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<informationTable xmlns="http://www.sec.gov/edgar/document/thirteenf/informationtable">
+    <infoTable>
+        <nameOfIssuer>MICROSOFT CORP</nameOfIssuer>
+        <titleOfClass>COM</titleOfClass>
+        <cusip>594918104</cusip>
+        <value>50000</value>
+        <shrsOrPrnAmt>
+            <sshPrnamt>SH</sshPrnamt>
+            <sshPrnamtType>2000</sshPrnamtType>
+        </shrsOrPrnAmt>
+        <investmentDiscretion>SOLE</investmentDiscretion>
+        <votingAuthority>
+            <Sole>2000</Sole>
+            <Shared>0</Shared>
+            <None>0</None>
+        </votingAuthority>
+    </infoTable>
+</informationTable>
+"""
+
+# HTML wrapper document (e.g., Berkshire, Renaissance)
+HTML_WRAPPER_13F = """<!DOCTYPE html>
+<html>
+<head>
+    <title>FORM 13F INFORMATION TABLE</title>
+</head>
+<body>
+    <div class="FormData">
+        <table>
+            <tr>
+                <td>This is an HTML wrapper, not a data table</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+"""
+
+
+def test_parse_namespace_aware_xml():
+    """Test parsing 13F InfoTable with namespace prefix."""
+    result = parse_13f_info_table_xml(
+        xml_content=NAMESPACE_13F_XML,
+        manager_name="Bridgewater Associates",
+        manager_cik="0001350694",
+        accession_number="0001350694-26-000002",
+        filing_date="2026-05-15",
+        report_period="2026-03-31",
+    )
+
+    assert result.parse_status == "fallback_namespace_success"
+    assert len(result.holdings) == 1
+
+    holding = result.holdings[0]
+    assert holding.issuer_name == "APPLE INC"
+    assert holding.cusip == "037833100"
+    assert holding.value_usd_thousands == 100000.0
+    assert holding.shares_or_principal_amount == 5000.0
+
+
+def test_parse_default_namespace_xml():
+    """Test parsing 13F InfoTable with default namespace."""
+    result = parse_13f_info_table_xml(
+        xml_content=DEFAULT_NAMESPACE_13F_XML,
+        manager_name="Citadel Advisors",
+        manager_cik="0001423053",
+        accession_number="0001104659-26-062477",
+        filing_date="2026-05-15",
+        report_period="2026-03-31",
+    )
+
+    assert result.parse_status == "fallback_namespace_success"
+    assert len(result.holdings) == 1
+
+    holding = result.holdings[0]
+    assert holding.issuer_name == "MICROSOFT CORP"
+    assert holding.cusip == "594918104"
+
+
+def test_parse_html_wrapper_fails_gracefully():
+    """Test parsing HTML wrapper document fails with appropriate status."""
+    result = parse_13f_info_table_xml(
+        xml_content=HTML_WRAPPER_13F,
+        manager_name="Berkshire Hathaway",
+        manager_cik="0001067983",
+        accession_number="0001193125-26-226661",
+        filing_date="2026-05-15",
+        report_period="2026-03-31",
+    )
+
+    assert result.parse_status == "failed"
+    assert result.error_type == "all_parse_attempts_failed"
+    assert len(result.holdings) == 0
+    assert result.error_message is not None
+
+
+def test_parse_result_includes_diagnostics():
+    """Test parse result includes diagnostic information."""
+    result = parse_13f_info_table_xml(
+        xml_content=NAMESPACE_13F_XML,
+        manager_name="Test Manager",
+        manager_cik="0001234567",
+        accession_number="0001234567-26-000001",
+        filing_date="2026-05-15",
+        report_period="2026-03-31",
+    )
+
+    # Check metadata is preserved
+    assert result.manager_name == "Test Manager"
+    assert result.manager_cik == "0001234567"
+    assert result.accession_number == "0001234567-26-000001"
+    assert result.filing_date == "2026-05-15"
+    assert result.report_period == "2026-03-31"
+
+    # Check parse status is recorded
+    assert result.parse_status in ["success", "fallback_namespace_success", "failed"]
+
+    # Check totals are calculated
+    if result.parse_status != "failed":
+        assert result.total_holdings == len(result.holdings)
+        assert result.total_value_usd >= 0
+
+
+def test_multiple_infotable_blocks_with_namespace():
+    """Test parsing multiple infoTable blocks with namespace."""
+    multi_namespace_xml = """<?xml version="1.0" encoding="UTF-8"?>
+<ns1:informationTable xmlns:ns1="http://www.sec.gov/edgar/document/thirteenf/informationtable">
+    <ns1:infoTable>
+        <ns1:nameOfIssuer>APPLE INC</ns1:nameOfIssuer>
+        <ns1:cusip>037833100</ns1:cusip>
+        <ns1:value>100</ns1:value>
+        <ns1:shrsOrPrnAmt>
+            <ns1:sshPrnamt>SH</ns1:sshPrnamt>
+            <ns1:sshPrnamtType>1000</ns1:sshPrnamtType>
+        </ns1:shrsOrPrnAmt>
+    </ns1:infoTable>
+    <ns1:infoTable>
+        <ns1:nameOfIssuer>MICROSOFT CORP</ns1:nameOfIssuer>
+        <ns1:cusip>594918104</ns1:cusip>
+        <ns1:value>200</ns1:value>
+        <ns1:shrsOrPrnAmt>
+            <ns1:sshPrnamt>SH</ns1:sshPrnamt>
+            <ns1:sshPrnamtType>2000</ns1:sshPrnamtType>
+        </ns1:shrsOrPrnAmt>
+    </ns1:infoTable>
+</ns1:informationTable>
+"""
+
+    result = parse_13f_info_table_xml(
+        xml_content=multi_namespace_xml,
+        manager_name="Test Manager",
+        manager_cik="0001234567",
+        accession_number="0001234567-26-000001",
+        filing_date="2026-05-15",
+        report_period="2026-03-31",
+    )
+
+    assert result.parse_status == "fallback_namespace_success"
+    assert len(result.holdings) == 2
+    assert result.total_holdings == 2
 
 
 if __name__ == "__main__":
