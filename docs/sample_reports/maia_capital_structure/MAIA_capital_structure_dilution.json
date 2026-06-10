@@ -1,0 +1,801 @@
+{
+  "ticker": "MAIA",
+  "cik": "0001878313",
+  "generated_at": "2026-06-10T00:05:34.529468+00:00",
+  "data_sources": [
+    "SEC EDGAR"
+  ],
+  "filings_reviewed": [
+    {
+      "form": "8-K",
+      "filing_date": "2026-05-22",
+      "accession": "0001493152-26-024884",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226024884/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-05-14",
+      "accession": "0001493152-26-023168",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226023168/form8-k.htm"
+    },
+    {
+      "form": "424B5",
+      "filing_date": "2026-05-14",
+      "accession": "0001493152-26-023160",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226023160/form424b5.htm"
+    },
+    {
+      "form": "10-Q",
+      "filing_date": "2026-05-11",
+      "accession": "0001493152-26-022154",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226022154/form10-q.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-04-16",
+      "accession": "0001493152-26-016989",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226016989/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-04-08",
+      "accession": "0001493152-26-015662",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226015662/form8-k.htm"
+    },
+    {
+      "form": "DEF 14A",
+      "filing_date": "2026-04-07",
+      "accession": "0001140361-26-013499",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000114036126013499/ny20065433x1_def14a.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-04-02",
+      "accession": "0001493152-26-014924",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226014924/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-03-31",
+      "accession": "0001493152-26-013879",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226013879/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-03-27",
+      "accession": "0001493152-26-013088",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226013088/form8-k.htm"
+    },
+    {
+      "form": "10-K",
+      "filing_date": "2026-03-23",
+      "accession": "0001493152-26-012088",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226012088/form10-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-03-04",
+      "accession": "0001493152-26-008897",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226008897/form8-k.htm"
+    },
+    {
+      "form": "424B5",
+      "filing_date": "2026-03-04",
+      "accession": "0001493152-26-008784",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226008784/form424b5.htm"
+    },
+    {
+      "form": "424B5",
+      "filing_date": "2026-03-02",
+      "accession": "0001493152-26-008571",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226008571/form424b5.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-02-24",
+      "accession": "0001493152-26-007831",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226007831/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-01-20",
+      "accession": "0001493152-26-002883",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226002883/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2026-01-13",
+      "accession": "0001493152-26-002085",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226002085/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-12-17",
+      "accession": "0001493152-25-028041",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225028041/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-12-11",
+      "accession": "0001493152-25-027244",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225027244/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-12-10",
+      "accession": "0001493152-25-027072",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225027072/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-11-21",
+      "accession": "0001493152-25-024556",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225024556/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-11-20",
+      "accession": "0001493152-25-024402",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225024402/form8-k.htm"
+    },
+    {
+      "form": "10-Q",
+      "filing_date": "2025-11-07",
+      "accession": "0001493152-25-021272",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225021272/form10-q.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-11-07",
+      "accession": "0001493152-25-021195",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225021195/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-10-27",
+      "accession": "0001493152-25-019748",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225019748/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-10-24",
+      "accession": "0001493152-25-019315",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225019315/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-10-23",
+      "accession": "0001493152-25-019014",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225019014/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-10-14",
+      "accession": "0001493152-25-017948",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225017948/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-10-07",
+      "accession": "0001493152-25-017222",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225017222/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-09-30",
+      "accession": "0001493152-25-016200",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225016200/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-09-24",
+      "accession": "0001493152-25-014729",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225014729/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-09-18",
+      "accession": "0001493152-25-014100",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225014100/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-09-12",
+      "accession": "0001493152-25-013190",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225013190/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-09-11",
+      "accession": "0001493152-25-013074",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225013074/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-09-08",
+      "accession": "0001493152-25-012769",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225012769/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-08-13",
+      "accession": "0001641172-25-023349",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225023349/form8-k.htm"
+    },
+    {
+      "form": "10-Q",
+      "filing_date": "2025-08-11",
+      "accession": "0001641172-25-022899",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225022899/form10-q.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-07-28",
+      "accession": "0001641172-25-021105",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225021105/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-07-17",
+      "accession": "0001641172-25-020043",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225020043/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-07-09",
+      "accession": "0001641172-25-018398",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225018398/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-06-26",
+      "accession": "0001641172-25-016574",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225016574/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-06-24",
+      "accession": "0001641172-25-016235",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225016235/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-06-18",
+      "accession": "0001641172-25-015524",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225015524/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-06-17",
+      "accession": "0001641172-25-015410",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225015410/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-06-05",
+      "accession": "0001641172-25-013803",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225013803/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-06-02",
+      "accession": "0001641172-25-013176",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225013176/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-05-28",
+      "accession": "0001641172-25-012617",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225012617/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-05-23",
+      "accession": "0001641172-25-012192",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225012192/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-05-22",
+      "accession": "0001641172-25-012079",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225012079/form8-k.htm"
+    },
+    {
+      "form": "10-Q",
+      "filing_date": "2025-05-09",
+      "accession": "0000950170-25-068005",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000095017025068005/maia-20250331.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-05-06",
+      "accession": "0001641172-25-008750",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225008750/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-04-22",
+      "accession": "0001641172-25-005692",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225005692/form8-k.htm"
+    },
+    {
+      "form": "DEF 14A",
+      "filing_date": "2025-04-08",
+      "accession": "0001140361-25-012689",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000114036125012689/ny20041469x2_def14a.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-04-01",
+      "accession": "0001641172-25-002001",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225002001/form8-k.htm"
+    },
+    {
+      "form": "PRE 14A",
+      "filing_date": "2025-03-28",
+      "accession": "0001140361-25-010968",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000114036125010968/ny20041469x1_pre14a.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-03-28",
+      "accession": "0001641172-25-001045",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225001045/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-03-26",
+      "accession": "0001641172-25-000788",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225000788/form8-k.htm"
+    },
+    {
+      "form": "424B5",
+      "filing_date": "2025-03-26",
+      "accession": "0001641172-25-000776",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225000776/form424b5.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-03-21",
+      "accession": "0001641172-25-000154",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000164117225000154/form8-k.htm"
+    },
+    {
+      "form": "10-K",
+      "filing_date": "2025-03-21",
+      "accession": "0000950170-25-043190",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000095017025043190/maia-20241231.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-03-19",
+      "accession": "0001493152-25-010925",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225010925/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-02-27",
+      "accession": "0001493152-25-008540",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225008540/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-02-25",
+      "accession": "0001493152-25-008137",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225008137/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-02-19",
+      "accession": "0001493152-25-007265",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225007265/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-02-06",
+      "accession": "0001493152-25-005205",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225005205/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2025-02-05",
+      "accession": "0001493152-25-004945",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315225004945/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-12-23",
+      "accession": "0001193125-24-284263",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524284263/d666778d8k.htm"
+    },
+    {
+      "form": "424B5",
+      "filing_date": "2024-12-23",
+      "accession": "0001193125-24-284258",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524284258/d698846d424b5.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-12-20",
+      "accession": "0001493152-24-050964",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224050964/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-12-10",
+      "accession": "0001193125-24-273921",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524273921/d899097d8k.htm"
+    },
+    {
+      "form": "10-Q",
+      "filing_date": "2024-11-12",
+      "accession": "0000950170-24-125474",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000095017024125474/maia-20240930.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-11-08",
+      "accession": "0001493152-24-044218",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224044218/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-11-05",
+      "accession": "0001493152-24-043681",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224043681/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-10-29",
+      "accession": "0001193125-24-246134",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524246134/d902975d8k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-09-10",
+      "accession": "0001493152-24-035572",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224035572/form8-k.htm"
+    },
+    {
+      "form": "10-Q",
+      "filing_date": "2024-08-09",
+      "accession": "0000950170-24-094747",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000095017024094747/maia-20240630.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-07-23",
+      "accession": "0001493152-24-028828",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224028828/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-06-06",
+      "accession": "0001493152-24-022906",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224022906/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-06-04",
+      "accession": "0001193125-24-154236",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524154236/d844775d8k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-06-03",
+      "accession": "0001193125-24-153019",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524153019/d728441d8k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-05-29",
+      "accession": "0001193125-24-149137",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524149137/d640108d8k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-05-15",
+      "accession": "0001193125-24-139369",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524139369/d807098d8k.htm"
+    },
+    {
+      "form": "424B5",
+      "filing_date": "2024-05-15",
+      "accession": "0001193125-24-139359",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524139359/d836726d424b5.htm"
+    },
+    {
+      "form": "10-Q",
+      "filing_date": "2024-05-14",
+      "accession": "0000950170-24-059550",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000095017024059550/maia-20240331.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-05-07",
+      "accession": "0001493152-24-018118",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224018118/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-04-23",
+      "accession": "0001193125-24-106975",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524106975/d815817d8k.htm"
+    },
+    {
+      "form": "DEF 14A",
+      "filing_date": "2024-04-16",
+      "accession": "0001140361-24-020060",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000114036124020060/ny20019222x1_def14a.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-04-02",
+      "accession": "0001193125-24-084756",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524084756/d818590d8k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-03-26",
+      "accession": "0001193125-24-077564",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524077564/d776139d8k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-03-25",
+      "accession": "0001193125-24-076482",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524076482/d802381d8k.htm"
+    },
+    {
+      "form": "424B5",
+      "filing_date": "2024-03-25",
+      "accession": "0001193125-24-076472",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524076472/d802379d424b5.htm"
+    },
+    {
+      "form": "10-K",
+      "filing_date": "2024-03-21",
+      "accession": "0000950170-24-034764",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000095017024034764/maia-20231231.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-03-13",
+      "accession": "0001193125-24-066954",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524066954/d778616d8k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-03-08",
+      "accession": "0001493152-24-009400",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224009400/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-03-06",
+      "accession": "0001493152-24-008942",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224008942/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-02-27",
+      "accession": "0001493152-24-008015",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315224008015/form8-k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-02-23",
+      "accession": "0001193125-24-044527",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524044527/d772027d8k.htm"
+    },
+    {
+      "form": "424B5",
+      "filing_date": "2024-02-14",
+      "accession": "0001193125-24-036598",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524036598/d770368d424b5.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-02-14",
+      "accession": "0001193125-24-036587",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524036587/d756637d8k.htm"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-01-30",
+      "accession": "0001193125-24-018845",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524018845/d741606d8k.htm"
+    },
+    {
+      "form": "144",
+      "filing_date": "2024-01-19",
+      "accession": "0001959173-24-000374",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000195917324000374/xsl144X01/primary_doc.xml"
+    },
+    {
+      "form": "8-K",
+      "filing_date": "2024-01-18",
+      "accession": "0001193125-24-009509",
+      "url": "https://www.sec.gov/Archives/edgar/data/1878313/000119312524009509/d712719d8k.htm"
+    }
+  ],
+  "march_2026_financing": {
+    "found": true,
+    "offering_details": {
+      "offering_date": null,
+      "closing_date": null,
+      "gross_proceeds": "$30.0 million",
+      "net_proceeds": "$32.3 million",
+      "share_price": null,
+      "common_shares_sold": "1,233,488",
+      "prefunded_warrants_sold": ",",
+      "common_warrants_sold": ",",
+      "warrant_exercise_price": "$1.36",
+      "warrant_expiration": null,
+      "underwriter": null,
+      "investors": "Not disclosed or described as healthcare-dedicated investors",
+      "blocker": "Beneficial ownership blocker present (4.99% or 9.99%)",
+      "use_of_proceeds": null
+    },
+    "filings_reviewed": [
+      {
+        "form": "8-K",
+        "filing_date": "2026-03-31",
+        "accession": "0001493152-26-013879",
+        "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226013879/form8-k.htm"
+      },
+      {
+        "form": "8-K",
+        "filing_date": "2026-03-27",
+        "accession": "0001493152-26-013088",
+        "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226013088/form8-k.htm"
+      },
+      {
+        "form": "8-K",
+        "filing_date": "2026-03-04",
+        "accession": "0001493152-26-008897",
+        "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226008897/form8-k.htm"
+      },
+      {
+        "form": "424B5",
+        "filing_date": "2026-03-04",
+        "accession": "0001493152-26-008784",
+        "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226008784/form424b5.htm"
+      },
+      {
+        "form": "424B5",
+        "filing_date": "2026-03-02",
+        "accession": "0001493152-26-008571",
+        "url": "https://www.sec.gov/Archives/edgar/data/1878313/000149315226008571/form424b5.htm"
+      }
+    ],
+    "note": "Pattern-based extraction from SEC filings. Manual review recommended."
+  },
+  "capital_structure": [
+    {
+      "security": "Common Stock Outstanding",
+      "source_filing": "10-Q 2026-05-11",
+      "date": "2026-05-11",
+      "count": null,
+      "exercise_price": "N/A",
+      "expiration": "N/A",
+      "blocker": "N/A",
+      "in_the_money": "N/A",
+      "dilution_impact": "Base",
+      "confidence": "High",
+      "notes": "Requires manual extraction from 10-Q"
+    },
+    {
+      "security": "Common Shares (March 2026 Offering)",
+      "source_filing": "424B5/8-K March 2026",
+      "date": "2026-03",
+      "count": null,
+      "exercise_price": "N/A",
+      "expiration": "N/A",
+      "blocker": "Beneficial ownership blocker present (4.99% or 9.99%)",
+      "in_the_money": "N/A",
+      "dilution_impact": "Immediate",
+      "confidence": "Medium",
+      "notes": "Shares sold: 1,233,488"
+    },
+    {
+      "security": "Pre-Funded Warrants (March 2026)",
+      "source_filing": "424B5 March 2026",
+      "date": "2026-03",
+      "count": null,
+      "exercise_price": "$0.0001 (typical pre-funded)",
+      "expiration": "Perpetual (typical)",
+      "blocker": "Beneficial ownership blocker present (4.99% or 9.99%)",
+      "in_the_money": "Yes (deeply in-the-money)",
+      "dilution_impact": "Near-immediate",
+      "confidence": "Medium",
+      "notes": "Warrants sold: ,"
+    },
+    {
+      "security": "Common Warrants (March 2026)",
+      "source_filing": "424B5 March 2026",
+      "date": "2026-03",
+      "count": null,
+      "exercise_price": "$1.36",
+      "expiration": "TBD (typically 5 years)",
+      "blocker": "Beneficial ownership blocker present (4.99% or 9.99%)",
+      "in_the_money": "TBD (requires current stock price)",
+      "dilution_impact": "Potential",
+      "confidence": "Medium",
+      "notes": "Warrants sold: ,"
+    },
+    {
+      "security": "Equity Incentive Plan",
+      "source_filing": "DEF 14A 2026-04-07",
+      "date": "2026-04-07",
+      "count": null,
+      "exercise_price": "Varies",
+      "expiration": "Varies",
+      "blocker": "N/A",
+      "in_the_money": "Varies",
+      "dilution_impact": "Potential",
+      "confidence": "High",
+      "notes": "Requires manual extraction from proxy statement"
+    }
+  ],
+  "fully_diluted_estimate": {
+    "basic_shares_outstanding": "TBD (from 10-Q)",
+    "prefunded_warrants": "TBD",
+    "common_warrants": "TBD",
+    "options_rsus": "TBD (from proxy/10-K)",
+    "other_convertibles": "None identified",
+    "estimated_fully_diluted_low": "TBD",
+    "estimated_fully_diluted_high": "TBD",
+    "note": "Requires manual extraction of share counts from filings",
+    "methodology": "Basic + Pre-funded + Common warrants + Options/RSUs"
+  },
+  "beneficial_ownership_13d_13g": [],
+  "proxy_beneficial_ownership": {
+    "status": "Requires manual extraction from DEF 14A"
+  },
+  "institutional_13f": {
+    "status": "Requires 13F matching integration",
+    "limitations": [
+      "CUSIP availability uncertain",
+      "Issuer-name matching quality unknown",
+      "13F reporting lag (45 days)",
+      "Positions below thresholds not disclosed"
+    ]
+  },
+  "form_144": [
+    {
+      "seller": "TBD (requires filing parse)",
+      "filing_date": "2024-01-19",
+      "shares_to_sell": null,
+      "approximate_sale_date": "TBD",
+      "relationship": "TBD",
+      "source_accession": "0001959173-24-000374"
+    }
+  ],
+  "hidden_institutional_assessment": [
+    "Unnamed healthcare-dedicated investors: March 2026 offering may reference 'healthcare-dedicated investors' without naming them. These could be biotech-focused hedge funds or institutional investors below 13F/13D reporting thresholds.",
+    "13F threshold and lag: 13F-HR filings report positions as of quarter-end with a 45-day lag. Positions below $200M AUM or below reporting thresholds are not disclosed.",
+    "13D/G 5% threshold: Only holders with \u22655% beneficial ownership must file 13D/13G. Significant positions at 2-4% are invisible.",
+    "Beneficial ownership blockers: Pre-funded warrants and common warrants often include 4.99% or 9.99% blockers, preventing exercise that would trigger 13D filing. This allows large investors to remain below disclosure thresholds.",
+    "Pre-funded warrant structures: These are economically equivalent to common stock but structured as warrants. Investors can control large positions without triggering reporting.",
+    "Private placements and resale registrations: MAIA may conduct private placements with resale registrations following the offering. Initial buyers may not be named in prospectus supplements.",
+    "Short/derivative exposure: 13F filings do not capture short positions or derivative exposure (swaps, total return swaps, etc.). Hedge funds may have synthetic short exposure not visible in SEC filings.",
+    "Underwriter and placement agent positions: Underwriters, placement agents, and their affiliates may take proprietary positions in connection with offerings. These positions may not be immediately disclosed.",
+    "Why Maggie 13F check may miss investors: Maggie's 13F analysis relies on CUSIP or issuer-name matching. MAIA's CUSIP availability and issuer-name match quality may be limited. Small-cap biotechs often have incomplete 13F coverage."
+  ],
+  "limitations": [
+    "Pattern-based extraction requires manual verification",
+    "Share counts require manual extraction from financial statements",
+    "Warrant terms require prospectus supplement review",
+    "Unnamed investors may not be disclosed until 13D/13G/13F filings",
+    "13F coverage may be limited for MAIA",
+    "In-the-money status requires current stock price",
+    "Hidden institutional positions below reporting thresholds"
+  ],
+  "safety": {
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false
+  }
+}
