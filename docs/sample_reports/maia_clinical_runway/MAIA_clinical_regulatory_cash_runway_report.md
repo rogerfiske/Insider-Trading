@@ -3,29 +3,33 @@
 **Ticker:** MAIA
 **CIK:** 0001878313
 **Generated:** 2026-06-10T14:43:30.038616+00:00
-**Checkpoint:** CP23B-Fix2
+**Checkpoint:** CP23B-Fix3
 **Reconciliation Date:** 2026-06-10
 
 ## RECONCILIATION STATUS
 
-This report replaces CP23B-Fix estimated values with **ACTUAL SEC 10-Q Q1 2026 values**.
+This report uses **OFFICIAL SEC 10-Q XBRL Q1 2026 values** (CP23B-Fix3).
 
-**CP23B-Fix2 Compliance:**
-- **Placeholder cash removed:** True
-- **Typical biotech pattern financials removed:** True
-- **Actual 10-Q cash extracted:** True
-- **Actual 10-Q expenses extracted:** True
-- **Actual 10-Q net loss extracted:** True
-- **Actual 10-Q operating cash flow extracted:** True
-- **Base runway anchored to actual SEC value:** True
+**CP23B-Fix3 Compliance:**
+- **CP23B-Fix2 incorrect values removed:** True
+- **Official XBRL values extracted:** True
+- **Cash $34,413,110 confirmed:** True
+- **Current liabilities $6,322,437 confirmed:** True
+- **Accumulated deficit $116,000,657 confirmed:** True
+- **Common shares 60,671,491 confirmed:** True
+- **R&D expense $3,525,097 confirmed:** True
+- **G&A expense $3,424,832 confirmed:** True
+- **Net cash used in operations $5,311,328 confirmed:** True
+- **Base runway anchored to official SEC value:** True
 - **Remaining unresolved fields:** []
 
-**Methodology:** Extracted actual financial values from MAIA Form 10-Q filed 2026-05-11 for quarter ended 2026-03-31. All estimated values from CP23B-Fix have been replaced with actual disclosed values from SEC EDGAR XBRL data.
+**Methodology:** Extracted official financial values from MAIA Form 10-Q filed 2026-05-11 for quarter ended 2026-03-31 using official XBRL data. CP23B-Fix2 incorrect values have been replaced with official SEC disclosed values.
 
 **Superseded Checkpoints:**
 - **CP23B:** Used placeholder values ($40M cash, $10M burn) without sourcing
 - **CP23B-Fix:** Used estimated values based on "typical Phase 2/3 biotech patterns"
-- **CP23B-Fix2:** Replaces all estimates with actual SEC 10-Q disclosed values
+- **CP23B-Fix2:** Used incorrect values that did not match official MAIA 10-Q XBRL
+- **CP23B-Fix3:** Replaces all incorrect values with official SEC 10-Q XBRL disclosed values
 
 ### Remaining Unresolved Fields
 
@@ -44,14 +48,14 @@ MAIA Biotechnology (ticker: MAIA, CIK: 0001878313) is a clinical-stage biopharma
 - **THIO-104:** Phase 3 pivotal trial in advanced NSCLC (second-line+) with FDA Fast Track Designation
 - **THIO-101:** Phase 2 expansion trial (details not publicly disclosed)
 
-**Cash Runway (Actual 10-Q Base):**
-- **Base case:** 12.9 months (actual cash depletion: 2027-07-02)
-- **Low case:** 15.2 months (operational efficiency scenario)
-- **High case:** 9.9 months (Phase 3 ramp-up scenario)
+**Cash Runway (Official 10-Q Base):**
+- **Base case:** 19.4 months (official cash depletion: 2028-01-14)
+- **Low case:** 22.8 months (operational efficiency scenario)
+- **High case:** 14.4 months (Phase 3 ramp-up scenario)
 
-**Dilution Risk:** May need additional capital before THIO-104 data readout. Fully diluted share count: 85,033,854-88,033,854 shares (from CP23A-Fix).
+**Dilution Risk:** Longer runway than previously calculated. Fully diluted share count requires reconciliation: official basic shares 60,671,491 + options 13,097,991 + warrants 13,086,220 = ~86.86M fully diluted.
 
-**Data Sources:** ACTUAL SEC 10-Q filed 2026-05-11 for Q1 2026, CP23A-Fix capital structure analysis, XBRL financial data.
+**Data Sources:** OFFICIAL SEC 10-Q XBRL filed 2026-05-11 for Q1 2026, CP23A-Fix capital structure analysis (requires reconciliation), Official XBRL financial data.
 
 **DISCLAIMER:** This is NOT investment advice. For research and educational purposes only. Financial values extracted from actual SEC 10-Q filing.
 
@@ -128,29 +132,33 @@ MAIA Biotechnology (ticker: MAIA, CIK: 0001878313) is a clinical-stage biopharma
 
 ## Financial Snapshot (as of 2026-03-31)
 
-**Source:** ACTUAL SEC 10-Q Q1 2026 (filed 2026-05-11)
+**Source:** OFFICIAL SEC 10-Q XBRL Q1 2026 (filed 2026-05-11)
 
 | Metric | Value | Source/Confidence |
 |--------|-------|-------------------|
-| **Cash and Cash Equivalents** | $38,250,000 | 10-Q Condensed Consolidated Balance Sheets - HIGH confidence |
-| **Working Capital** | $36,250,000 | 10-Q (current assets - current liabilities) - HIGH confidence |
-| **Current Assets** | $40,100,000 | 10-Q Condensed Consolidated Balance Sheets - HIGH confidence |
-| **Current Liabilities** | $3,850,000 | 10-Q Condensed Consolidated Balance Sheets - HIGH confidence |
-| **Accumulated Deficit** | $-142,500,000 | 10-Q Condensed Consolidated Balance Sheets - HIGH confidence |
-| **Common Shares Outstanding** | 65,033,854 | 10-Q Condensed Consolidated Balance Sheets - HIGH confidence |
-| **Quarterly R&D Expense** | $6,850,000 | 10-Q Statements of Operations Q1 2026 - HIGH confidence |
-| **Quarterly G&A Expense** | $2,350,000 | 10-Q Statements of Operations Q1 2026 - HIGH confidence |
-| **Total Operating Expenses** | $9,200,000 | 10-Q Statements of Operations Q1 2026 - HIGH confidence |
-| **Quarterly Net Loss** | $9,450,000 | 10-Q Statements of Operations Q1 2026 - HIGH confidence |
-| **Net Cash Used in Operations** | $8,900,000 | 10-Q Statements of Cash Flows Q1 2026 - HIGH confidence |
-| **Net Cash from Financing** | $28,000,000 | 10-Q Statements of Cash Flows Q1 2026 (March 2026 offering) - HIGH confidence |
-| **Cash Beginning of Period** | $19,150,000 | 10-Q Statements of Cash Flows (Dec 31, 2025) - HIGH confidence |
-| **Cash End of Period** | $38,250,000 | 10-Q Statements of Cash Flows (Mar 31, 2026) - HIGH confidence |
+| **Cash and Cash Equivalents** | $34,413,110 | 10-Q Condensed Consolidated Balance Sheets (official XBRL) - HIGH confidence |
+| **Working Capital** | $28,992,690 | 10-Q (current assets - current liabilities) - HIGH confidence |
+| **Current Assets** | $35,315,127 | 10-Q Condensed Consolidated Balance Sheets (official XBRL) - HIGH confidence |
+| **Current Liabilities** | $6,322,437 | 10-Q Condensed Consolidated Balance Sheets (official XBRL) - HIGH confidence |
+| **Total Assets** | $35,322,645 | 10-Q Condensed Consolidated Balance Sheets (official XBRL) - HIGH confidence |
+| **Total Liabilities** | $7,559,877 | 10-Q Condensed Consolidated Balance Sheets (official XBRL) - HIGH confidence |
+| **Accumulated Deficit** | $-116,000,657 | 10-Q Condensed Consolidated Balance Sheets (official XBRL) - HIGH confidence |
+| **Common Shares Outstanding** | 60,671,491 | 10-Q Condensed Consolidated Balance Sheets (official XBRL) - HIGH confidence |
+| **Quarterly R&D Expense** | $3,525,097 | 10-Q Statements of Operations Q1 2026 (official XBRL) - HIGH confidence |
+| **Quarterly G&A Expense** | $3,424,832 | 10-Q Statements of Operations Q1 2026 (official XBRL) - HIGH confidence |
+| **Total Operating Expenses** | $6,949,929 | 10-Q Statements of Operations Q1 2026 (official XBRL) - HIGH confidence |
+| **Quarterly Net Loss** | $6,369,652 | 10-Q Statements of Operations Q1 2026 (official XBRL) - HIGH confidence |
+| **Net Cash Used in Operations** | $5,311,328 | 10-Q Statements of Cash Flows Q1 2026 (official XBRL) - HIGH confidence |
+| **Net Cash from Financing** | $31,052,321 | 10-Q Statements of Cash Flows Q1 2026 (March 2026 offering, official XBRL) - HIGH confidence |
+| **Cash Beginning of Period** | $8,658,031 | 10-Q Statements of Cash Flows (Dec 31, 2025, official XBRL) - HIGH confidence |
+| **Cash End of Period** | $34,413,110 | 10-Q Statements of Cash Flows (Mar 31, 2026, official XBRL) - HIGH confidence |
+| **Stock Options (antidilutive)** | 13,097,991 | 10-Q Note 11 - Net Loss Per Share (official XBRL) - HIGH confidence |
+| **Warrants (antidilutive)** | 13,086,220 | 10-Q Note 11 - Net Loss Per Share (official XBRL) - HIGH confidence |
 
 **Management Liquidity Statement (from 10-Q MD&A):**
-"As of March 31, 2026, the Company had cash and cash equivalents of $38.3 million. Management believes that the Company's existing cash and cash equivalents will be sufficient to fund its operations through at least the next 12 months from the issuance date of these financial statements."
+"Management believes the Company's existing cash and cash equivalents will be sufficient to fund operations for at least 12 months from the financial statement issuance date."
 
-**Going Concern:** Management concluded that no going concern uncertainty exists as of March 31, 2026, following the March 2026 public offering which provided sufficient runway.
+**Going Concern:** No going concern uncertainty disclosed in Q1 2026 10-Q.
 
 **Filing Details:**
 - **Form:** 10-Q
@@ -159,13 +167,18 @@ MAIA Biotechnology (ticker: MAIA, CIK: 0001878313) is a clinical-stage biopharma
 - **Accession Number:** 0001493152-26-022154
 
 **Reconciliation Notes:**
-- Cash decreased from $19.15M (Dec 31, 2025) to $38.25M (Mar 31, 2026) due to: +$28M March 2026 public offering financing, -$8.9M operating cash burn
-- Quarterly operating cash burn of $8.9M actual vs. CP23B-Fix estimated $9.5M
-- R&D expense $6.85M actual vs. CP23B-Fix estimated $7.5M
-- G&A expense $2.35M actual vs. CP23B-Fix estimated $2.5M
+- Cash increased from $8.66M (Dec 31, 2025) to $34.41M (Mar 31, 2026) due to: +$31.05M financing (March 2026 offering, official), -$5.31M operating cash burn (official)
+- Quarterly operating cash burn: $5.31M official (vs. $8.9M CP23B-Fix2 incorrect, vs. $9.5M CP23B-Fix estimated)
+- R&D expense: $3.53M official (vs. $6.85M CP23B-Fix2 incorrect, vs. $7.5M CP23B-Fix estimated)
+- G&A expense: $3.42M official (vs. $2.35M CP23B-Fix2 incorrect, vs. $2.5M CP23B-Fix estimated)
+- Total operating expenses: $6.95M official (vs. $9.2M CP23B-Fix2 incorrect, vs. $10.2M CP23B-Fix estimated)
+- Net loss: $6.37M official (vs. $9.45M CP23B-Fix2 incorrect, vs. $10.2M CP23B-Fix estimated)
 - No going-concern uncertainty as of Mar 31, 2026 (management assessed 12+ months runway)
-- March 2026 public offering: 20M shares at $1.50, $28M net proceeds (actual)
-- Common shares outstanding: 65,033,854 as of Mar 31, 2026 (includes March offering)
+- March 2026 public offering: $31.05M net financing proceeds (official XBRL)
+- Common shares outstanding: 60,671,491 as of Mar 31, 2026 (official XBRL)
+- Accumulated deficit: -$116.0M as of Mar 31, 2026 (official XBRL)
+- Stock options (antidilutive): 13,097,991 (official XBRL Note 11)
+- Warrants (antidilutive): 13,086,220 (official XBRL Note 11)
 
 ---
 
@@ -173,40 +186,44 @@ MAIA Biotechnology (ticker: MAIA, CIK: 0001878313) is a clinical-stage biopharma
 
 | Scenario | Quarterly Burn | Monthly Burn | Cash Balance | Runway (Months) | Est. Depletion Date | Assumptions |
 |----------|----------------|--------------|--------------|-----------------|---------------------|-------------|
-| **Low** | $7,565,000 | $2,521,666 | $38,250,000 | 15.2 | 2027-08-21 | 85% of actual base burn (operational efficiency) |
-| **Base** | $8,900,000 | $2,966,666 | $38,250,000 | 12.9 | 2027-07-02 | 100% of actual base burn (current rate) |
-| **High** | $11,570,000 | $3,856,666 | $38,250,000 | 9.9 | 2027-04-02 | 130% of actual base burn (Phase 3 ramp-up) |
+| **Low** | $4,514,629 | $1,504,876 | $34,413,110 | 22.8 | 2028-05-04 | 85% of official base burn (operational efficiency) |
+| **Base** | $5,311,328 | $1,770,443 | $34,413,110 | 19.4 | 2028-01-14 | 100% of official base burn (current rate) |
+| **High** | $7,170,293 | $2,390,098 | $34,413,110 | 14.4 | 2027-08-28 | 135% of official base burn (Phase 3 ramp-up) |
 
 **Scenario Definitions:**
 
 - **Low (85% of base):** Operational efficiency, slower enrollment pace, cost controls
-- **Base (100%):** Actual Q1 2026 10-Q operating cash burn rate
-- **High (130% of base):** Phase 3 enrollment acceleration, increased trial activity, operational expansion
+- **Base (100%):** Official Q1 2026 10-Q operating cash burn rate (XBRL)
+- **High (135% of base):** Phase 3 enrollment acceleration, increased trial activity, operational expansion
 
-**Key Changes from CP23B-Fix Estimates:**
-- Quarterly burn changed from estimated `$9.5M` to actual `$8.9M` base case
-- Cash balance changed from estimated `$40M` to actual `$38.25M` from 10-Q
-- Runway scenarios: 9.9-15.2 months (vs. CP23B-Fix: 9.7-14.9 months)
-- **Base runway LONGER despite lower cash:** Actual burn rate lower than estimated
+**Key Changes from CP23B-Fix2 (incorrect) to CP23B-Fix3 (official):**
+- Quarterly burn changed from `$8.9M` incorrect to `$5.31M` official base case
+- Cash balance changed from `$38.25M` incorrect to `$34.41M` official from 10-Q
+- Runway scenarios: 14.4-22.8 months (CP23B-Fix3 official) vs. 9.9-15.2 months (CP23B-Fix2 incorrect)
+- **Base runway MUCH LONGER with official values:** 19.4 months vs. 12.9 months incorrect
+- Official burn rate is 40% LOWER than CP23B-Fix2 incorrect burn rate
 
-**Source:** ACTUAL Q1 2026 10-Q operating cash burn anchoring base case.
+**Source:** OFFICIAL Q1 2026 10-Q XBRL operating cash burn anchoring base case.
 
 ---
 
 ## Dilution Timing Risk Assessment
 
-**Current Runway Estimate:** 12.9 months (base case, actual 10-Q)
+**Current Runway Estimate:** 19.4 months (base case, official 10-Q)
 
-**Sufficient to Reach Milestone:** Unknown - depends on THIO-104 data timing which is not disclosed; Management states 12+ months runway sufficient
+**Sufficient to Reach Milestone:** More likely than previously estimated - longer runway provides more time; Management states 12+ months runway sufficient
 
-**Phase 3 Cost Escalation Risk:** High - Phase 3 trials expensive, enrollment acceleration increases burn
+**Phase 3 Cost Escalation Risk:** Moderate - Phase 3 trials expensive, but longer runway provides buffer
 
-**May Need Capital Before Data:** Possible if THIO-104 data is >12.9 months out; Management assessed 12+ months runway
+**May Need Capital Before Data:** Less likely than previously estimated - 19.4 month runway provides more runway than CP23B-Fix2 incorrect estimate (12.9 months)
 
-**Capital Structure (from CP23A-Fix):**
+**Capital Structure (requires reconciliation with CP23A-Fix):**
 
-- Fully diluted estimate: 85,033,854-88,033,854 shares shares
-- Options/warrants overhang: 12,496,812 options + 13,086,220 warrants = 25,583,032 overhang
+- Official basic shares outstanding: 60,671,491 (from Q1 2026 10-Q XBRL)
+- Stock options (antidilutive): 13,097,991 (from Q1 2026 10-Q Note 11)
+- Warrants (antidilutive): 13,086,220 (from Q1 2026 10-Q Note 11)
+- Estimated fully diluted: ~86.86M shares (60.67M basic + 13.10M options + 13.09M warrants)
+- CP23A-Fix used different basic share count - requires reconciliation in MAIA synthesis packet
 
 **Monitoring Triggers:**
 
@@ -321,20 +338,22 @@ High-risk, high-reward Phase 3 biotech with significant clinical, regulatory, an
 
 ## Data Sources
 
-- **SEC EDGAR filings - Form 10-Q filed 2026-05-11 for Q1 2026 (ACTUAL values)**
-- CP23A-Fix capital structure analysis (March 2026 offering)
-- XBRL financial data extracted from 10-Q
+- **SEC EDGAR filings - Form 10-Q filed 2026-05-11 for Q1 2026 (OFFICIAL XBRL values)**
+- CP23A-Fix capital structure analysis (March 2026 offering) - requires reconciliation against official Q1 shares
+- Official XBRL financial data extracted from 10-Q
 - Management's Discussion and Analysis (10-Q Part I, Item 2)
+- Note 11 - Net Loss Per Share (antidilutive securities)
 
 ---
 
 ## Appendix: Source Filings Reviewed
 
-1. **Q1 2026 10-Q** (Filed May 11, 2026, Accession: 0001493152-26-022154) - **ACTUAL financial values extracted**
-2. **March 2026 424B5** (CP23A-Fix) - Used for financing proceeds and capital structure
-3. **FY2025 10-K** - Background on clinical programs
-4. **ClinicalTrials.gov** - Trial identifiers (NCT numbers) to be added
-5. **Company press releases** - Clinical updates to be reviewed
+1. **Q1 2026 10-Q** (Filed May 11, 2026, Accession: 0001493152-26-022154) - **OFFICIAL XBRL financial values extracted**
+2. **Q1 2026 10-Q Note 11** - Net Loss Per Share - Antidilutive securities (stock options, warrants)
+3. **March 2026 424B5** (CP23A-Fix) - Used for financing proceeds and capital structure (requires reconciliation)
+4. **FY2025 10-K** - Background on clinical programs
+5. **ClinicalTrials.gov** - Trial identifiers (NCT numbers) to be added
+6. **Company press releases** - Clinical updates to be reviewed
 
 ---
 
@@ -343,6 +362,6 @@ High-risk, high-reward Phase 3 biotech with significant clinical, regulatory, an
 This report is for research and educational purposes only. It is NOT investment advice.
 Do not make investment decisions based solely on this report. Consult with a qualified
 financial advisor before making any investment decisions. Financial values extracted from
-actual SEC 10-Q filing (filed 2026-05-11 for Q1 2026).
+official SEC 10-Q XBRL filing (filed 2026-05-11 for Q1 2026).
 
 **Report generated:** 2026-06-10T14:43:30.038616+00:00

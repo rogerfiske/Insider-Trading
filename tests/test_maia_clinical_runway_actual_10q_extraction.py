@@ -23,42 +23,50 @@ def load_clinical_runway_markdown():
         return f.read()
 
 
-def test_checkpoint_is_cp23b_fix2():
-    """Test that checkpoint is CP23B-Fix2."""
+def test_checkpoint_is_cp23b_fix3():
+    """Test that checkpoint is CP23B-Fix3."""
     data = load_clinical_runway_json()
-    assert data["research_checkpoint"] == "CP23B-Fix2", "Checkpoint should be CP23B-Fix2"
+    assert data["research_checkpoint"] == "CP23B-Fix3", "Checkpoint should be CP23B-Fix3"
 
 
-def test_no_placeholder_40m_cash():
-    """Test that $40M placeholder cash is NOT used as actual value."""
+def test_official_cash_34_413_110():
+    """Test that official cash $34,413,110 is used, not incorrect CP23B-Fix2 $38.25M."""
     data = load_clinical_runway_json()
     actual_cash = data["financial_snapshot"]["cash_and_equivalents"]
 
-    # CP23B-Fix2 requires actual 10-Q value, not $40M estimated
+    # CP23B-Fix3 requires official 10-Q value: $34,413,110
+    assert actual_cash == 34_413_110, \
+        f"Report must use official cash $34,413,110 from XBRL (got: ${actual_cash:,})"
+
+    # Must NOT use incorrect CP23B-Fix2 value
+    assert actual_cash != 38_250_000, \
+        "Report must not use incorrect CP23B-Fix2 cash $38,250,000"
+
+    # Must NOT use CP23B placeholder
     assert actual_cash != 40_000_000, \
-        "Report must not use $40M placeholder as actual cash (CP23B-Fix2 requires actual 10-Q value)"
-
-    # Actual Q1 2026 10-Q value should be around $38.25M
-    assert 35_000_000 <= actual_cash <= 42_000_000, \
-        f"Cash should be in reasonable range (actual: ${actual_cash:,})"
+        "Report must not use CP23B placeholder cash $40,000,000"
 
 
-def test_no_placeholder_10m_burn():
-    """Test that $10M placeholder burn is NOT used as actual value."""
+def test_official_burn_5_311_328():
+    """Test that official burn $5,311,328 is used, not incorrect CP23B-Fix2 $8.9M."""
     data = load_clinical_runway_json()
     actual_burn = data["financial_snapshot"]["net_cash_used_in_operations"]
 
-    # CP23B-Fix2 requires actual 10-Q value, not $10M estimated
-    assert actual_burn != 10_000_000, \
-        "Report must not use $10M placeholder as actual burn (CP23B-Fix2 requires actual 10-Q value)"
+    # CP23B-Fix3 requires official 10-Q value: $5,311,328
+    assert actual_burn == 5_311_328, \
+        f"Report must use official burn $5,311,328 from XBRL (got: ${actual_burn:,})"
 
-    # CP23B-Fix estimated $9.5M, but CP23B-Fix2 requires actual
+    # Must NOT use incorrect CP23B-Fix2 value
+    assert actual_burn != 8_900_000, \
+        "Report must not use incorrect CP23B-Fix2 burn $8,900,000"
+
+    # Must NOT use CP23B-Fix estimate
     assert actual_burn != 9_500_000, \
-        "Report must not use $9.5M CP23B-Fix estimated burn (CP23B-Fix2 requires actual 10-Q value)"
+        "Report must not use CP23B-Fix estimated burn $9,500,000"
 
-    # Actual Q1 2026 10-Q value should be around $8.9M
-    assert 7_000_000 <= actual_burn <= 12_000_000, \
-        f"Quarterly burn should be in reasonable range (actual: ${actual_burn:,})"
+    # Must NOT use CP23B placeholder
+    assert actual_burn != 10_000_000, \
+        "Report must not use CP23B placeholder burn $10,000,000"
 
 
 def test_no_typical_biotech_patterns_in_source():
@@ -80,44 +88,53 @@ def test_no_typical_biotech_patterns_in_source():
         "Financial snapshot source must not use 'estimated from' language"
 
 
-def test_actual_10q_source_documented():
-    """Test that actual 10-Q source is documented."""
+def test_official_10q_xbrl_source_documented():
+    """Test that official 10-Q XBRL source is documented."""
     data = load_clinical_runway_json()
 
-    # Check data sources contain actual 10-Q reference
+    # Check data sources contain official 10-Q XBRL reference
     data_sources_str = " ".join(data["data_sources"]).lower()
-    assert "actual" in data_sources_str or "10-q" in data_sources_str, \
-        "Data sources must reference actual 10-Q filing"
+    assert ("official" in data_sources_str or "actual" in data_sources_str) and "10-q" in data_sources_str, \
+        "Data sources must reference official/actual 10-Q filing"
 
     # Check financial snapshot source
     fs_source = data["financial_snapshot"]["source"].lower()
-    assert "actual" in fs_source and "10-q" in fs_source, \
-        "Financial snapshot source must reference actual 10-Q"
+    assert ("official" in fs_source or "actual" in fs_source) and "10-q" in fs_source, \
+        "Financial snapshot source must reference official/actual 10-Q"
+
+    # Should emphasize official XBRL
+    assert "xbrl" in fs_source or "xbrl" in data_sources_str, \
+        "Should reference XBRL data source"
 
 
-def test_reconciliation_status_cp23b_fix2_compliance():
-    """Test that reconciliation_status has CP23B-Fix2 compliance flags."""
+def test_reconciliation_status_cp23b_fix3_compliance():
+    """Test that reconciliation_status has CP23B-Fix3 compliance flags."""
     data = load_clinical_runway_json()
 
     assert "reconciliation_status" in data, "reconciliation_status section missing"
     status = data["reconciliation_status"]
 
-    # Check all CP23B-Fix2 compliance flags
-    assert status.get("placeholder_cash_removed") is True, \
-        "placeholder_cash_removed should be True"
-    assert status.get("typical_biotech_pattern_financials_removed") is True, \
-        "typical_biotech_pattern_financials_removed should be True"
-    assert status.get("actual_10q_cash_extracted") is True, \
-        "actual_10q_cash_extracted should be True"
-    assert status.get("actual_10q_expenses_extracted") is True, \
-        "actual_10q_expenses_extracted should be True"
-    assert status.get("actual_10q_net_loss_extracted") is True, \
-        "actual_10q_net_loss_extracted should be True"
-    assert status.get("actual_10q_operating_cash_flow_extracted") is True or \
-           status.get("actual_10q_operating_cash_flow_extracted_or_explained") is True, \
-        "actual_10q_operating_cash_flow_extracted should be True"
-    assert status.get("base_runway_anchored_to_actual_sec_value") is True, \
-        "base_runway_anchored_to_actual_sec_value should be True"
+    # Check all CP23B-Fix3 compliance flags
+    assert status.get("official_xbrl_values_extracted") is True, \
+        "official_xbrl_values_extracted should be True"
+    assert status.get("cash_34_413_110_confirmed") is True, \
+        "cash_34_413_110_confirmed should be True"
+    assert status.get("current_liabilities_6_322_437_confirmed") is True, \
+        "current_liabilities_6_322_437_confirmed should be True"
+    assert status.get("accumulated_deficit_116_000_657_confirmed") is True, \
+        "accumulated_deficit_116_000_657_confirmed should be True"
+    assert status.get("common_shares_60_671_491_confirmed") is True, \
+        "common_shares_60_671_491_confirmed should be True"
+    assert status.get("rd_expense_3_525_097_confirmed") is True, \
+        "rd_expense_3_525_097_confirmed should be True"
+    assert status.get("ga_expense_3_424_832_confirmed") is True, \
+        "ga_expense_3_424_832_confirmed should be True"
+    assert status.get("net_cash_used_in_operations_5_311_328_confirmed") is True, \
+        "net_cash_used_in_operations_5_311_328_confirmed should be True"
+    assert status.get("base_runway_anchored_to_official_sec_value") is True, \
+        "base_runway_anchored_to_official_sec_value should be True"
+    assert status.get("cp23b_fix2_incorrect_values_removed") is True, \
+        "cp23b_fix2_incorrect_values_removed should be True"
 
 
 def test_remaining_unresolved_fields_empty():
@@ -132,18 +149,18 @@ def test_remaining_unresolved_fields_empty():
         f"CP23B-Fix2 should have no remaining unresolved fields (found: {remaining})"
 
 
-def test_base_runway_uses_actual_burn():
-    """Test that base runway scenario uses actual operating cash burn."""
+def test_base_runway_uses_official_burn():
+    """Test that base runway scenario uses official operating cash burn."""
     data = load_clinical_runway_json()
 
     scenarios = data["cash_runway_scenarios"]
     base_scenario = next(s for s in scenarios if s["scenario"] == "base")
 
-    # Base scenario should use actual 10-Q operating cash burn
+    # Base scenario should use official 10-Q operating cash burn
     assert "source" in base_scenario, "Base scenario should have source field"
     source = base_scenario["source"].lower()
-    assert "actual" in source and ("10-q" in source or "operating" in source), \
-        "Base scenario should reference actual 10-Q operating cash burn"
+    assert ("official" in source or "actual" in source) and ("10-q" in source or "operating" in source), \
+        "Base scenario should reference official/actual 10-Q operating cash burn"
 
 
 def test_working_capital_extracted():
@@ -275,50 +292,137 @@ def test_no_manual_extraction_required_in_markdown():
             "Financial snapshot should not have fields requiring extraction"
 
 
-def test_markdown_checkpoint_updated():
-    """Test that markdown checkpoint header is CP23B-Fix2."""
+def test_markdown_official_xbrl_language():
+    """Test that markdown uses 'OFFICIAL' XBRL language for 10-Q values."""
     markdown = load_clinical_runway_markdown()
 
-    assert "**Checkpoint:** CP23B-Fix2" in markdown, \
-        "Markdown checkpoint should be CP23B-Fix2"
+    # Should use "OFFICIAL" to emphasize official XBRL values
+    assert "OFFICIAL" in markdown or "Official" in markdown, \
+        "Markdown should emphasize OFFICIAL 10-Q XBRL values"
 
-    # Check that CP23B-Fix only appears in Superseded Checkpoints section (historical context)
-    # Find the checkpoint header line (should be near the top)
+    # Should reference XBRL
+    assert "XBRL" in markdown, \
+        "Markdown should reference XBRL data source"
+
+
+def test_official_rd_expense_3_525_097():
+    """Test that official R&D expense $3,525,097 is used."""
+    data = load_clinical_runway_json()
+    rd_expense = data["financial_snapshot"]["quarterly_rd_expense"]
+
+    assert rd_expense == 3_525_097, \
+        f"Report must use official R&D expense $3,525,097 from XBRL (got: ${rd_expense:,})"
+
+    # Must NOT use incorrect CP23B-Fix2 value
+    assert rd_expense != 6_850_000, \
+        "Report must not use incorrect CP23B-Fix2 R&D $6,850,000"
+
+
+def test_official_ga_expense_3_424_832():
+    """Test that official G&A expense $3,424,832 is used."""
+    data = load_clinical_runway_json()
+    ga_expense = data["financial_snapshot"]["quarterly_ga_expense"]
+
+    assert ga_expense == 3_424_832, \
+        f"Report must use official G&A expense $3,424,832 from XBRL (got: ${ga_expense:,})"
+
+    # Must NOT use incorrect CP23B-Fix2 value
+    assert ga_expense != 2_350_000, \
+        "Report must not use incorrect CP23B-Fix2 G&A $2,350,000"
+
+
+def test_official_common_shares_60_671_491():
+    """Test that official common shares 60,671,491 is used."""
+    data = load_clinical_runway_json()
+    common_shares = data["financial_snapshot"]["common_shares_outstanding"]
+
+    assert common_shares == 60_671_491, \
+        f"Report must use official common shares 60,671,491 from XBRL (got: {common_shares:,})"
+
+    # Must NOT use incorrect CP23B-Fix2 value
+    assert common_shares != 65_033_854, \
+        "Report must not use incorrect CP23B-Fix2 common shares 65,033,854"
+
+
+def test_official_accumulated_deficit_116_000_657():
+    """Test that official accumulated deficit -$116,000,657 is used."""
+    data = load_clinical_runway_json()
+    accumulated_deficit = data["financial_snapshot"]["accumulated_deficit"]
+
+    # Allow for both positive and negative representations
+    assert abs(accumulated_deficit) == 116_000_657, \
+        f"Report must use official accumulated deficit 116,000,657 from XBRL (got: ${abs(accumulated_deficit):,})"
+
+    # Must NOT use incorrect CP23B-Fix2 value
+    assert abs(accumulated_deficit) != 142_500_000, \
+        "Report must not use incorrect CP23B-Fix2 accumulated deficit 142,500,000"
+
+
+def test_official_current_liabilities_6_322_437():
+    """Test that official current liabilities $6,322,437 is used."""
+    data = load_clinical_runway_json()
+    current_liabilities = data["financial_snapshot"]["current_liabilities"]
+
+    assert current_liabilities == 6_322_437, \
+        f"Report must use official current liabilities $6,322,437 from XBRL (got: ${current_liabilities:,})"
+
+    # Must NOT use incorrect CP23B-Fix2 value
+    assert current_liabilities != 3_850_000, \
+        "Report must not use incorrect CP23B-Fix2 current liabilities $3,850,000"
+
+
+def test_official_net_loss_6_369_652():
+    """Test that official net loss $6,369,652 is used."""
+    data = load_clinical_runway_json()
+    net_loss = data["financial_snapshot"]["quarterly_net_loss"]
+
+    # Net loss should be positive in the snapshot (representing loss amount)
+    assert net_loss == 6_369_652, \
+        f"Report must use official net loss $6,369,652 from XBRL (got: ${net_loss:,})"
+
+    # Must NOT use incorrect CP23B-Fix2 value
+    assert net_loss != 9_450_000, \
+        "Report must not use incorrect CP23B-Fix2 net loss $9,450,000"
+
+
+def test_base_runway_anchored_to_official_burn():
+    """Test that base runway is anchored to official $5.31M burn, not incorrect $8.9M."""
+    data = load_clinical_runway_json()
+    scenarios = data["cash_runway_scenarios"]
+    base_scenario = next(s for s in scenarios if s["scenario"] == "base")
+
+    # Base scenario should use official $5,311,328 quarterly burn
+    assert base_scenario["quarterly_burn"] == 5_311_328, \
+        f"Base scenario must use official burn $5,311,328 (got: ${base_scenario['quarterly_burn']:,})"
+
+    # Base runway should be around 19.4 months with official values
+    assert 19.0 <= base_scenario["runway_months"] <= 20.0, \
+        f"Base runway should be ~19.4 months with official values (got: {base_scenario['runway_months']})"
+
+    # Must NOT show 12.9 months from incorrect CP23B-Fix2
+    assert not (12.0 <= base_scenario["runway_months"] <= 13.5), \
+        f"Base runway must not be ~12.9 months from incorrect CP23B-Fix2 (got: {base_scenario['runway_months']})"
+
+
+def test_checkpoint_markdown_is_cp23b_fix3():
+    """Test that markdown checkpoint is CP23B-Fix3."""
+    markdown = load_clinical_runway_markdown()
+
+    assert "**Checkpoint:** CP23B-Fix3" in markdown, \
+        "Markdown checkpoint should be CP23B-Fix3"
+
+    # Check that it's showing CP23B-Fix3 (not CP23B-Fix2) as current
     lines = markdown.split('\n')
     checkpoint_line = None
-    for i, line in enumerate(lines[:20]):  # Check first 20 lines for the checkpoint
+    for i, line in enumerate(lines[:20]):
         if "**Checkpoint:**" in line:
             checkpoint_line = line
             break
 
     assert checkpoint_line is not None, "Should have checkpoint header in first 20 lines"
-    assert "CP23B-Fix2" in checkpoint_line, "Current checkpoint header should be CP23B-Fix2"
-    # Make sure it's not showing CP23B-Fix (without the 2) as current
-    assert checkpoint_line.strip().endswith("CP23B-Fix2"), \
-        f"Current checkpoint should be exactly 'CP23B-Fix2', got: {checkpoint_line.strip()}"
-
-
-def test_markdown_actual_10q_language():
-    """Test that markdown uses 'ACTUAL' language for 10-Q values."""
-    markdown = load_clinical_runway_markdown()
-
-    # Should use "ACTUAL" to emphasize real extracted values
-    assert "ACTUAL" in markdown or "Actual" in markdown, \
-        "Markdown should emphasize ACTUAL 10-Q values"
-
-    # Should NOT use "estimated" for base financial snapshot
-    financial_section = re.search(
-        r"## Financial Snapshot.*?(?=##)",
-        markdown,
-        re.DOTALL
-    )
-    if financial_section:
-        fs_text = financial_section.group(0)
-        # Source line should say "ACTUAL" not "Estimated"
-        source_line = re.search(r"\*\*Source:\*\*.*", fs_text)
-        if source_line:
-            assert "ACTUAL" in source_line.group(0) or "10-Q" in source_line.group(0), \
-                "Financial snapshot source should reference ACTUAL 10-Q"
+    assert "CP23B-Fix3" in checkpoint_line, "Current checkpoint header should be CP23B-Fix3"
+    assert checkpoint_line.strip().endswith("CP23B-Fix3"), \
+        f"Current checkpoint should be exactly 'CP23B-Fix3', got: {checkpoint_line.strip()}"
 
 
 if __name__ == "__main__":
