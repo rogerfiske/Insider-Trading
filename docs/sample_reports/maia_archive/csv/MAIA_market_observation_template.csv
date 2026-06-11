@@ -1,0 +1,2 @@
+date,closing_price,weekly_high,weekly_low,weekly_volume,avg_volume_reference,days_above_1_50,days_below_1_50,major_news,sec_filings,form4_activity,form144_activity,clinical_updates,financing_updates,price_volume_read,pm_review_triggered,notes
+2026-06-14,(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),(EXAMPLE),"This is an EXAMPLE row with placeholder values - NOT actual MAIA data. Replace with actual observations."

@@ -1,0 +1,362 @@
+{
+  "ticker": "MAIA",
+  "cik": "0001878313",
+  "company_name": "MAIA Biotechnology, Inc.",
+  "generated_at": "2026-06-10T00:00:00+00:00",
+  "checkpoint": "CP23D",
+  "source_boundary": [
+    "SEC EDGAR filings only",
+    "Project-approved reports: CP21G/H/I/J, CP23A-Fix, CP23B-Fix3A",
+    "NO Roger's uploaded MAIA spreadsheet",
+    "NO OpenInsider data"
+  ],
+  "insider_activity": {
+    "lookback_days": 1460,
+    "form4_filings_found": 214,
+    "form4_filings_parsed": 214,
+    "transactions_extracted": 134,
+    "open_market_purchases": 134,
+    "open_market_sales": 0,
+    "purchase_value_usd": 4921437.58,
+    "sale_value_usd": 0.0,
+    "net_purchase_value_usd": 4921437.58,
+    "distinct_buyers": 10,
+    "buyer_roles": ["CEO", "CFO", "CMO", "CSO", "Director"],
+    "latest_purchase_date": "2026-06-01",
+    "purchase_months_count": 21,
+    "insider_score": 100,
+    "insider_rating": "Very Strong Insider Buying Evidence",
+    "source_checkpoint": "CP21G/CP21H/CP21I/CP21J"
+  },
+  "capital_structure": {
+    "march_2026_offering": {
+      "date": "2026-03-04",
+      "common_shares_sold": 20000000,
+      "price_per_share": 1.50,
+      "gross_proceeds": 30000000,
+      "net_proceeds_base": 28000000,
+      "net_proceeds_with_overallotment": 32300000,
+      "prefunded_warrants": 0,
+      "common_warrants": 0
+    },
+    "fully_diluted_estimates": {
+      "cp23a_fix_low_case": 85033854,
+      "cp23a_fix_high_case": 88033854,
+      "cp23b_fix3a_estimate": 86855702,
+      "note": "CP23A-Fix based on March 2, 2026. CP23B-Fix3A from Q1 2026 10-Q: 60,671,491 basic + 13,097,991 options + 13,086,220 warrants"
+    },
+    "form_13d_13g_filings": 0,
+    "form_144_filings": 0,
+    "beneficial_ownership_blocker": "4.99% or 9.99%",
+    "source_checkpoint": "CP23A-Fix"
+  },
+  "official_10q_financials": {
+    "period_ended": "2026-03-31",
+    "filing_date": "2026-05-11",
+    "accession": "0001493152-26-022154",
+    "cash_and_equivalents": 34413110,
+    "working_capital": 28992690,
+    "current_assets": 35315127,
+    "current_liabilities": 6322437,
+    "common_shares_outstanding": 60671491,
+    "accumulated_deficit": -116000657,
+    "quarterly_rd_expense": 3525097,
+    "quarterly_ga_expense": 3424832,
+    "total_operating_expenses": 6949929,
+    "quarterly_net_loss": -6369652,
+    "net_cash_used_in_operations": -5311328,
+    "net_cash_provided_by_financing": 31052321,
+    "net_increase_in_cash": 25755079,
+    "cash_beginning_of_period": 8658031,
+    "cash_end_of_period": 34413110,
+    "source_checkpoint": "CP23B-Fix3A"
+  },
+  "cash_runway_scenarios": [
+    {
+      "scenario": "low",
+      "quarterly_burn": 4514629,
+      "monthly_burn": 1504876,
+      "cash_balance": 34413110,
+      "runway_months": 22.8,
+      "estimated_depletion_date": "2028-05-04",
+      "assumptions": "85% of official base burn (operational efficiency)"
+    },
+    {
+      "scenario": "base",
+      "quarterly_burn": 5311328,
+      "monthly_burn": 1770443,
+      "cash_balance": 34413110,
+      "runway_months": 19.4,
+      "estimated_depletion_date": "2028-01-14",
+      "assumptions": "100% of official Q1 2026 10-Q operating cash burn"
+    },
+    {
+      "scenario": "high",
+      "quarterly_burn": 7170293,
+      "monthly_burn": 2390098,
+      "cash_balance": 34413110,
+      "runway_months": 14.4,
+      "estimated_depletion_date": "2027-08-28",
+      "assumptions": "135% of official base burn (Phase 3 ramp-up)"
+    }
+  ],
+  "clinical_programs": [
+    {
+      "program": "THIO-104",
+      "drug": "Ateganosine (THIO)",
+      "indication": "Advanced NSCLC (second-line+)",
+      "phase": "Phase 3 pivotal trial",
+      "fda_status": "Fast Track Designation",
+      "trial_status": "Ongoing (not disclosed)",
+      "enrollment_target": "Not disclosed",
+      "data_timing": "Not disclosed"
+    },
+    {
+      "program": "THIO-101",
+      "drug": "Ateganosine (THIO)",
+      "indication": "Not disclosed",
+      "phase": "Phase 2 expansion",
+      "trial_status": "Not disclosed",
+      "data_timing": "Not disclosed"
+    }
+  ],
+  "milestone_calendar": [
+    {
+      "milestone": "THIO-104 Phase 3 data readout",
+      "timing": "Not disclosed",
+      "timing_basis": "not disclosed",
+      "impact": "Primary catalyst"
+    },
+    {
+      "milestone": "THIO-104 regulatory submission",
+      "timing": "Not disclosed",
+      "timing_basis": "not disclosed",
+      "impact": "Dependent on Phase 3 data"
+    }
+  ],
+  "institutional_visibility": {
+    "form_13d_13g": "None found",
+    "form_13f": "Not integrated (infrastructure available)",
+    "note": "Beneficial ownership blockers (4.99%/9.99%) designed to keep investors below 5% disclosure threshold"
+  },
+  "form_144": {
+    "filings_found": 0,
+    "note": "No insider sale notices during review period"
+  },
+  "evidence_matrix": [
+    {
+      "category": "Insider buying strength",
+      "evidence": "134 open-market purchases, $4.92M total value",
+      "direction": "Positive",
+      "strength": "High",
+      "confidence": "High",
+      "source": "SEC Form 4 filings (CP21J)",
+      "comment": "Perfect 100/100 insider score"
+    },
+    {
+      "category": "Insider selling absence",
+      "evidence": "Zero open-market sales",
+      "direction": "Positive",
+      "strength": "High",
+      "confidence": "High",
+      "source": "SEC Form 4 filings (CP21J)",
+      "comment": "No selling pressure from insiders"
+    },
+    {
+      "category": "Buyer breadth",
+      "evidence": "10 distinct buyers across CEO, CFO, CMO, CSO, Directors",
+      "direction": "Positive",
+      "strength": "High",
+      "confidence": "High",
+      "source": "SEC Form 4 filings (CP21J)",
+      "comment": "Broad insider participation"
+    },
+    {
+      "category": "Recency of insider buying",
+      "evidence": "Latest purchase: 2026-06-01 (8 days ago)",
+      "direction": "Positive",
+      "strength": "High",
+      "confidence": "High",
+      "source": "SEC Form 4 filings (CP21J)",
+      "comment": "Very recent buying activity"
+    },
+    {
+      "category": "Persistence over time",
+      "evidence": "Purchases in 21 distinct months over 1460-day lookback",
+      "direction": "Positive",
+      "strength": "High",
+      "confidence": "High",
+      "source": "SEC Form 4 filings (CP21J)",
+      "comment": "Sustained pattern, not one-time event"
+    },
+    {
+      "category": "Capital raise / cash position",
+      "evidence": "$34.41M cash (Mar 31, 2026); March 2026 offering raised $28-32M",
+      "direction": "Positive",
+      "strength": "High",
+      "confidence": "High",
+      "source": "Official 10-Q XBRL (CP23B-Fix3A), 424B5 (CP23A-Fix)",
+      "comment": "Well-capitalized post-offering"
+    },
+    {
+      "category": "Dilution overhang",
+      "evidence": "Fully diluted ~86-88M shares (vs. 60.67M basic)",
+      "direction": "Negative",
+      "strength": "Medium",
+      "confidence": "High",
+      "source": "CP23A-Fix, CP23B-Fix3A",
+      "comment": "~42% dilution from options/warrants if all exercised"
+    },
+    {
+      "category": "Cash runway",
+      "evidence": "19.4 months base case (official burn rate)",
+      "direction": "Positive",
+      "strength": "High",
+      "confidence": "High",
+      "source": "Official 10-Q operating cash burn (CP23B-Fix3A)",
+      "comment": "Management assessed 12+ months sufficient"
+    },
+    {
+      "category": "Phase 3 progress",
+      "evidence": "THIO-104 Phase 3 ongoing with Fast Track",
+      "direction": "Positive",
+      "strength": "Medium",
+      "confidence": "Medium",
+      "source": "Public filings",
+      "comment": "Fast Track suggests regulatory path"
+    },
+    {
+      "category": "Clinical milestone timing",
+      "evidence": "THIO-104 data timing not disclosed",
+      "direction": "Unknown",
+      "strength": "N/A",
+      "confidence": "Low",
+      "source": "Public filings (absence)",
+      "comment": "Cannot assess if runway sufficient to reach data"
+    },
+    {
+      "category": "13D/G ownership",
+      "evidence": "No 13D/13G filings found",
+      "direction": "Neutral",
+      "strength": "Low",
+      "confidence": "Medium",
+      "source": "SEC EDGAR search (CP23A-Fix)",
+      "comment": "Beneficial ownership blockers prevent disclosure"
+    },
+    {
+      "category": "13F institutional visibility",
+      "evidence": "Not yet integrated (infrastructure exists)",
+      "direction": "Unknown",
+      "strength": "N/A",
+      "confidence": "Low",
+      "source": "CP23A-Fix",
+      "comment": "Requires 13F-HR InfoTable XML parsing"
+    },
+    {
+      "category": "Form 144 selling",
+      "evidence": "Zero Form 144 filings",
+      "direction": "Positive",
+      "strength": "Medium",
+      "confidence": "High",
+      "source": "SEC EDGAR search (CP23A-Fix)",
+      "comment": "No planned insider sales"
+    },
+    {
+      "category": "Market confirmation",
+      "evidence": "Not yet tracked (monitoring plan defined)",
+      "direction": "Unknown",
+      "strength": "N/A",
+      "confidence": "Low",
+      "source": "CP23B-Fix3A monitoring plan",
+      "comment": "Requires market price/volume tracking"
+    },
+    {
+      "category": "Financing risk before data",
+      "evidence": "Unknown - depends on undisclosed THIO-104 data timing",
+      "direction": "Unknown",
+      "strength": "N/A",
+      "confidence": "Low",
+      "source": "CP23B-Fix3A",
+      "comment": "19.4 month runway vs. unknown catalyst timing"
+    }
+  ],
+  "synthesis_scores": {
+    "insider_evidence_score": 100,
+    "insider_evidence_rating": "Very Strong",
+    "dilution_capital_risk_score": 65,
+    "dilution_capital_risk_rating": "Moderate",
+    "cash_runway_score": 85,
+    "cash_runway_rating": "Strong",
+    "clinical_progress_score": 60,
+    "clinical_progress_rating": "Moderate (limited disclosure)",
+    "data_quality_confidence_score": 90,
+    "data_quality_rating": "High (official SEC sources only)",
+    "overall_research_posture": "Strong insider-evidence / high clinical-timing uncertainty profile"
+  },
+  "monitoring_plan": [
+    {
+      "item": "Form 4 filings",
+      "frequency": "Daily",
+      "action": "Track continued insider buying or any selling",
+      "alert_trigger": "First insider sale"
+    },
+    {
+      "item": "SEC filings (8-K, 10-Q, 10-K)",
+      "frequency": "As filed",
+      "action": "Review clinical updates, cash burn, data announcements",
+      "alert_trigger": "THIO-104 data or regulatory submission"
+    },
+    {
+      "item": "Press releases",
+      "frequency": "As issued",
+      "action": "Monitor clinical progress, enrollment, partnerships",
+      "alert_trigger": "Material clinical update"
+    },
+    {
+      "item": "Equity offerings (S-3, 424B)",
+      "frequency": "As filed",
+      "action": "Track dilution events",
+      "alert_trigger": "New offering filed"
+    },
+    {
+      "item": "ClinicalTrials.gov",
+      "frequency": "Weekly",
+      "action": "Check trial status updates",
+      "alert_trigger": "Status change or completion"
+    },
+    {
+      "item": "Market price and volume",
+      "frequency": "Daily",
+      "action": "Confirm market reflects insider activity",
+      "alert_trigger": "Unusual volume or price movement"
+    }
+  ],
+  "open_questions": [
+    "What is the THIO-104 Phase 3 data timing? (not disclosed)",
+    "Is 19.4 months runway sufficient to reach THIO-104 data? (unknown - depends on undisclosed timing)",
+    "What is hidden institutional ownership via beneficial ownership blockers? (cannot determine without 13F integration)",
+    "What is THIO-101 indication and progress? (not disclosed)",
+    "What are enrollment targets and trial sites for THIO-104? (not disclosed)",
+    "Will company need additional financing before data readout? (unknown)"
+  ],
+  "limitations": [
+    "Clinical milestone timing not publicly disclosed - cannot assess financing risk",
+    "13F institutional ownership not integrated (infrastructure exists, requires implementation)",
+    "CUSIP identifier not extracted - limits institutional matching confidence",
+    "Market confirmation tracking not yet implemented",
+    "13F has 45-day reporting lag",
+    "Beneficial ownership blockers hide institutional positions below 5%",
+    "No access to insider trading motivation (required vs. discretionary purchases)",
+    "Trial enrollment progress not disclosed"
+  ],
+  "safety": {
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "scheduled_tasks_triggered": false,
+    "env_printed_or_changed": false,
+    "secrets_printed": false,
+    "investment_recommendation_given": false
+  }
+}

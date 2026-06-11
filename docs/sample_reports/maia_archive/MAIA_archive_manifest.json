@@ -1,0 +1,166 @@
+{
+  "ticker": "MAIA",
+  "cik": "0001878313",
+  "generated_at": "2026-06-11T17:27:10.022123Z",
+  "approved_checkpoint_range": "CP23D-CP23G",
+  "approved_commits": [
+    "0fbff09",
+    "b2c0ade",
+    "fb2075f",
+    "b72cda0"
+  ],
+  "archive_root": "docs/sample_reports/maia_archive",
+  "artifacts": [
+    {
+      "name": "CP23D_MAIA_full_synthesis_packet_report",
+      "type": "markdown",
+      "original_path": "docs/checkpoints/reports/CP23D_MAIA_full_synthesis_packet_report.md",
+      "archive_path": "md/CP23D_MAIA_full_synthesis_packet_report.md",
+      "purpose": "Cp23D Maia Full Synthesis Packet Report checkpoint execution report",
+      "status": "checkpoint_report",
+      "sha256": "0c0a08200d55813d229c7a9095850bd71344cd6e64bb4d5f9574a58117d2724d"
+    },
+    {
+      "name": "CP23E_MAIA_monitoring_pack_report",
+      "type": "markdown",
+      "original_path": "docs/checkpoints/reports/CP23E_MAIA_monitoring_pack_report.md",
+      "archive_path": "md/CP23E_MAIA_monitoring_pack_report.md",
+      "purpose": "Cp23E Maia Monitoring Pack Report checkpoint execution report",
+      "status": "checkpoint_report",
+      "sha256": "9d7924f75ba2e034359ea8e3fd63894aa6f8787ebbba55b7f0e2bb398d579e16"
+    },
+    {
+      "name": "CP23F_fix_13f_parser_hardening_report",
+      "type": "markdown",
+      "original_path": "docs/checkpoints/reports/CP23F_fix_13f_parser_hardening_report.md",
+      "archive_path": "md/CP23F_fix_13f_parser_hardening_report.md",
+      "purpose": "Cp23F Fix 13F Parser Hardening Report checkpoint execution report",
+      "status": "checkpoint_report",
+      "sha256": "0f58f9e81b6cdf75c750c010924dad7218c1ab40be810f1b7254f5ed9c2afc7d"
+    },
+    {
+      "name": "CP23G_MAIA_market_confirmation_checklist_report",
+      "type": "markdown",
+      "original_path": "docs/checkpoints/reports/CP23G_MAIA_market_confirmation_checklist_report.md",
+      "archive_path": "md/CP23G_MAIA_market_confirmation_checklist_report.md",
+      "purpose": "Cp23G Maia Market Confirmation Checklist Report checkpoint execution report",
+      "status": "checkpoint_report",
+      "sha256": "d6a7df74aadc71565183ac35c772d2204e1405bc8537694088edea66de072bf5"
+    },
+    {
+      "name": "MAIA_13F_infotable_matching_report",
+      "type": "markdown",
+      "original_path": "docs/sample_reports/maia_13f/MAIA_13F_infotable_matching_report.md",
+      "archive_path": "md/MAIA_13F_infotable_matching_report.md",
+      "purpose": "13F institutional holdings parsing results (60% parser success rate; no MAIA matches found)",
+      "status": "approved_with_limitation",
+      "sha256": "852fa1b594b265e8fdbe121c6e066e2761a118eba892331ce367d20eef64e17b"
+    },
+    {
+      "name": "MAIA_full_synthesis_packet",
+      "type": "markdown",
+      "original_path": "docs/sample_reports/maia_synthesis/MAIA_full_synthesis_packet.md",
+      "archive_path": "md/MAIA_full_synthesis_packet.md",
+      "purpose": "Comprehensive insider activity, capital structure, clinical programs, cash runway, and evidence matrix analysis",
+      "status": "approved",
+      "sha256": "bb1fcbad50f2e7a7f9878ed9ab038d0de21f184a056916f944fbfc1e413e1b0c"
+    },
+    {
+      "name": "MAIA_market_confirmation_baseline_status",
+      "type": "markdown",
+      "original_path": "docs/sample_reports/maia_market_confirmation/MAIA_market_confirmation_baseline_status.md",
+      "archive_path": "md/MAIA_market_confirmation_baseline_status.md",
+      "purpose": "Current market confirmation baseline and automation gaps",
+      "status": "approved",
+      "sha256": "5e5ea7dcf2b74b43d9a2903460f555508b2e9c0d614e4ce9362cae27d8ddc0d2"
+    },
+    {
+      "name": "MAIA_market_confirmation_checklist",
+      "type": "markdown",
+      "original_path": "docs/sample_reports/maia_market_confirmation/MAIA_market_confirmation_checklist.md",
+      "archive_path": "md/MAIA_market_confirmation_checklist.md",
+      "purpose": "Manual price/volume monitoring framework relative to $1.50 March 2026 offering price",
+      "status": "approved",
+      "sha256": "2538098efa577d0327dbaa66b1169bb23e4e7c9a755c034223145e6001210d38"
+    },
+    {
+      "name": "MAIA_monitoring_baseline_status",
+      "type": "markdown",
+      "original_path": "docs/sample_reports/maia_monitoring/MAIA_monitoring_baseline_status.md",
+      "archive_path": "md/MAIA_monitoring_baseline_status.md",
+      "purpose": "Current monitoring baseline and approval status",
+      "status": "approved",
+      "sha256": "0a4ff1cb4a242d9e0630f384035dd9baeb4d4250be5ee5a98b47544e5e278249"
+    },
+    {
+      "name": "MAIA_weekly_monitoring_checklist",
+      "type": "markdown",
+      "original_path": "docs/sample_reports/maia_monitoring/MAIA_weekly_monitoring_checklist.md",
+      "archive_path": "md/MAIA_weekly_monitoring_checklist.md",
+      "purpose": "Structured monitoring workflow for tracking Form 4, Form 144, 13D/G, 13F, clinical updates, financing, and financial filings",
+      "status": "approved",
+      "sha256": "e338b2ada3bfd264ab1abd1efa92d5143fe37df2c69398427faef417b04ff589"
+    },
+    {
+      "name": "MAIA_13F_infotable_matching",
+      "type": "json",
+      "original_path": "docs/sample_reports/maia_13f/MAIA_13F_infotable_matching.json",
+      "archive_path": "json/MAIA_13F_infotable_matching.json",
+      "purpose": "13F institutional holdings parsing results (60% parser success rate; no MAIA matches found)",
+      "status": "approved_with_limitation",
+      "sha256": "0088290eb941ca0bb528763295fd67f9b06893b7924a1fd7d79c533ebe5e7196"
+    },
+    {
+      "name": "MAIA_full_synthesis_packet",
+      "type": "json",
+      "original_path": "docs/sample_reports/maia_synthesis/MAIA_full_synthesis_packet.json",
+      "archive_path": "json/MAIA_full_synthesis_packet.json",
+      "purpose": "Comprehensive insider activity, capital structure, clinical programs, cash runway, and evidence matrix analysis",
+      "status": "approved",
+      "sha256": "a4e47aa76d860ac3e79e584311158e6b812b9886fdd5f1dbfe398d9409d4d315"
+    },
+    {
+      "name": "MAIA_market_confirmation_plan",
+      "type": "json",
+      "original_path": "docs/sample_reports/maia_market_confirmation/MAIA_market_confirmation_plan.json",
+      "archive_path": "json/MAIA_market_confirmation_plan.json",
+      "purpose": "Machine-readable market confirmation plan with baseline, triggers, status labels",
+      "status": "approved",
+      "sha256": "84f09d675ad0ba583fc34873f6b9f16753b08de4422e7e887631c8eb6e8cbb62"
+    },
+    {
+      "name": "MAIA_monitoring_plan",
+      "type": "json",
+      "original_path": "docs/sample_reports/maia_monitoring/MAIA_monitoring_plan.json",
+      "archive_path": "json/MAIA_monitoring_plan.json",
+      "purpose": "Machine-readable monitoring plan data",
+      "status": "approved",
+      "sha256": "429088d9c2cdad67b4e9aef8daebf0fdad0a1986b01dd5c3333569c5e11869ed"
+    },
+    {
+      "name": "MAIA_market_observation_template",
+      "type": "csv",
+      "original_path": "docs/sample_reports/maia_market_confirmation/MAIA_market_observation_template.csv",
+      "archive_path": "csv/MAIA_market_observation_template.csv",
+      "purpose": "Weekly price/volume manual observation template",
+      "status": "manual_template",
+      "sha256": "c2644a8f0ebaa631e2d113ca9899b77f8b2143c54595e165df3638dab1170fc0"
+    }
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "secrets_included": false
+  },
+  "limitations": [
+    "13F parser success rate is 60%; no-match conclusion scoped to successfully parsed filings only",
+    "Price/volume data is manual-entry only; no live market quote source integrated",
+    "THIO-104 Phase 3 data timing is not disclosed (critical unknown)",
+    "PDF export unavailable (pandoc/wkhtmltopdf not installed); markdown/JSON/CSV archive only"
+  ]
+}
