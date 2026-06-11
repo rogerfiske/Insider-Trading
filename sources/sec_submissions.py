@@ -204,3 +204,237 @@ def get_form4_filings_for_cik(cik: str, lookback_days: int) -> list[SecSubmissio
     form4_filings.sort(key=lambda f: f.filing_date, reverse=True)
 
     return form4_filings
+
+
+def build_submissions_inventory(
+    cik: str, lookback_days: int = 1460, max_recent: int = 100
+) -> dict[str, any]:
+    """Build comprehensive SEC submissions inventory for a CIK.
+
+    Fetches SEC submissions data and builds an inventory of filing counts by form type,
+    latest relevant filings, recent filings list, coverage flags, and evidence provenance.
+
+    Args:
+        cik: SEC Central Index Key (with or without leading zeros)
+        lookback_days: Number of days to look back for coverage analysis (default 1460 = ~4 years)
+        max_recent: Maximum number of recent filings to include in list (default 100)
+
+    Returns:
+        dict with keys:
+            status: "retrieved" | "failed" | "degraded"
+            data: dict with inventory fields (if retrieved)
+            error: str | None (if failed)
+
+    Example:
+        >>> result = build_submissions_inventory("0001878313")
+        >>> result["status"]
+        "retrieved"
+        >>> result["data"]["filing_counts_by_form"]["4"]
+        12
+    """
+    from sources.sec_common import utcnow_iso
+
+    # Fetch submissions data
+    fetch_result = fetch_company_submissions(cik)
+
+    if not fetch_result["ok"]:
+        return {
+            "status": "failed",
+            "data": None,
+            "error": fetch_result.get("error", "Unknown error fetching submissions"),
+        }
+
+    body = fetch_result["body"]
+    source_url = fetch_result["url"]
+    retrieved_at = utcnow_iso()
+
+    # Extract filings.recent parallel arrays
+    filings_recent = body.get("filings", {}).get("recent", {})
+
+    if not filings_recent:
+        return {
+            "status": "degraded",
+            "data": {
+                "filing_counts_by_form": {},
+                "latest_10k": None,
+                "latest_10q": None,
+                "latest_8k": None,
+                "latest_form4": None,
+                "latest_form144": None,
+                "latest_13d_or_13g": None,
+                "latest_13f_hr": None,
+                "recent_filings": [],
+                "coverage_flags": {
+                    "has_form4": False,
+                    "has_form144": False,
+                    "has_13d_13g": False,
+                    "has_10q": False,
+                    "has_10k": False,
+                    "has_8k": False,
+                    "has_s3_or_offering_filing": False,
+                    "has_13f_hr": False,
+                },
+                "source_url": source_url,
+                "retrieved_at": retrieved_at,
+            },
+            "error": "No recent filings found in submissions data",
+        }
+
+    # Extract parallel arrays
+    accession_numbers = filings_recent.get("accessionNumber", [])
+    filing_dates = filings_recent.get("filingDate", [])
+    report_dates = filings_recent.get("reportDate", [])
+    forms = filings_recent.get("form", [])
+    primary_documents = filings_recent.get("primaryDocument", [])
+    file_numbers = filings_recent.get("fileNumber", [])
+    film_numbers = filings_recent.get("filmNumber", [])
+
+    # Calculate lookback cutoff date
+    now = datetime.now(timezone.utc)
+    cutoff_date = (now - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
+
+    # Extract CIK without leading zeros for URLs
+    cik_padded = cik.zfill(10)
+    cik_no_leading_zeros = str(int(cik))
+
+    # Build filing counts by form type (within lookback window)
+    filing_counts_by_form: dict[str, int] = {}
+
+    # Track latest filings for key forms
+    latest_10k = None
+    latest_10q = None
+    latest_8k = None
+    latest_form4 = None
+    latest_form144 = None
+    latest_13d_or_13g = None
+    latest_13f_hr = None
+
+    # Build recent filings list
+    recent_filings = []
+
+    # Process filings
+    for i in range(len(accession_numbers)):
+        if i >= len(forms):
+            break
+
+        form = forms[i]
+        filing_date = filing_dates[i] if i < len(filing_dates) else ""
+        accession_number = accession_numbers[i]
+        report_date = report_dates[i] if i < len(report_dates) else ""
+        primary_document = primary_documents[i] if i < len(primary_documents) else ""
+        file_number = file_numbers[i] if i < len(file_numbers) else ""
+        film_number = film_numbers[i] if i < len(film_numbers) else ""
+
+        # Count within lookback window
+        if filing_date >= cutoff_date:
+            filing_counts_by_form[form] = filing_counts_by_form.get(form, 0) + 1
+
+        # Build filing entry for recent list (up to max_recent)
+        if len(recent_filings) < max_recent:
+            accession_no_dashes = accession_number.replace("-", "")
+            archive_directory_url = (
+                f"https://www.sec.gov/Archives/edgar/data/"
+                f"{cik_no_leading_zeros}/{accession_no_dashes}/"
+            )
+
+            filing_entry = {
+                "accession_number": accession_number,
+                "filing_date": filing_date,
+                "report_date": report_date,
+                "form": form,
+                "primary_document": primary_document,
+                "file_number": file_number,
+                "film_number": film_number,
+                "archive_url": archive_directory_url,
+            }
+
+            recent_filings.append(filing_entry)
+
+        # Track latest filings for key forms
+        if form == "10-K" and latest_10k is None:
+            latest_10k = {
+                "accession_number": accession_number,
+                "filing_date": filing_date,
+                "form": form,
+                "primary_document": primary_document,
+            }
+        elif form == "10-Q" and latest_10q is None:
+            latest_10q = {
+                "accession_number": accession_number,
+                "filing_date": filing_date,
+                "form": form,
+                "primary_document": primary_document,
+            }
+        elif form == "8-K" and latest_8k is None:
+            latest_8k = {
+                "accession_number": accession_number,
+                "filing_date": filing_date,
+                "form": form,
+                "primary_document": primary_document,
+            }
+        elif form == "4" and latest_form4 is None:
+            latest_form4 = {
+                "accession_number": accession_number,
+                "filing_date": filing_date,
+                "form": form,
+                "primary_document": primary_document,
+            }
+        elif form == "144" and latest_form144 is None:
+            latest_form144 = {
+                "accession_number": accession_number,
+                "filing_date": filing_date,
+                "form": form,
+                "primary_document": primary_document,
+            }
+        elif form in ("SC 13D", "SC 13G", "SC 13D/A", "SC 13G/A") and latest_13d_or_13g is None:
+            latest_13d_or_13g = {
+                "accession_number": accession_number,
+                "filing_date": filing_date,
+                "form": form,
+                "primary_document": primary_document,
+            }
+        elif form in ("13F-HR", "13F-HR/A") and latest_13f_hr is None:
+            latest_13f_hr = {
+                "accession_number": accession_number,
+                "filing_date": filing_date,
+                "form": form,
+                "primary_document": primary_document,
+            }
+
+    # Build coverage flags
+    coverage_flags = {
+        "has_form4": filing_counts_by_form.get("4", 0) > 0,
+        "has_form144": filing_counts_by_form.get("144", 0) > 0,
+        "has_13d_13g": any(
+            filing_counts_by_form.get(f, 0) > 0
+            for f in ("SC 13D", "SC 13G", "SC 13D/A", "SC 13G/A")
+        ),
+        "has_10q": filing_counts_by_form.get("10-Q", 0) > 0,
+        "has_10k": filing_counts_by_form.get("10-K", 0) > 0,
+        "has_8k": filing_counts_by_form.get("8-K", 0) > 0,
+        "has_s3_or_offering_filing": any(
+            filing_counts_by_form.get(f, 0) > 0
+            for f in ("S-3", "S-1", "S-4", "S-8", "S-3/A", "S-1/A", "S-4/A", "S-8/A")
+        ),
+        "has_13f_hr": any(
+            filing_counts_by_form.get(f, 0) > 0 for f in ("13F-HR", "13F-HR/A")
+        ),
+    }
+
+    # Build inventory data
+    inventory_data = {
+        "filing_counts_by_form": filing_counts_by_form,
+        "latest_10k": latest_10k,
+        "latest_10q": latest_10q,
+        "latest_8k": latest_8k,
+        "latest_form4": latest_form4,
+        "latest_form144": latest_form144,
+        "latest_13d_or_13g": latest_13d_or_13g,
+        "latest_13f_hr": latest_13f_hr,
+        "recent_filings": recent_filings,
+        "coverage_flags": coverage_flags,
+        "source_url": source_url,
+        "retrieved_at": retrieved_at,
+    }
+
+    return {"status": "retrieved", "data": inventory_data, "error": None}

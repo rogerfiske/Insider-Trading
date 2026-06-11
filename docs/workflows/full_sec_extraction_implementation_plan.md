@@ -22,7 +22,9 @@ Each checkpoint is:
 
 ---
 
-## CP24B — Generic Ticker/CIK Resolver and SEC Submissions Inventory
+## CP24B — Generic Ticker/CIK Resolver and SEC Submissions Inventory ✓ COMPLETED
+
+**Status:** ✓ Completed (2026-06-11)
 
 ### Goal
 
@@ -32,53 +34,52 @@ Implement ticker/CIK resolution and SEC submissions inventory for arbitrary tick
 
 - User-provided ticker symbol (string)
 - Lookback window in days (default: 1460 = 4 years)
+- Max recent filings (default: 100)
 
 ### Outputs
 
 - TickerCikResult (ok, ticker, cik, cik_padded, company_name)
-- List[SecSubmissionFiling] (all filing types within lookback window)
-- JSON output: `{ticker}_submissions_inventory.json`
+- Comprehensive submissions inventory with:
+  - Filing counts by form
+  - Latest filings for key forms (10-K, 10-Q, 8-K, Form 4, Form 144, 13D/13G, 13F-HR)
+  - Recent filings list (up to max_recent)
+  - Coverage flags (has_form4, has_form144, has_10q, has_10k, etc.)
+  - Downstream readiness assessment
+- JSON output: `{ticker}_sec_inventory.json`
+- Markdown report: `{ticker}_sec_inventory.md`
+- Batch summary for multiple tickers
 
-### Files Likely Changed
+### Files Created/Modified
 
-**Existing (Reuse):**
-- sources/sec_ticker.py (already generic)
-- sources/sec_submissions.py (already generic)
+**Created:**
 
-**New/Modified:**
-- scripts/ticker_submissions_inventory.py (new CLI tool)
-- tests/test_ticker_submissions_inventory.py (new tests)
+- scripts/sec_ticker_inventory.py (CLI tool)
+- tests/test_sec_ticker_inventory.py (21 tests)
+- docs/sample_reports/sec_inventory/MAIA/ (sample reports)
+- docs/sample_reports/sec_inventory/NVDA/ (sample reports)
+- docs/sample_reports/sec_inventory/batch_maia_nvda/ (batch sample)
 
-### Implementation Steps
+**Modified:**
 
-1. Create CLI tool `scripts/ticker_submissions_inventory.py`:
-   - Accept --ticker, --lookback-days arguments
-   - Call resolve_ticker_to_cik()
-   - Call fetch_company_submissions()
-   - Filter by lookback window
-   - Save to JSON
+- sources/sec_submissions.py (added build_submissions_inventory())
 
-2. Add helper functions:
-   - get_all_filing_types_for_cik() → dict of filings by form type
-   - filter_filings_by_date_range() → List[SecSubmissionFiling]
+**Reused:**
 
-3. Add tests:
-   - Ticker resolution (known tickers: AAPL, MSFT, NVDA)
-   - Unknown ticker handling
-   - Submissions filtering by date
-   - Submissions filtering by form type
+- sources/sec_ticker.py (resolve_ticker_to_cik, TickerCikResult)
+- sources/sec_submissions.py (fetch_company_submissions)
+- sources/sec_common.py (sec_fetch, utcnow_iso)
 
-### Validation Commands
+### CLI Usage
 
 ```powershell
-# Inventory NVDA filings (4-year lookback)
-python scripts/ticker_submissions_inventory.py --ticker NVDA --lookback-days 1460 --output-dir docs/sample_reports/generic_ticker/NVDA
+# Single ticker inventory
+.\.venv\Scripts\python.exe scripts\sec_ticker_inventory.py --ticker MAIA --output-dir docs/sample_reports/sec_inventory/MAIA
 
-# Verify output
-ls docs/sample_reports/generic_ticker/NVDA/submissions/
+# Multiple tickers (batch mode)
+.\.venv\Scripts\python.exe scripts\sec_ticker_inventory.py --tickers MAIA,NVDA --output-dir docs/sample_reports/sec_inventory/batch
 
-# Run tests
-pytest tests/test_ticker_submissions_inventory.py -v
+# Custom parameters
+.\.venv\Scripts\python.exe scripts\sec_ticker_inventory.py --ticker AAPL --output-dir docs/sample_reports/sec_inventory/AAPL --max-recent-filings 200
 ```
 
 ### Safety Constraints
@@ -86,18 +87,28 @@ pytest tests/test_ticker_submissions_inventory.py -v
 - Read-only SEC access (no writes)
 - No alert generation
 - No Telegram/email
-- Output JSON only (no automated actions)
+- No scheduled task modification
+- Output JSON/Markdown only (no automated actions)
 - User-Agent compliance
+- No OpenInsider data required
 
 ### Acceptance Criteria
 
-- ✓ Resolves known tickers (AAPL, MSFT, NVDA)
-- ✓ Handles unknown tickers gracefully (error_type=TICKER_NOT_FOUND)
+- ✓ Resolves MAIA to CIK 0001878313
+- ✓ Resolves NVDA to CIK 0001045810
+- ✓ Handles unknown tickers gracefully (error_type=ticker_not_found)
 - ✓ Fetches submissions for resolved CIK
-- ✓ Filters by form type (4, 144, 13D, 13G, 13F-HR, 10-Q, 10-K)
-- ✓ Filters by lookback window
-- ✓ Saves JSON with provenance (retrieve_at, source_url)
-- ✓ 10/10 tests pass
+- ✓ Builds filing counts by form type
+- ✓ Identifies latest filings for key forms (10-K, 10-Q, 8-K, Form 4, Form 144, 13D/13G, 13F-HR)
+- ✓ Generates coverage flags for downstream checkpoints
+- ✓ Assesses downstream readiness (form4_ready, xbrl_financials_ready, etc.)
+- ✓ Handles degraded mode (no filings, unresolved ticker)
+- ✓ Generates JSON/Markdown outputs with safety flags
+- ✓ Batch mode for multiple tickers
+- ✓ No buy/sell/hold language
+- ✓ No secrets in outputs
+- ✓ 21/21 tests pass
+- ✓ Python compilation successful
 
 ---
 

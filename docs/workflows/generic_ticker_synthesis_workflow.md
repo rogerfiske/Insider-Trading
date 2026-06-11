@@ -109,6 +109,61 @@ The generic ticker synthesis workflow provides a reusable framework for generati
 - README (planned)
 - ZIP archive (optional, requires external tool)
 
+## Foundation Tools (CP24B)
+
+### SEC Ticker/CIK Submissions Inventory
+
+**Checkpoint:** CP24B
+**Status:** ✓ Completed (2026-06-11)
+**Purpose:** Resolve ticker to CIK and build comprehensive SEC submissions inventory
+
+**CLI:**
+
+```powershell
+# Single ticker inventory
+.\.venv\Scripts\python.exe scripts\sec_ticker_inventory.py `
+    --ticker MAIA `
+    --output-dir docs/sample_reports/sec_inventory/MAIA
+
+# Multiple tickers (batch mode)
+.\.venv\Scripts\python.exe scripts\sec_ticker_inventory.py `
+    --tickers MAIA,NVDA `
+    --output-dir docs/sample_reports/sec_inventory/batch
+
+# Custom lookback and recent filings count
+.\.venv\Scripts\python.exe scripts\sec_ticker_inventory.py `
+    --ticker AAPL `
+    --output-dir docs/sample_reports/sec_inventory/AAPL `
+    --max-recent-filings 200
+```
+
+**Outputs:**
+
+- `{TICKER}_sec_inventory.json` - Structured inventory data
+- `{TICKER}_sec_inventory.md` - Human-readable report
+- `batch_sec_inventory_summary.json` - Batch summary (multi-ticker mode)
+- `batch_sec_inventory_summary.md` - Batch summary report (multi-ticker mode)
+
+**Key Features:**
+
+- Ticker-to-CIK resolution using SEC company_tickers.json
+- Filing counts by form type (within 4-year lookback window)
+- Latest filings for key forms (10-K, 10-Q, 8-K, Form 4, Form 144, 13D/13G, 13F-HR)
+- Coverage flags for downstream extraction (has_form4, has_10q, has_10k, etc.)
+- Downstream readiness assessment (form4_ready, xbrl_financials_ready, etc.)
+- Degraded-mode detection and reporting
+- Evidence provenance tracking
+- Safety flags (report_only, no alerts, no Telegram/email)
+
+**Downstream Checkpoints:**
+
+- CP24C - Form 4 insider transaction extraction
+- CP24D - Form 144 restricted stock sales
+- CP24E - XBRL financial extraction (10-Q, 10-K)
+- CP24F - 13D/13G beneficial ownership
+- CP24G - Capital structure from S-3/offerings
+- CP24H - 13F institutional holdings
+
 ## CLI Usage
 
 ### Synthesis Workflow
