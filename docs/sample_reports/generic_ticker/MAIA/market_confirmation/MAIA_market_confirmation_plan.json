@@ -1,0 +1,480 @@
+{
+  "ticker": "MAIA",
+  "cik": "0001878313",
+  "company_name": "MAIA Biotechnology, Inc.",
+  "generated_at": "2026-06-10T00:00:00Z",
+  "checkpoint": "CP23G",
+  "purpose": "Manual monitoring checklist to track whether MAIA market price/volume behavior confirms, ignores, or contradicts the strong insider buying evidence",
+  "baseline": {
+    "insider_activity": {
+      "insider_score": 100,
+      "open_market_purchases": 134,
+      "open_market_sales": 0,
+      "purchase_value_usd": 4921437.58,
+      "distinct_buyers": 10,
+      "buyer_roles": [
+        "CEO",
+        "CFO",
+        "CMO",
+        "CSO",
+        "Director"
+      ],
+      "latest_purchase_date": "2026-06-01",
+      "purchase_months": 21,
+      "insider_rating": "Very Strong Insider Buying Evidence",
+      "source_checkpoint": "CP21G/CP21H/CP21I/CP21J"
+    },
+    "capital_structure": {
+      "march_2026_offering_price": 1.5,
+      "common_shares_outstanding": 60671491,
+      "approximate_fully_diluted_shares": 86860000,
+      "form_13d_13g_filings": 0,
+      "form_144_filings": 0,
+      "beneficial_ownership_blockers": "4.99% or 9.99%",
+      "source_checkpoint": "CP23A-Fix, CP23B-Fix3A"
+    },
+    "cash_runway": {
+      "cash_balance_usd": 34413110,
+      "period_ended": "2026-03-31",
+      "quarterly_operating_cash_burn": 5311328,
+      "base_runway_months": 19.4,
+      "source_checkpoint": "CP23B-Fix3A"
+    },
+    "institutional_visibility": {
+      "form_13f_parser_success_rate": 0.6,
+      "managers_successfully_parsed": 3,
+      "managers_failed_parsing": 2,
+      "total_holdings_parsed": 21128,
+      "maia_matches_found": 0,
+      "status": "Partial implementation - no reliable institutional holdings detected",
+      "source_checkpoint": "CP23F-Fix"
+    },
+    "clinical_programs": {
+      "primary_program": "THIO-104",
+      "phase": "Phase 3 pivotal trial",
+      "indication": "Advanced NSCLC (second-line+)",
+      "fda_status": "Fast Track Designation",
+      "data_timing": "Not disclosed",
+      "critical_unknown": "THIO-104 Phase 3 data timing not disclosed"
+    },
+    "evidence_matrix_conclusion": "Strong insider-evidence / high clinical-timing uncertainty profile"
+  },
+  "reference_levels": [
+    {
+      "level_name": "March 2026 offering price",
+      "price_usd": 1.5,
+      "significance": "Primary reference price for market confirmation analysis"
+    },
+    {
+      "level_name": "Current price",
+      "price_usd": null,
+      "significance": "Manual entry or integration required",
+      "note": "To be manually recorded or auto-populated via verified public quote source"
+    },
+    {
+      "level_name": "52-week high",
+      "price_usd": null,
+      "significance": "Manual entry or integration required"
+    },
+    {
+      "level_name": "52-week low",
+      "price_usd": null,
+      "significance": "Manual entry or integration required"
+    },
+    {
+      "level_name": "Average daily volume (30-day)",
+      "volume": null,
+      "significance": "Manual entry or integration required"
+    }
+  ],
+  "weekly_checklist": [
+    {
+      "check_id": "WK01",
+      "check_name": "Closing price relative to $1.50",
+      "check_type": "price",
+      "frequency": "weekly",
+      "manual_entry_required": true,
+      "description": "Record days above/below $1.50 offering price"
+    },
+    {
+      "check_id": "WK02",
+      "check_name": "Weekly high/low range",
+      "check_type": "price",
+      "frequency": "weekly",
+      "manual_entry_required": true,
+      "description": "Record weekly price range and note compression/expansion"
+    },
+    {
+      "check_id": "WK03",
+      "check_name": "Price reaction to MAIA IR updates",
+      "check_type": "price",
+      "frequency": "event-driven",
+      "manual_entry_required": true,
+      "description": "Record price reaction to press releases or investor presentations"
+    },
+    {
+      "check_id": "WK04",
+      "check_name": "Price reaction to new SEC filing",
+      "check_type": "price",
+      "frequency": "event-driven",
+      "manual_entry_required": true,
+      "description": "Record price reaction to Form 4, Form 144, 13D/G, 10-Q/10-K, S-1/S-3"
+    },
+    {
+      "check_id": "WK05",
+      "check_name": "Sustained move or failed rally",
+      "check_type": "price",
+      "frequency": "weekly",
+      "manual_entry_required": true,
+      "description": "Assess whether price holds new level or reverts; record duration"
+    },
+    {
+      "check_id": "WK06",
+      "check_name": "Large single-day volume spike",
+      "check_type": "volume",
+      "frequency": "event-driven",
+      "manual_entry_required": true,
+      "description": "Record volume ratio vs. recent average on high-volume days"
+    },
+    {
+      "check_id": "WK07",
+      "check_name": "Price gap up or gap down",
+      "check_type": "price",
+      "frequency": "event-driven",
+      "manual_entry_required": true,
+      "description": "Record gap size (percentage) and whether gap filled or held"
+    },
+    {
+      "check_id": "WK08",
+      "check_name": "Liquidity concern / very low volume",
+      "check_type": "volume",
+      "frequency": "weekly",
+      "manual_entry_required": true,
+      "description": "Flag if daily volume drops significantly below average"
+    },
+    {
+      "check_id": "WK09",
+      "check_name": "Spread concern (manual observation)",
+      "check_type": "liquidity",
+      "frequency": "weekly",
+      "manual_entry_required": true,
+      "description": "Flag if wide bid-ask spread is manually observed"
+    },
+    {
+      "check_id": "WK10",
+      "check_name": "Weekly volume vs. recent average",
+      "check_type": "volume",
+      "frequency": "weekly",
+      "manual_entry_required": true,
+      "description": "Record percentage above/below recent 30-day average volume"
+    }
+  ],
+  "event_driven_checks": [
+    {
+      "event_id": "EV01",
+      "event_name": "New Form 4 purchase",
+      "event_type": "insider_activity",
+      "baseline_reference": "134 purchases, 0 sales",
+      "price_volume_observation_required": true,
+      "confirmation_levels": {
+        "confirming": "New purchase + price holds above $1.50 on rising volume",
+        "neutral": "New purchase + price stable, no significant volume change",
+        "cautionary": "New purchase + price breaks below $1.50 on heavy volume",
+        "requires_pm_review": "If price diverges sharply despite new purchase"
+      }
+    },
+    {
+      "event_id": "EV02",
+      "event_name": "First Form 4 sale",
+      "event_type": "insider_activity",
+      "baseline_reference": "0 sales (critical baseline change)",
+      "price_volume_observation_required": true,
+      "pm_review_mandatory": true,
+      "confirmation_levels": {
+        "requires_pm_review": "First sale regardless of price/volume behavior"
+      }
+    },
+    {
+      "event_id": "EV03",
+      "event_name": "New Form 144 filing",
+      "event_type": "insider_activity",
+      "baseline_reference": "0 filings",
+      "price_volume_observation_required": true,
+      "pm_review_mandatory": true,
+      "confirmation_levels": {
+        "requires_pm_review": "First Form 144 regardless of price/volume behavior"
+      }
+    },
+    {
+      "event_id": "EV04",
+      "event_name": "New 13D/G filing",
+      "event_type": "institutional_activity",
+      "baseline_reference": "0 filings",
+      "price_volume_observation_required": true,
+      "pm_review_mandatory": true,
+      "confirmation_levels": {
+        "requires_pm_review": "New 5%+ beneficial ownership regardless of price/volume behavior"
+      }
+    },
+    {
+      "event_id": "EV05",
+      "event_name": "New 13F match",
+      "event_type": "institutional_activity",
+      "baseline_reference": "0 matches in Q1 2026 sample",
+      "price_volume_observation_required": true,
+      "pm_review_mandatory": true,
+      "confirmation_levels": {
+        "requires_pm_review": "First reliable 13F institutional match"
+      }
+    },
+    {
+      "event_id": "EV06",
+      "event_name": "New clinical update",
+      "event_type": "clinical",
+      "baseline_reference": "THIO-104 Phase 3 data timing not disclosed",
+      "price_volume_observation_required": true,
+      "confirmation_levels": {
+        "confirming": "Positive clinical update + price up on heavy volume",
+        "neutral": "Update neutral or minor, price/volume stable",
+        "cautionary": "Negative update + price down on heavy volume",
+        "requires_pm_review": "If update is major milestone or data readout"
+      }
+    },
+    {
+      "event_id": "EV07",
+      "event_name": "THIO-104 data timing disclosed",
+      "event_type": "clinical",
+      "baseline_reference": "Critical unknown in synthesis",
+      "price_volume_observation_required": true,
+      "pm_review_mandatory": true,
+      "confirmation_levels": {
+        "requires_pm_review": "Critical unknown resolved regardless of price/volume behavior"
+      }
+    },
+    {
+      "event_id": "EV08",
+      "event_name": "New financing filing",
+      "event_type": "financing",
+      "baseline_reference": "March 2026 offering at $1.50",
+      "price_volume_observation_required": true,
+      "confirmation_levels": {
+        "confirming": "Price holds above offering price on stable/rising volume",
+        "neutral": "Price stable, no major volume reaction",
+        "cautionary": "Price drops on heavy volume after financing filing",
+        "requires_pm_review": "If offering price significantly below $1.50 or dilution substantial"
+      }
+    },
+    {
+      "event_id": "EV09",
+      "event_name": "New 10-Q/10-K filing",
+      "event_type": "financial",
+      "baseline_reference": "Q1 2026 10-Q: $34.4M cash, 19.4 months runway",
+      "price_volume_observation_required": true,
+      "confirmation_levels": {
+        "confirming": "Strong cash position, stable burn, no going-concern issues, price stable/up",
+        "neutral": "Expected burn, stable cash runway, no surprises",
+        "cautionary": "Going-concern language added, burn accelerating, cash runway dropping",
+        "requires_pm_review": "If runway drops below 12 months or going-concern language changes"
+      }
+    },
+    {
+      "event_id": "EV10",
+      "event_name": "Cash runway drops below 12 months",
+      "event_type": "financial",
+      "baseline_reference": "19.4 months runway from 2026-03-31",
+      "price_volume_observation_required": true,
+      "pm_review_mandatory": true,
+      "confirmation_levels": {
+        "requires_pm_review": "Financing need imminent regardless of price/volume behavior"
+      }
+    }
+  ],
+  "pm_review_triggers": [
+    {
+      "trigger_id": "TR01",
+      "trigger_name": "Price closes below $1.50 for 5 consecutive trading days",
+      "trigger_type": "price",
+      "threshold": "5 consecutive days below $1.50",
+      "significance": "Sustained break of March 2026 offering price"
+    },
+    {
+      "trigger_id": "TR02",
+      "trigger_name": "Price reclaims $1.50 and holds for 5 consecutive trading days on elevated volume",
+      "trigger_type": "price",
+      "threshold": "5 consecutive days above $1.50 with volume above average",
+      "significance": "Potential trend reversal"
+    },
+    {
+      "trigger_id": "TR03",
+      "trigger_name": "Single-day volume spike >3x recent average",
+      "trigger_type": "volume",
+      "threshold": ">3x average volume",
+      "significance": "Major interest or event"
+    },
+    {
+      "trigger_id": "TR04",
+      "trigger_name": "Price declines >25% in one week without company explanation",
+      "trigger_type": "price",
+      "threshold": ">25% decline in 5 trading days",
+      "significance": "Possible negative event or leak"
+    },
+    {
+      "trigger_id": "TR05",
+      "trigger_name": "Price declines >50% from $1.50 offering price",
+      "trigger_type": "price",
+      "threshold": "Price reaches $0.75 or below",
+      "significance": "Severe decline from offering price"
+    },
+    {
+      "trigger_id": "TR06",
+      "trigger_name": "Price surges >50% in one week on heavy volume",
+      "trigger_type": "price",
+      "threshold": ">50% increase in 5 trading days with volume spike",
+      "significance": "Possible catalyst or speculation"
+    },
+    {
+      "trigger_id": "TR07",
+      "trigger_name": "Volume consistently <50% of recent average for 5+ days",
+      "trigger_type": "volume",
+      "threshold": "<50% average volume for 5 consecutive days",
+      "significance": "Liquidity concern"
+    },
+    {
+      "trigger_id": "TR08",
+      "trigger_name": "First Form 4 open-market sale",
+      "trigger_type": "insider_activity",
+      "threshold": "First sale after 0-sales baseline",
+      "significance": "Critical baseline change"
+    },
+    {
+      "trigger_id": "TR09",
+      "trigger_name": "First Form 144 filing",
+      "trigger_type": "insider_activity",
+      "threshold": "First filing after 0-filings baseline",
+      "significance": "Indicates intended sale"
+    },
+    {
+      "trigger_id": "TR10",
+      "trigger_name": "Insider purchases stop for >90 days",
+      "trigger_type": "insider_activity",
+      "threshold": "No new purchases for >90 days",
+      "significance": "Prolonged pause after 21 months of active purchasing"
+    },
+    {
+      "trigger_id": "TR11",
+      "trigger_name": "New 13D/G filing",
+      "trigger_type": "institutional_activity",
+      "threshold": "5%+ beneficial ownership disclosure",
+      "significance": "First institutional disclosure after 0-filings baseline"
+    },
+    {
+      "trigger_id": "TR12",
+      "trigger_name": "New reliable 13F institutional match",
+      "trigger_type": "institutional_activity",
+      "threshold": "First match after 0-matches baseline",
+      "significance": "Institutional entry detected"
+    },
+    {
+      "trigger_id": "TR13",
+      "trigger_name": "THIO-104 data timing disclosed",
+      "trigger_type": "clinical",
+      "threshold": "Data timing announcement",
+      "significance": "Resolves critical unknown"
+    },
+    {
+      "trigger_id": "TR14",
+      "trigger_name": "THIO-104 topline data released",
+      "trigger_type": "clinical",
+      "threshold": "Phase 3 topline data announcement",
+      "significance": "Primary catalyst event"
+    },
+    {
+      "trigger_id": "TR15",
+      "trigger_name": "Clinical trial update (enrollment complete, enrollment halted, etc.)",
+      "trigger_type": "clinical",
+      "threshold": "Material trial status change",
+      "significance": "May affect timeline expectations"
+    },
+    {
+      "trigger_id": "TR16",
+      "trigger_name": "New financing filing",
+      "trigger_type": "financing",
+      "threshold": "S-1, S-3, or registered direct offering filed",
+      "significance": "Indicates capital raise"
+    },
+    {
+      "trigger_id": "TR17",
+      "trigger_name": "Cash runway drops below 12 months",
+      "trigger_type": "financial",
+      "threshold": "Runway <12 months based on latest 10-Q/10-K",
+      "significance": "Near-term financing need"
+    },
+    {
+      "trigger_id": "TR18",
+      "trigger_name": "Going-concern language change in 10-Q/10-K",
+      "trigger_type": "financial",
+      "threshold": "Going-concern language added or removed",
+      "significance": "Significant disclosure change"
+    }
+  ],
+  "manual_observation_template": {
+    "path": "docs/sample_reports/maia_market_confirmation/MAIA_market_observation_template.csv",
+    "columns": [
+      "date",
+      "closing_price",
+      "weekly_high",
+      "weekly_low",
+      "weekly_volume",
+      "avg_volume_reference",
+      "days_above_1_50",
+      "days_below_1_50",
+      "major_news",
+      "sec_filings",
+      "form4_activity",
+      "form144_activity",
+      "clinical_updates",
+      "financing_updates",
+      "price_volume_read",
+      "pm_review_triggered",
+      "notes"
+    ],
+    "usage_instructions": "Weekly minimum entry; event-driven entry for any PM review trigger; manually record price/volume data or integrate verified public quote source"
+  },
+  "status_labels": [
+    "confirming",
+    "neutral",
+    "cautionary",
+    "requires_pm_review"
+  ],
+  "limitations": [
+    "Price/volume data is manual-entry unless verified public quote source is integrated",
+    "Form 4 filings due within 2 business days of transaction; price reaction may precede public filing",
+    "Form 144 filings indicate intent to sell, not completed sale; actual sale timing not disclosed",
+    "13F-HR filings have 45-day lag from quarter-end; holdings data is stale",
+    "13F parser success rate is 60%; no-match conclusion scoped to successfully parsed filings only",
+    "13F only reports long positions >$200k or >10k shares threshold",
+    "THIO-104 Phase 3 data timing is not disclosed (critical unknown)",
+    "Clinical updates depend on MAIA voluntary disclosure; no automatic source exists",
+    "Rule 10b5-1 trading plans are not always disclosed; cannot distinguish planned vs. discretionary trades"
+  ],
+  "future_automation": [
+    "Automated price/volume data integration via public quote API (Alpha Vantage, Yahoo Finance, IEX Cloud)",
+    "Automated PM review trigger detection and alert generation (email/Telegram if PM approves)",
+    "Form 4 price correlation analysis - match transaction prices to market closing prices",
+    "Expanded 13F parser coverage beyond current 60% success rate",
+    "Quarterly 13F institutional holder trend analysis",
+    "Clinical milestone calendar automation - parse press releases and 10-Q/10-K for milestone updates",
+    "Cash runway auto-update from latest 10-Q/10-K with automatic PM review trigger when <12 months",
+    "Event-driven PDF summary report generation"
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

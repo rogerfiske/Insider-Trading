@@ -1,0 +1,86 @@
+{
+  "ticker": "MAIA",
+  "cik": "0001878313",
+  "generated_at": "2026-06-11T17:50:12.539405Z",
+  "checkpoint": "CP23C",
+  "archive_root": "docs/sample_reports/generic_ticker/MAIA/archive",
+  "artifacts": [
+    {
+      "name": "MAIA_synthesis_packet",
+      "type": "json",
+      "original_path": "docs/sample_reports/generic_ticker/MAIA/synthesis/MAIA_synthesis_packet.json",
+      "archive_path": "synthesis/MAIA_synthesis_packet.json",
+      "purpose": "Synthesis output",
+      "status": "approved",
+      "sha256": "fa5b23dc4867f662d3b7e8ca2d9458d7d340ce21b07193944172ada0ea90777b"
+    },
+    {
+      "name": "MAIA_synthesis_packet",
+      "type": "md",
+      "original_path": "docs/sample_reports/generic_ticker/MAIA/synthesis/MAIA_synthesis_packet.md",
+      "archive_path": "synthesis/MAIA_synthesis_packet.md",
+      "purpose": "Synthesis output",
+      "status": "approved",
+      "sha256": "02978e580bbf17add37dcc6af1cb514c8c1187fdd04fd6005f454b18ff17beec"
+    },
+    {
+      "name": "MAIA_monitoring_plan",
+      "type": "json",
+      "original_path": "docs/sample_reports/generic_ticker/MAIA/monitoring/MAIA_monitoring_plan.json",
+      "archive_path": "monitoring/MAIA_monitoring_plan.json",
+      "purpose": "Monitoring output",
+      "status": "approved",
+      "sha256": "9555b39058cd69bfe2b4a569762db567b6c0928d699fcf4d6805c060b30ef9f2"
+    },
+    {
+      "name": "MAIA_monitoring_plan",
+      "type": "md",
+      "original_path": "docs/sample_reports/generic_ticker/MAIA/monitoring/MAIA_monitoring_plan.md",
+      "archive_path": "monitoring/MAIA_monitoring_plan.md",
+      "purpose": "Monitoring output",
+      "status": "approved",
+      "sha256": "9b4e472b88e069b56e1181aef9857b9e6bd0c87961b08fa27c6e6e6e137d0239"
+    },
+    {
+      "name": "MAIA_market_confirmation_checklist",
+      "type": "md",
+      "original_path": "docs/sample_reports/generic_ticker/MAIA/market_confirmation/MAIA_market_confirmation_checklist.md",
+      "archive_path": "market_confirmation/MAIA_market_confirmation_checklist.md",
+      "purpose": "Market Confirmation output",
+      "status": "approved",
+      "sha256": "706538d22cf4be873b4474e1721b7cdbcb29e56a5a486110c54e8a243109977e"
+    },
+    {
+      "name": "MAIA_market_confirmation_plan",
+      "type": "json",
+      "original_path": "docs/sample_reports/generic_ticker/MAIA/market_confirmation/MAIA_market_confirmation_plan.json",
+      "archive_path": "market_confirmation/MAIA_market_confirmation_plan.json",
+      "purpose": "Market Confirmation output",
+      "status": "approved",
+      "sha256": "db094d419c6ffb53e7baedd56ff00bed8609669db5f6dd13aec183ef70705a99"
+    },
+    {
+      "name": "MAIA_market_observation_template",
+      "type": "csv",
+      "original_path": "docs/sample_reports/generic_ticker/MAIA/market_confirmation/MAIA_market_observation_template.csv",
+      "archive_path": "market_confirmation/MAIA_market_observation_template.csv",
+      "purpose": "Market Confirmation output",
+      "status": "approved",
+      "sha256": "79654736f066035a49cc72eae8ad62f5d68247500111698a4237ad42d0dc990a"
+    }
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  },
+  "limitations": [
+    "Generic framework skeleton - full SEC extraction not yet implemented",
+    "Validation mode uses reformatted existing data"
+  ]
+}

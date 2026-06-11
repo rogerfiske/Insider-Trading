@@ -1,0 +1,251 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generic Ticker Synthesis Packet Schema",
+  "description": "Reusable schema for generating comprehensive SEC-only ticker research packets",
+  "type": "object",
+  "required": [
+    "ticker",
+    "cik",
+    "generated_at",
+    "source_boundary",
+    "modules",
+    "evidence_matrix",
+    "synthesis_scores",
+    "safety"
+  ],
+  "properties": {
+    "ticker": {
+      "type": "string",
+      "description": "Stock ticker symbol"
+    },
+    "cik": {
+      "type": "string",
+      "description": "SEC CIK number"
+    },
+    "company_name": {
+      "type": "string",
+      "description": "Company legal name"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    },
+    "checkpoint": {
+      "type": "string",
+      "description": "Checkpoint ID if applicable"
+    },
+    "ticker_profile": {
+      "type": "string",
+      "enum": ["biotech_clinical", "small_cap_operating_company", "pre_revenue_company", "unknown_profile"],
+      "description": "Company profile type for module activation"
+    },
+    "source_boundary": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Approved data sources used for research"
+    },
+    "modules": {
+      "type": "object",
+      "description": "Research modules - fields can be not_applicable for irrelevant ticker types",
+      "properties": {
+        "insider_activity": {
+          "type": "object",
+          "properties": {
+            "lookback_days": {"type": "integer"},
+            "form4_filings_found": {"type": "integer"},
+            "form4_filings_parsed": {"type": "integer"},
+            "transactions_extracted": {"type": "integer"},
+            "open_market_purchases": {"type": "integer"},
+            "open_market_sales": {"type": "integer"},
+            "purchase_value_usd": {"type": "number"},
+            "sale_value_usd": {"type": "number"},
+            "net_purchase_value_usd": {"type": "number"},
+            "distinct_buyers": {"type": "integer"},
+            "distinct_sellers": {"type": "integer"},
+            "buyer_roles": {"type": "array", "items": {"type": "string"}},
+            "latest_purchase_date": {"type": ["string", "null"]},
+            "latest_sale_date": {"type": ["string", "null"]},
+            "purchase_months_count": {"type": "integer"},
+            "insider_score": {"type": "integer", "minimum": 0, "maximum": 100},
+            "insider_rating": {"type": "string"},
+            "source_checkpoint": {"type": "string"}
+          }
+        },
+        "capital_structure": {
+          "type": "object",
+          "properties": {
+            "common_shares_outstanding": {"type": ["integer", "null"]},
+            "stock_options": {"type": ["integer", "null"]},
+            "warrants": {"type": ["integer", "null"]},
+            "approximate_fully_diluted": {"type": ["integer", "null"]},
+            "dilution_overhang_percent": {"type": ["number", "null"]},
+            "recent_offerings": {"type": "array"},
+            "form_13d_13g_filings": {"type": "integer"},
+            "form_144_filings": {"type": "integer"},
+            "beneficial_ownership_blocker": {"type": ["string", "null"]},
+            "source_checkpoint": {"type": "string"}
+          }
+        },
+        "cash_runway": {
+          "type": "object",
+          "description": "Can be not_applicable for revenue-positive operating companies",
+          "properties": {
+            "official_10q_financials": {"type": ["object", "null"]},
+            "cash_runway_scenarios": {"type": "array"},
+            "source_checkpoint": {"type": "string"}
+          }
+        },
+        "ownership_13dg": {
+          "type": "object",
+          "properties": {
+            "filings_found": {"type": "integer"},
+            "major_holders": {"type": "array"},
+            "note": {"type": "string"}
+          }
+        },
+        "ownership_13f": {
+          "type": "object",
+          "properties": {
+            "parser_success_rate": {"type": ["number", "null"]},
+            "managers_successfully_parsed": {"type": "integer"},
+            "managers_failed_parsing": {"type": "integer"},
+            "total_holdings_parsed": {"type": "integer"},
+            "ticker_matches_found": {"type": "integer"},
+            "status": {"type": "string"},
+            "note": {"type": "string"}
+          }
+        },
+        "form_144": {
+          "type": "object",
+          "properties": {
+            "filings_found": {"type": "integer"},
+            "recent_144s": {"type": "array"},
+            "note": {"type": "string"}
+          }
+        },
+        "clinical_regulatory": {
+          "type": ["object", "string"],
+          "description": "Object for biotech_clinical profile, or 'not_applicable' for others",
+          "properties": {
+            "clinical_programs": {"type": "array"},
+            "milestone_calendar": {"type": "array"},
+            "regulatory_designations": {"type": "array"},
+            "critical_unknowns": {"type": "array"}
+          }
+        },
+        "business_operations": {
+          "type": ["object", "string"],
+          "description": "For operating companies; 'not_applicable' for pre-revenue/clinical",
+          "properties": {
+            "revenue_sources": {"type": "array"},
+            "operating_milestones": {"type": "array"},
+            "competitive_position": {"type": "string"}
+          }
+        },
+        "market_confirmation": {
+          "type": "object",
+          "description": "Manual tracking framework, not real-time data",
+          "properties": {
+            "reference_price": {"type": ["number", "null"]},
+            "reference_date": {"type": ["string", "null"]},
+            "tracking_status": {"type": "string"},
+            "note": {"type": "string"}
+          }
+        }
+      }
+    },
+    "evidence_matrix": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["category", "evidence", "direction", "strength", "confidence", "source"],
+        "properties": {
+          "category": {"type": "string"},
+          "evidence": {"type": "string"},
+          "direction": {
+            "type": "string",
+            "enum": ["Positive", "Negative", "Neutral", "Unknown", "Not Applicable"]
+          },
+          "strength": {
+            "type": "string",
+            "enum": ["High", "Medium", "Low", "N/A"]
+          },
+          "confidence": {
+            "type": "string",
+            "enum": ["High", "Medium", "Low"]
+          },
+          "source": {"type": "string"},
+          "comment": {"type": "string"}
+        }
+      }
+    },
+    "synthesis_scores": {
+      "type": "object",
+      "required": ["overall_research_posture"],
+      "properties": {
+        "insider_evidence_score": {"type": "integer", "minimum": 0, "maximum": 100},
+        "insider_evidence_rating": {"type": "string"},
+        "dilution_capital_risk_score": {"type": "integer", "minimum": 0, "maximum": 100},
+        "dilution_capital_risk_rating": {"type": "string"},
+        "cash_runway_score": {"type": ["integer", "string"], "minimum": 0, "maximum": 100},
+        "cash_runway_rating": {"type": "string"},
+        "clinical_progress_score": {"type": ["integer", "string"], "minimum": 0, "maximum": 100},
+        "clinical_progress_rating": {"type": "string"},
+        "business_progress_score": {"type": ["integer", "string"], "minimum": 0, "maximum": 100},
+        "business_progress_rating": {"type": "string"},
+        "data_quality_confidence_score": {"type": "integer", "minimum": 0, "maximum": 100},
+        "data_quality_rating": {"type": "string"},
+        "market_confirmation_score": {"type": ["integer", "string"], "minimum": 0, "maximum": 100},
+        "market_confirmation_rating": {"type": "string"},
+        "overall_research_posture": {
+          "type": "string",
+          "description": "Allowed: Strong insider-evidence / high uncertainty, Mixed evidence, Weak insider-evidence, Incomplete evidence, etc. NO buy/sell/hold"
+        }
+      }
+    },
+    "monitoring_plan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": {"type": "string"},
+          "frequency": {"type": "string"},
+          "action": {"type": "string"},
+          "alert_trigger": {"type": "string"}
+        }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "limitations": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "report_only",
+        "alerts_generated",
+        "openinsider_spreadsheet_used",
+        "telegram_sent",
+        "email_sent",
+        "scheduled_tasks_modified",
+        "env_printed_or_changed",
+        "buy_sell_hold_language_used"
+      ],
+      "properties": {
+        "report_only": {"type": "boolean", "const": true},
+        "alerts_generated": {"type": "boolean", "const": false},
+        "openinsider_spreadsheet_used": {"type": "boolean", "const": false},
+        "telegram_sent": {"type": "boolean", "const": false},
+        "email_sent": {"type": "boolean", "const": false},
+        "scheduled_tasks_modified": {"type": "boolean", "const": false},
+        "env_printed_or_changed": {"type": "boolean", "const": false},
+        "buy_sell_hold_language_used": {"type": "boolean", "const": false}
+      }
+    }
+  }
+}

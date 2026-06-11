@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generic Ticker Market Confirmation Plan Schema",
+  "description": "Reusable schema for manual market confirmation tracking",
+  "type": "object",
+  "required": [
+    "ticker",
+    "cik",
+    "generated_at",
+    "purpose",
+    "baseline",
+    "reference_levels",
+    "weekly_checklist"
+  ],
+  "properties": {
+    "ticker": {"type": "string"},
+    "cik": {"type": "string"},
+    "company_name": {"type": "string"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "checkpoint": {"type": "string"},
+    "purpose": {"type": "string"},
+    "baseline": {
+      "type": "object",
+      "description": "Approved baseline from synthesis packet",
+      "properties": {
+        "insider_activity": {"type": "object"},
+        "capital_structure": {"type": "object"},
+        "cash_runway": {"type": ["object", "null"]},
+        "institutional_visibility": {"type": "object"},
+        "clinical_programs": {"type": ["object", "string"]},
+        "business_operations": {"type": ["object", "string"]},
+        "evidence_matrix_conclusion": {"type": "string"}
+      }
+    },
+    "reference_levels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "level_name": {"type": "string"},
+          "price_usd": {"type": ["number", "null"]},
+          "volume": {"type": ["integer", "null"]},
+          "significance": {"type": "string"},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "weekly_checklist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check_id", "check_name", "check_type", "frequency"],
+        "properties": {
+          "check_id": {"type": "string"},
+          "check_name": {"type": "string"},
+          "check_type": {
+            "type": "string",
+            "enum": ["price", "volume", "technical", "sentiment"]
+          },
+          "frequency": {
+            "type": "string",
+            "enum": ["daily", "weekly", "monthly", "as_needed"]
+          },
+          "manual_entry_required": {"type": "boolean"},
+          "description": {"type": "string"}
+        }
+      }
+    },
+    "status_labels": {
+      "type": "object",
+      "properties": {
+        "confirmation": {"type": "string"},
+        "neutral": {"type": "string"},
+        "contradiction": {"type": "string"}
+      }
+    },
+    "automation_gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "gap_name": {"type": "string"},
+          "current_state": {"type": "string"},
+          "required_integration": {"type": "string"}
+        }
+      }
+    }
+  }
+}
