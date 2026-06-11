@@ -1,0 +1,46 @@
+{
+  "ticker": "NVDA",
+  "cik": "not_available",
+  "generated_at": "2026-06-11T18:13:40.652533Z",
+  "checkpoint": "CP23I",
+  "purpose": "Skeleton validation for generic market confirmation framework",
+  "baseline": {
+    "synthesis_checkpoint": "CP23I",
+    "reference_price_source": "not_available - skeleton validation mode",
+    "baseline_date": "not_available"
+  },
+  "reference_levels": [
+    {
+      "level_type": "skeleton_placeholder",
+      "price_usd": "not_available",
+      "significance": "Placeholder for validation testing only",
+      "source": "not_available - skeleton mode"
+    }
+  ],
+  "weekly_checklist": [
+    "Review closing price and daily volume",
+    "Note any significant price or volume deviations",
+    "Check for material SEC filings or news events"
+  ],
+  "observation_frequency": "weekly",
+  "manual_entry_required": true,
+  "automation_gaps": [
+    "Price/volume data collection requires manual CSV entry",
+    "No automated market data integration in skeleton mode"
+  ],
+  "limitations": [
+    "Skeleton validation mode - no live market data",
+    "NVDA selected only to validate framework handles non-biotech ticker profiles",
+    "No MAIA-specific $1.50 offering price reference"
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

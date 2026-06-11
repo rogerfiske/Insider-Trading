@@ -246,6 +246,73 @@ MAIA serves as the validation ticker because it has approved baseline values.
 
 The script validates that all baseline values are preserved.
 
+## NVDA Second Validation (CP23I)
+
+NVDA serves as the second validation ticker to verify the generic framework handles non-biotech companies correctly.
+
+**Purpose:**
+- Confirm framework works for non-biotech ticker profiles
+- Verify clinical/regulatory module correctly set to `not_applicable`
+- Confirm MAIA-specific values do not leak into NVDA outputs
+- Validate safety flags, no buy/sell/hold language
+- Demonstrate market confirmation and archive outputs for non-biotech ticker
+
+**NVDA validation characteristics:**
+- Ticker: NVDA
+- Profile: `unknown_profile` (not biotech)
+- Clinical/regulatory module: `not_applicable`
+- All insider/financial data: `not_available` (skeleton mode)
+- No MAIA-specific values: No $1.50, no 134 purchases, no THIO references
+- Not an investment analysis: Framework validation only
+
+**Validation commands:**
+```powershell
+# Synthesis
+python scripts/ticker_synthesis_workflow.py `
+    --ticker NVDA --mode validation --profile unknown_profile `
+    --output-dir docs/sample_reports/generic_ticker/NVDA
+
+# Monitoring
+python scripts/ticker_monitoring_pack.py `
+    --ticker NVDA --mode validation `
+    --input-dir docs/sample_reports/generic_ticker/NVDA `
+    --output-dir docs/sample_reports/generic_ticker/NVDA
+
+# Market confirmation
+python scripts/ticker_market_confirmation_checklist.py `
+    --ticker NVDA --mode validation `
+    --input-dir docs/sample_reports/generic_ticker/NVDA `
+    --output-dir docs/sample_reports/generic_ticker/NVDA
+
+# Archive
+python scripts/ticker_archive_packet.py `
+    --ticker NVDA --mode validation `
+    --input-dir docs/sample_reports/generic_ticker/NVDA `
+    --output-dir docs/sample_reports/generic_ticker/NVDA/archive
+```
+
+**Expected outputs:**
+- `docs/sample_reports/generic_ticker/NVDA/synthesis/NVDA_synthesis_packet.json`
+- `docs/sample_reports/generic_ticker/NVDA/synthesis/NVDA_synthesis_packet.md`
+- `docs/sample_reports/generic_ticker/NVDA/monitoring/NVDA_monitoring_plan.json`
+- `docs/sample_reports/generic_ticker/NVDA/monitoring/NVDA_monitoring_plan.md`
+- `docs/sample_reports/generic_ticker/NVDA/market_confirmation/NVDA_market_confirmation_plan.json`
+- `docs/sample_reports/generic_ticker/NVDA/market_confirmation/NVDA_market_confirmation_checklist.md`
+- `docs/sample_reports/generic_ticker/NVDA/market_confirmation/NVDA_market_observation_template.csv`
+- `docs/sample_reports/generic_ticker/NVDA/archive/NVDA_archive_manifest.json`
+- `docs/sample_reports/generic_ticker/NVDA/archive/NVDA_archive_index.md`
+
+**Validation tests:**
+```powershell
+pytest tests/test_generic_ticker_second_validation.py -v
+```
+
+**Known limitations:**
+- Skeleton validation mode - no live SEC data extraction
+- All financial/insider data marked `not_available`
+- Not an NVDA investment analysis or research report
+- Demonstrates framework structure, not actual analysis
+
 ## Safety Constraints
 
 **All scripts enforce:**

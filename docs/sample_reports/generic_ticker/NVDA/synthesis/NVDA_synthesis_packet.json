@@ -1,0 +1,154 @@
+{
+  "ticker": "NVDA",
+  "cik": "not_available",
+  "company_name": "NVIDIA Corporation (skeleton validation)",
+  "generated_at": "2026-06-11T18:13:29.852198Z",
+  "checkpoint": "CP23I",
+  "ticker_profile": "unknown_profile",
+  "source_boundary": [
+    "SEC EDGAR public filings only",
+    "Checkpoint: CP23I",
+    "Generic ticker workflow for NVDA",
+    "NO Roger's uploaded MAIA spreadsheet",
+    "NO OpenInsider data"
+  ],
+  "modules": {
+    "insider_activity": {
+      "lookback_days": 1460,
+      "form4_filings_found": 0,
+      "form4_filings_parsed": 0,
+      "transactions_extracted": 0,
+      "open_market_purchases": 0,
+      "open_market_sales": 0,
+      "purchase_value_usd": 0.0,
+      "sale_value_usd": 0.0,
+      "net_purchase_value_usd": 0.0,
+      "distinct_buyers": 0,
+      "distinct_sellers": 0,
+      "buyer_roles": [],
+      "latest_purchase_date": "not_available",
+      "latest_sale_date": "not_available",
+      "purchase_months_count": 0,
+      "insider_score": 0,
+      "insider_rating": "not_available - skeleton validation mode",
+      "source_checkpoint": "Skeleton validation (CP23I)"
+    },
+    "capital_structure": {
+      "common_shares_outstanding": null,
+      "stock_options": null,
+      "warrants": null,
+      "approximate_fully_diluted": null,
+      "dilution_overhang_percent": null,
+      "recent_offerings": [],
+      "form_13d_13g_filings": 0,
+      "form_144_filings": 0,
+      "beneficial_ownership_blocker": null,
+      "source_checkpoint": "not_available"
+    },
+    "cash_runway": {
+      "official_10q_financials": null,
+      "cash_runway_scenarios": [],
+      "source_checkpoint": "not_applicable - revenue-positive operating company"
+    },
+    "ownership_13dg": {
+      "filings_found": 0,
+      "major_holders": [],
+      "note": "not_available - skeleton validation mode"
+    },
+    "ownership_13f": {
+      "parser_success_rate": null,
+      "managers_successfully_parsed": 0,
+      "managers_failed_parsing": 0,
+      "total_holdings_parsed": 0,
+      "ticker_matches_found": 0,
+      "status": "not_available - skeleton validation mode",
+      "note": "13F parsing infrastructure exists but not run for NVDA validation"
+    },
+    "form_144": {
+      "filings_found": 0,
+      "recent_144s": [],
+      "note": "not_available - skeleton validation mode"
+    },
+    "clinical_regulatory": "not_applicable",
+    "business_operations": {
+      "revenue_sources": [
+        "not_available"
+      ],
+      "operating_milestones": [],
+      "competitive_position": "not_available - skeleton validation mode"
+    },
+    "market_confirmation": {
+      "reference_price": null,
+      "reference_date": null,
+      "tracking_status": "Manual monitoring framework available",
+      "note": "Requires manual price/volume entry; no live quote integration"
+    }
+  },
+  "evidence_matrix": [
+    {
+      "category": "Insider buying strength",
+      "evidence": "not_available - skeleton validation mode",
+      "direction": "Unknown",
+      "strength": "N/A",
+      "confidence": "Low",
+      "source": "Skeleton validation data (CP23I)",
+      "comment": "Live SEC extraction not implemented"
+    },
+    {
+      "category": "Clinical/regulatory progress",
+      "evidence": "not_applicable - NVDA is not biotech",
+      "direction": "Not Applicable",
+      "strength": "N/A",
+      "confidence": "N/A",
+      "source": "Ticker profile classification",
+      "comment": "Clinical module not applicable for large operating company"
+    }
+  ],
+  "synthesis_scores": {
+    "insider_evidence_score": 0,
+    "insider_evidence_rating": "not_available",
+    "dilution_capital_risk_score": 0,
+    "dilution_capital_risk_rating": "not_available",
+    "cash_runway_score": "not_applicable",
+    "cash_runway_rating": "not_applicable - revenue-positive operating company",
+    "clinical_progress_score": "not_applicable",
+    "clinical_progress_rating": "not_applicable - not biotech",
+    "business_progress_score": 0,
+    "business_progress_rating": "not_available",
+    "data_quality_confidence_score": 10,
+    "data_quality_rating": "Low (skeleton validation mode only)",
+    "market_confirmation_score": 0,
+    "market_confirmation_rating": "not_available",
+    "overall_research_posture": "Incomplete evidence / skeleton validation mode"
+  },
+  "monitoring_plan": [
+    {
+      "item": "Skeleton validation mode",
+      "frequency": "not_applicable",
+      "action": "NVDA validation demonstrates clinical module is not_applicable",
+      "alert_trigger": "not_applicable"
+    }
+  ],
+  "open_questions": [
+    "This is a skeleton validation mode for CP23I framework testing only",
+    "Not an NVDA investment analysis",
+    "Full SEC extraction not implemented for arbitrary tickers"
+  ],
+  "limitations": [
+    "Skeleton validation mode - no live SEC data extraction",
+    "NVDA selected only to validate framework handles non-biotech ticker profiles",
+    "Clinical/regulatory module correctly set to not_applicable",
+    "All financial/insider data marked as not_available",
+    "Not an investment analysis or research report"
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

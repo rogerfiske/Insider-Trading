@@ -1,0 +1,86 @@
+{
+  "ticker": "NVDA",
+  "cik": "0001878313",
+  "generated_at": "2026-06-11T18:13:45.446202Z",
+  "checkpoint": "CP23I",
+  "archive_root": "docs/sample_reports/generic_ticker/NVDA/archive",
+  "artifacts": [
+    {
+      "name": "NVDA_synthesis_packet",
+      "type": "json",
+      "original_path": "docs/sample_reports/generic_ticker/NVDA/synthesis/NVDA_synthesis_packet.json",
+      "archive_path": "synthesis/NVDA_synthesis_packet.json",
+      "purpose": "Synthesis output",
+      "status": "approved",
+      "sha256": "99e80093bda9c603da19310851186cfbce4b8cb08da428f54fb7786d24564bf5"
+    },
+    {
+      "name": "NVDA_synthesis_packet",
+      "type": "md",
+      "original_path": "docs/sample_reports/generic_ticker/NVDA/synthesis/NVDA_synthesis_packet.md",
+      "archive_path": "synthesis/NVDA_synthesis_packet.md",
+      "purpose": "Synthesis output",
+      "status": "approved",
+      "sha256": "3a6e9104026e0014bbd840d780edccc974be5c3d514145e27f8c18edd8e10944"
+    },
+    {
+      "name": "NVDA_monitoring_plan",
+      "type": "json",
+      "original_path": "docs/sample_reports/generic_ticker/NVDA/monitoring/NVDA_monitoring_plan.json",
+      "archive_path": "monitoring/NVDA_monitoring_plan.json",
+      "purpose": "Monitoring output",
+      "status": "approved",
+      "sha256": "9b25a9063ba30e2f192414eb9e7a250c5a80923a7baa962949c19360297c5de9"
+    },
+    {
+      "name": "NVDA_monitoring_plan",
+      "type": "md",
+      "original_path": "docs/sample_reports/generic_ticker/NVDA/monitoring/NVDA_monitoring_plan.md",
+      "archive_path": "monitoring/NVDA_monitoring_plan.md",
+      "purpose": "Monitoring output",
+      "status": "approved",
+      "sha256": "6dde552c3746b30afc95ccac094e9cd67838493b79913ce761d8ab58a4148471"
+    },
+    {
+      "name": "NVDA_market_confirmation_checklist",
+      "type": "md",
+      "original_path": "docs/sample_reports/generic_ticker/NVDA/market_confirmation/NVDA_market_confirmation_checklist.md",
+      "archive_path": "market_confirmation/NVDA_market_confirmation_checklist.md",
+      "purpose": "Market Confirmation output",
+      "status": "approved",
+      "sha256": "0be8a554241aa750cf5f26030ca03331ceea862bc88c7cabc675fb71762b3745"
+    },
+    {
+      "name": "NVDA_market_confirmation_plan",
+      "type": "json",
+      "original_path": "docs/sample_reports/generic_ticker/NVDA/market_confirmation/NVDA_market_confirmation_plan.json",
+      "archive_path": "market_confirmation/NVDA_market_confirmation_plan.json",
+      "purpose": "Market Confirmation output",
+      "status": "approved",
+      "sha256": "8732332ac3f3de68391ac80c8c02fa03bfb30292656bc59170b3ccd954e0a6e2"
+    },
+    {
+      "name": "NVDA_market_observation_template",
+      "type": "csv",
+      "original_path": "docs/sample_reports/generic_ticker/NVDA/market_confirmation/NVDA_market_observation_template.csv",
+      "archive_path": "market_confirmation/NVDA_market_observation_template.csv",
+      "purpose": "Market Confirmation output",
+      "status": "approved",
+      "sha256": "79654736f066035a49cc72eae8ad62f5d68247500111698a4237ad42d0dc990a"
+    }
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  },
+  "limitations": [
+    "Generic framework skeleton - full SEC extraction not yet implemented",
+    "Validation mode uses reformatted existing data"
+  ]
+}

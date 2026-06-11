@@ -53,7 +53,7 @@ class TickerArchivePacket:
                 sha256_hash.update(byte_block)
         return sha256_hash.hexdigest()
 
-    def generate_archive_manifest(self, input_dir: Path) -> dict:
+    def generate_archive_manifest(self, input_dir: Path, checkpoint: str = "CP23C") -> dict:
         """Generate archive manifest with checksums."""
         artifacts = []
 
@@ -77,7 +77,7 @@ class TickerArchivePacket:
             "ticker": self.ticker,
             "cik": self.cik,
             "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "checkpoint": "CP23C",
+            "checkpoint": checkpoint,
             "archive_root": f"docs/sample_reports/generic_ticker/{self.ticker}/archive",
             "artifacts": artifacts,
             "safety": get_safety_flags(),
@@ -97,8 +97,16 @@ class TickerArchivePacket:
 
         output_dir.mkdir(parents=True, exist_ok=True)
 
+        # Read checkpoint from synthesis packet
+        synthesis_path = input_dir / "synthesis" / f"{self.ticker}_synthesis_packet.json"
+        checkpoint = "CP23C"  # default
+        if synthesis_path.exists():
+            with open(synthesis_path, "r", encoding="utf-8") as f:
+                synthesis_data = json.load(f)
+                checkpoint = synthesis_data.get("checkpoint", "CP23C")
+
         # Generate manifest
-        manifest = self.generate_archive_manifest(input_dir)
+        manifest = self.generate_archive_manifest(input_dir, checkpoint)
 
         # Save manifest
         manifest_path = output_dir / f"{self.ticker}_archive_manifest.json"

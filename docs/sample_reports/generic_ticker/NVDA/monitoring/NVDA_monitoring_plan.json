@@ -1,0 +1,64 @@
+{
+  "ticker": "NVDA",
+  "cik": "not_available",
+  "generated_at": "2026-06-11T18:13:35.118897Z",
+  "checkpoint": "CP23I",
+  "purpose": "Skeleton validation for generic monitoring framework",
+  "baseline": {
+    "synthesis_checkpoint": "CP23I",
+    "insider_activity": {
+      "open_market_purchases": 0,
+      "open_market_sales": 0,
+      "purchase_value_usd": 0.0,
+      "insider_score": 0
+    },
+    "cash_runway": {
+      "cash_balance_usd": "not_available",
+      "monthly_burn_rate_usd": "not_available",
+      "months_remaining": "not_available"
+    },
+    "clinical_regulatory": "not_applicable"
+  },
+  "monitoring_categories": [
+    {
+      "category": "insider_activity",
+      "data_sources": [
+        "SEC EDGAR Form 4"
+      ],
+      "check_frequency": "weekly",
+      "track_changes": [
+        "new open-market purchases",
+        "new open-market sales"
+      ],
+      "alert_triggers": [],
+      "automation_status": "not_available - skeleton mode"
+    },
+    {
+      "category": "ownership_13f",
+      "data_sources": [
+        "SEC EDGAR 13F"
+      ],
+      "check_frequency": "quarterly",
+      "track_changes": [
+        "institutional ownership changes"
+      ],
+      "alert_triggers": [],
+      "automation_status": "not_available - skeleton mode"
+    }
+  ],
+  "limitations": [
+    "Skeleton validation mode - no live monitoring configured",
+    "NVDA selected only to validate framework handles non-biotech ticker profiles",
+    "Clinical monitoring correctly excluded (not_applicable)"
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

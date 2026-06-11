@@ -54,6 +54,58 @@ class TickerMonitoringPack:
         with open(maia_path, "r", encoding="utf-8") as f:
             return json.load(f)
 
+    def generate_nvda_skeleton_data(self) -> dict:
+        """
+        Generate skeleton NVDA monitoring plan for second validation ticker (CP23I).
+        Minimal monitoring structure without MAIA-specific baselines.
+        """
+        return {
+            "ticker": "NVDA",
+            "cik": "not_available",
+            "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "checkpoint": "CP23I",
+            "purpose": "Skeleton validation for generic monitoring framework",
+            "baseline": {
+                "synthesis_checkpoint": "CP23I",
+                "insider_activity": {
+                    "open_market_purchases": 0,
+                    "open_market_sales": 0,
+                    "purchase_value_usd": 0.0,
+                    "insider_score": 0,
+                },
+                "cash_runway": {
+                    "cash_balance_usd": "not_available",
+                    "monthly_burn_rate_usd": "not_available",
+                    "months_remaining": "not_available",
+                },
+                "clinical_regulatory": "not_applicable",
+            },
+            "monitoring_categories": [
+                {
+                    "category": "insider_activity",
+                    "data_sources": ["SEC EDGAR Form 4"],
+                    "check_frequency": "weekly",
+                    "track_changes": ["new open-market purchases", "new open-market sales"],
+                    "alert_triggers": [],
+                    "automation_status": "not_available - skeleton mode",
+                },
+                {
+                    "category": "ownership_13f",
+                    "data_sources": ["SEC EDGAR 13F"],
+                    "check_frequency": "quarterly",
+                    "track_changes": ["institutional ownership changes"],
+                    "alert_triggers": [],
+                    "automation_status": "not_available - skeleton mode",
+                },
+            ],
+            "limitations": [
+                "Skeleton validation mode - no live monitoring configured",
+                "NVDA selected only to validate framework handles non-biotech ticker profiles",
+                "Clinical monitoring correctly excluded (not_applicable)",
+            ],
+            "safety": get_safety_flags(),
+        }
+
     def generate_monitoring_plan(self, synthesis_data: dict) -> dict:
         """
         Generate monitoring plan from synthesis packet.
@@ -66,11 +118,13 @@ class TickerMonitoringPack:
         Returns:
             Monitoring plan dict
         """
-        # Skeleton: return validation data for MAIA
+        # Skeleton: return validation data for MAIA and NVDA
         if self.ticker == "MAIA":
             return self.load_maia_validation_data()
+        elif self.ticker == "NVDA":
+            return self.generate_nvda_skeleton_data()
 
-        raise NotImplementedError("Generic monitoring generation not yet implemented")
+        raise NotImplementedError(f"Generic monitoring generation not yet implemented for ticker: {self.ticker}")
 
     def run(self, input_dir: Path, output_dir: Path, mode: str = "validation") -> None:
         """Execute monitoring pack generation."""

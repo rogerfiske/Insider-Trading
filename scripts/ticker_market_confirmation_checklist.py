@@ -57,6 +57,49 @@ class TickerMarketConfirmationChecklist:
         with open(maia_path, "r", encoding="utf-8") as f:
             return json.load(f)
 
+    def generate_nvda_skeleton_data(self) -> dict:
+        """
+        Generate skeleton NVDA market confirmation plan for second validation ticker (CP23I).
+        Minimal market confirmation structure without MAIA-specific price levels.
+        """
+        return {
+            "ticker": "NVDA",
+            "cik": "not_available",
+            "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "checkpoint": "CP23I",
+            "purpose": "Skeleton validation for generic market confirmation framework",
+            "baseline": {
+                "synthesis_checkpoint": "CP23I",
+                "reference_price_source": "not_available - skeleton validation mode",
+                "baseline_date": "not_available",
+            },
+            "reference_levels": [
+                {
+                    "level_type": "skeleton_placeholder",
+                    "price_usd": "not_available",
+                    "significance": "Placeholder for validation testing only",
+                    "source": "not_available - skeleton mode",
+                }
+            ],
+            "weekly_checklist": [
+                "Review closing price and daily volume",
+                "Note any significant price or volume deviations",
+                "Check for material SEC filings or news events",
+            ],
+            "observation_frequency": "weekly",
+            "manual_entry_required": True,
+            "automation_gaps": [
+                "Price/volume data collection requires manual CSV entry",
+                "No automated market data integration in skeleton mode",
+            ],
+            "limitations": [
+                "Skeleton validation mode - no live market data",
+                "NVDA selected only to validate framework handles non-biotech ticker profiles",
+                "No MAIA-specific $1.50 offering price reference",
+            ],
+            "safety": get_safety_flags(),
+        }
+
     def generate_observation_template_csv(self, output_path: Path) -> None:
         """Generate CSV template for manual price/volume observations."""
         headers = [
@@ -88,10 +131,15 @@ class TickerMarketConfirmationChecklist:
             raise FileNotFoundError(f"Synthesis packet not found: {synthesis_path}")
 
         # Generate market confirmation plan
-        if self.ticker == "MAIA" and mode == "validation":
-            mc_data = self.load_maia_validation_data()
+        if mode == "validation":
+            if self.ticker == "MAIA":
+                mc_data = self.load_maia_validation_data()
+            elif self.ticker == "NVDA":
+                mc_data = self.generate_nvda_skeleton_data()
+            else:
+                raise ValueError(f"Validation mode only supports MAIA and NVDA tickers, got: {self.ticker}")
         else:
-            raise NotImplementedError("Generic market confirmation not yet implemented")
+            raise NotImplementedError("Generic market confirmation not yet implemented for live mode")
 
         # Save outputs
         mc_dir = output_dir / "market_confirmation"
