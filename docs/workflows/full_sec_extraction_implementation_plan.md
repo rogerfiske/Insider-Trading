@@ -390,7 +390,9 @@ python -m scripts.sec_xbrl_financials --tickers MAIA,NVDA --output-dir docs/samp
 
 ---
 
-## CP24F — Generic Capital Structure/Dilution Extraction
+## CP24F — Generic Capital Structure/Dilution Extraction ✓ COMPLETED
+
+**Status:** ✓ Completed (2026-06-12)
 
 ### Goal
 
@@ -407,49 +409,59 @@ Extract capital structure and calculate dilution metrics.
 - CapitalStructure (shares_outstanding, options, warrants, dilution_percent)
 - JSON output: `{ticker}_capital_structure.json`
 
-### Files Likely Changed
+### Files Created/Modified
 
-**New:**
-- sources/sec_capital_structure.py (capital structure extractor)
-- scripts/ticker_capital_structure_extractor.py (CLI tool)
-- tests/test_sec_capital_structure.py
+**Created:**
+- sources/sec_capital_structure.py (capital structure and dilution extraction)
+- sources/sec_offering_terms.py (offering terms parser)
+- scripts/sec_capital_structure.py (CLI tool)
+- tests/test_sec_capital_structure.py (15 tests)
+- docs/sample_reports/capital_structure/MAIA/ (MAIA capital structure reports)
+- docs/sample_reports/capital_structure/NVDA/ (NVDA capital structure reports)
+- docs/sample_reports/capital_structure/batch_maia_nvda/ (batch reports)
+- docs/checkpoints/reports/CP24F_capital_structure_dilution_report.md
 
-### Implementation Steps
+**Reused:**
+- sources/sec_xbrl_financials.py (XBRL financial outputs from CP24E)
+- sources/sec_submissions.py (submissions inventory from CP24B)
 
-1. Create capital structure extractor:
-   - Extract from 10-Q/10-K XBRL:
-     - us-gaap:CommonStockSharesOutstanding
-     - us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber
-   - Extract from notes/tables:
-     - Warrants outstanding
-     - Convertible securities
-   - Calculate:
-     - Approximate fully diluted shares = common + options + warrants + convertibles
-     - Dilution overhang = (fully_diluted - common) / fully_diluted * 100
-
-2. Create CLI tool
-
-3. Add tests
-
-### Validation Commands
+### CLI Usage
 
 ```powershell
-# Extract NVDA capital structure
-python scripts/ticker_capital_structure_extractor.py --ticker NVDA --input-dir docs/sample_reports/generic_ticker/NVDA --output-dir docs/sample_reports/generic_ticker/NVDA
+# Single ticker capital structure
+.\.venv\Scripts\python.exe scripts\sec_capital_structure.py --ticker MAIA --output-dir docs/sample_reports/capital_structure/MAIA
+
+# Multiple tickers (batch mode)
+.\.venv\Scripts\python.exe scripts\sec_capital_structure.py --tickers MAIA,NVDA --output-dir docs/sample_reports/capital_structure/batch_maia_nvda
+
+# Custom parameters
+.\.venv\Scripts\python.exe scripts\sec_capital_structure.py --ticker AAPL --output-dir docs/sample_reports/capital_structure/AAPL --lookback-days 730 --inventory-json path/to/inventory.json --xbrl-json path/to/xbrl.json
 ```
 
 ### Safety Constraints
 
-- Read-only access
-- Graceful failure if data unavailable
+- Read-only SEC access (no writes)
+- No alert generation
+- No Telegram/email
+- No scheduled task modification
+- No OpenInsider data required
+- Output JSON/Markdown/CSV only (no automated actions)
+- No buy/sell/hold language
 
 ### Acceptance Criteria
 
-- ✓ Extracts shares outstanding
-- ✓ Extracts stock options outstanding
-- ✓ Calculates dilution overhang
-- ✓ Handles missing data (set to None)
-- ✓ 8/8 tests pass
+- ✓ Extracts share counts from XBRL (CP24E outputs)
+- ✓ Parses public offering terms
+- ✓ Calculates fully diluted estimates (low/high)
+- ✓ Calculates dilution overhang percentages
+- ✓ Captures known unknowns
+- ✓ Preserves parse failures
+- ✓ MAIA reconciliation matches approved values
+- ✓ NVDA validation uses appropriate large-cap framing
+- ✓ No buy/sell/hold language
+- ✓ Safety flags correct
+- ✓ No secrets in outputs
+- ✓ 15/15 tests pass
 
 ---
 

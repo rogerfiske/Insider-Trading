@@ -1,0 +1,53 @@
+{
+  "ticker": "NVDA",
+  "cik": "0001045810",
+  "company_name": "NVIDIA CORP",
+  "generated_at": "2026-06-12T16:31:41.005096+00:00",
+  "source_inventory_path": null,
+  "source_xbrl_path": null,
+  "share_counts": {},
+  "securities": {
+    "options_outstanding": 20000000,
+    "rsus_outstanding": 4362363,
+    "warrants_outstanding": 0,
+    "preferred_shares_outstanding": 0,
+    "convertible_notes_or_debt": 0
+  },
+  "capital_events": [],
+  "derived_dilution_metrics": {
+    "fully_diluted_low_estimate": 24362363,
+    "fully_diluted_high_estimate": 27362363,
+    "dilution_overhang_percent_low": null,
+    "dilution_overhang_percent_high": null
+  },
+  "reconciliation": {
+    "has_reconciliation_target": false,
+    "status": "not_applicable",
+    "differences": []
+  },
+  "known_unknowns": [
+    "Warrant count may be incomplete - warrant liability on balance sheet but count not disclosed in recent filings"
+  ],
+  "parse_failure_summary": [],
+  "degraded_mode": {
+    "is_degraded": false,
+    "reasons": []
+  },
+  "evidence_provenance": [
+    {
+      "source": "sec_companyfacts",
+      "source_url": "https://data.sec.gov/submissions/CIK0001045810.json",
+      "retrieve_at": "2026-06-12T16:31:41.005096+00:00"
+    }
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-06-12T16:31:41.007099+00:00",
+  "tickers": [
+    "MAIA",
+    "NVDA"
+  ],
+  "ticker_count": 2,
+  "ticker_summaries": {
+    "MAIA": {
+      "cik": "0001878313",
+      "company_name": "MAIA Biotechnology, Inc.",
+      "common_shares_outstanding": 60671491,
+      "fully_diluted_low_estimate": 85033854,
+      "fully_diluted_high_estimate": 88033854,
+      "dilution_overhang_percent_low": 40.15,
+      "dilution_overhang_percent_high": 45.1,
+      "reconciliation_status": "reconciled_with_differences",
+      "degraded_mode": false
+    },
+    "NVDA": {
+      "cik": "0001045810",
+      "company_name": "NVIDIA CORP",
+      "common_shares_outstanding": null,
+      "fully_diluted_low_estimate": 24362363,
+      "fully_diluted_high_estimate": 27362363,
+      "dilution_overhang_percent_low": null,
+      "dilution_overhang_percent_high": null,
+      "reconciliation_status": "not_applicable",
+      "degraded_mode": false
+    }
+  },
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}
