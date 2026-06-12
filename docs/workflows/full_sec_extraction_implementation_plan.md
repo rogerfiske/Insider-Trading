@@ -281,72 +281,112 @@ Extract Form 144 (notice of proposed sale) and Schedule 13D/G (beneficial owners
 
 ---
 
-## CP24E — Generic 10-Q/10-K XBRL Financial Extraction
+## CP24E — Generic 10-Q/10-K XBRL Financial Extraction ✓ COMPLETED
+
+**Status:** ✓ Completed (2026-06-12)
 
 ### Goal
 
-Extract financial statements from 10-Q and 10-K XBRL filings.
+Extract financial statements from SEC companyfacts API for arbitrary tickers.
 
 ### Inputs
 
-- Ticker
-- List[SecSubmissionFiling] for 10-Q, 10-K
+- Ticker symbol
+- SEC companyfacts JSON for CIK
 
 ### Outputs
 
-- XBRLFinancials (cash, assets, liabilities, revenue, etc.)
+- XBRLFinancials (cash, assets, liabilities, revenue, operating expenses, cash flow, etc.)
 - JSON output: `{ticker}_xbrl_financials.json`
+- Markdown report: `{ticker}_xbrl_financials.md`
+- CSV output: `{ticker}_xbrl_financials.csv`
+- Batch summary for multiple tickers
 
-### Files Likely Changed
+### Files Created/Modified
 
-**New:**
-- sources/sec_xbrl_financials.py (XBRL parser)
-- scripts/ticker_xbrl_extractor.py (CLI tool)
-- tests/test_sec_xbrl_financials.py
+**Created:**
+- sources/sec_companyfacts.py (SEC companyfacts API wrapper)
+- sources/sec_xbrl_financials.py (Financial metrics extraction with tag alias mapping)
+- scripts/sec_xbrl_financials.py (CLI tool)
+- tests/test_sec_xbrl_financials.py (20 tests)
+- tests/fixtures/maia_companyfacts_minimal.json (test fixture)
+- docs/sample_reports/xbrl_financials/MAIA/ (sample reports)
+- docs/sample_reports/xbrl_financials/batch_maia_nvda/MAIA/ (batch sample)
+- docs/sample_reports/xbrl_financials/batch_maia_nvda/NVDA/ (batch sample)
+- docs/sample_reports/xbrl_financials/batch_maia_nvda/batch_xbrl_financials_summary.json
+- docs/sample_reports/xbrl_financials/batch_maia_nvda/batch_xbrl_financials_summary.md
 
-### Implementation Steps
+### Implementation Summary
 
-1. Create XBRL parser:
-   - Fetch XBRL instance document (.xml from FilingSummary.xml)
-   - Parse XML namespaces (us-gaap, dei)
-   - Extract financial facts:
-     - us-gaap:CashAndCashEquivalentsAtCarryingValue
-     - us-gaap:Assets
-     - us-gaap:Liabilities
-     - us-gaap:WorkingCapital (or calculate: current assets - current liabilities)
-     - us-gaap:Revenues
-     - us-gaap:NetCashProvidedByUsedInOperatingActivities
-     - us-gaap:ResearchAndDevelopmentExpense
-   - Handle context IDs (report period vs instant)
+1. SEC companyfacts parser:
+   - Fetches companyfacts JSON from SEC API
+   - Parses facts organized by taxonomy (us-gaap, dei)
+   - Extracts concept values with units (USD, shares)
+   - Handles missing concepts gracefully
 
-2. Create CLI tool for XBRL extraction
+2. Tag alias mapping:
+   - 50+ canonical metric names mapped to US-GAAP XBRL tags
+   - Supports multiple aliases per metric (e.g., Cash vs CashAndCashEquivalentsAtCarryingValue)
+   - Preserves concept provenance for each extracted metric
 
-3. Add tests:
-   - XBRL tag extraction
-   - Context ID filtering (most recent period)
-   - Missing tag handling (set to None)
+3. Financial metrics extraction:
+   - Balance sheet: cash, assets, liabilities, equity, accumulated deficit
+   - Income statement: revenue, R&D, G&A, operating expenses, net loss, EPS
+   - Cash flow: operating/investing/financing activities
+   - Capitalization: shares outstanding, stock-based comp
 
-### Validation Commands
+4. Derived metrics:
+   - Working capital = current_assets - current_liabilities
+   - Quarterly burn = abs(operating cash flow) if negative
+   - Monthly burn = quarterly burn / 3
+   - Cash runway = cash / monthly burn (for cash-burning companies)
+   - Current ratio = current_assets / current_liabilities
+
+5. Period selection:
+   - Latest quarter (Q1, Q2, Q3, Q4)
+   - Latest annual (FY)
+
+6. MAIA reconciliation:
+   - Reconciles against CP23B-Fix3A official values
+   - Reports exact matches and differences
+   - Explains concept/tag/period differences
+
+### CLI Usage
 
 ```powershell
-# Extract NVDA financials
-python scripts/ticker_xbrl_extractor.py --ticker NVDA --input-dir docs/sample_reports/generic_ticker/NVDA/submissions --output-dir docs/sample_reports/generic_ticker/NVDA
+# Single ticker extraction
+python -m scripts.sec_xbrl_financials --ticker MAIA --output-dir docs/sample_reports/xbrl_financials/MAIA
+
+# Multiple tickers (batch mode)
+python -m scripts.sec_xbrl_financials --tickers MAIA,NVDA --output-dir docs/sample_reports/xbrl_financials/batch_maia_nvda
 ```
 
 ### Safety Constraints
 
-- Read-only access
-- Parse failures → None values
-- No financial analysis (just extraction)
+- Read-only SEC access
+- No alerts generated
+- No Telegram/email
+- No scheduled task modification
+- Output JSON/Markdown/CSV only
+- User-Agent compliance
+- Missing tags → not_available status
 
 ### Acceptance Criteria
 
-- ✓ Fetches latest 10-Q or 10-K
-- ✓ Parses XBRL instance document
-- ✓ Extracts key financial facts
-- ✓ Handles missing tags (set to None)
-- ✓ Returns report period date
-- ✓ 12/12 tests pass
+- ✓ Fetches SEC companyfacts for resolved CIK
+- ✓ Parses US-GAAP taxonomy facts
+- ✓ Extracts 30+ canonical financial metrics using tag aliases
+- ✓ Handles missing tags (status=not_available)
+- ✓ Selects latest quarter and annual periods
+- ✓ Calculates derived metrics (working capital, burn rate, runway, current ratio)
+- ✓ MAIA reconciliation against CP23B-Fix3A targets (9/13 exact matches)
+- ✓ NVDA extraction successful (operating company, no pre-revenue framing)
+- ✓ Generates JSON/Markdown/CSV outputs with safety flags
+- ✓ Batch mode for multiple tickers
+- ✓ No buy/sell/hold language
+- ✓ No secrets in outputs
+- ✓ 20/20 tests pass
+- ✓ Python compilation successful
 
 ---
 
