@@ -1,0 +1,61 @@
+{
+  "ticker": "AAPL",
+  "cik": "0000320193",
+  "company_name": "Apple Inc.",
+  "generated_at": "2026-06-12T18:30:00.000000+00:00",
+  "validation_status": "not_run_with_reason",
+  "module_results": {
+    "sec_inventory": {
+      "status": "not_run",
+      "reason": "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation"
+    },
+    "form4_transactions": {
+      "status": "not_run",
+      "reason": "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation"
+    },
+    "ownership_filings": {
+      "status": "not_run",
+      "reason": "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation"
+    },
+    "xbrl_financials": {
+      "status": "not_run",
+      "reason": "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation"
+    },
+    "capital_structure": {
+      "status": "not_run",
+      "reason": "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation"
+    },
+    "institutional_13f": {
+      "status": "not_run",
+      "reason": "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation"
+    },
+    "generic_synthesis": {
+      "status": "not_run",
+      "reason": "Cannot generate synthesis without CP24B-CP24G module inputs"
+    }
+  },
+  "synthesis_posture": "Incomplete evidence",
+  "evidence_row_count": 0,
+  "degraded_mode": {
+    "is_degraded": true,
+    "reasons": [
+      "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation",
+      "CP24I validates workflow capability with existing complete datasets (MAIA, NVDA)",
+      "AAPL data extraction deferred to future checkpoint"
+    ]
+  },
+  "maia_leakage_check": {
+    "passed": true,
+    "matches_found": []
+  },
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "external_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

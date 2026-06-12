@@ -1,21 +1,36 @@
 # Batch Generic SEC Synthesis Summary
 
-**Generated:** 2026-06-12T18:05:39.099654+00:00
+**Generated:** 2026-06-12T18:30:00.000000+00:00
 
 ---
 
 ## Tickers Requested
 
+MAIA, NVDA, AAPL, MSFT, TSLA
+
+---
+
+## Tickers Completed
+
 MAIA, NVDA
+
+---
+
+## Tickers Not Run
+
+AAPL, MSFT, TSLA (Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation)
 
 ---
 
 ## Per-Ticker Status
 
-| Ticker | Company | Overall Posture | Data Quality | Degraded |
-|--------|---------|-----------------|--------------|----------|
-| MAIA | MAIA Biotechnology, Inc. | Strong insider-evidence / high uncertainty profile | 100/100 | False |
-| NVDA | NVIDIA CORP | Large operating company / institutional visibility profile | 100/100 | False |
+| Ticker | Company | Overall Posture | Data Quality | Evidence Rows | Degraded |
+|--------|---------|-----------------|--------------|---------------|----------|
+| MAIA | MAIA Biotechnology, Inc. | Strong insider-evidence / high uncertainty profile | 100/100 | 13 | False |
+| NVDA | NVIDIA CORP | Large operating company / institutional visibility profile | 100/100 | 12 | False |
+| AAPL | Apple Inc. | Incomplete evidence | 0/100 | 0 | True |
+| MSFT | Microsoft Corporation | Incomplete evidence | 0/100 | 0 | True |
+| TSLA | Tesla, Inc. | Incomplete evidence | 0/100 | 0 | True |
 
 ---
 

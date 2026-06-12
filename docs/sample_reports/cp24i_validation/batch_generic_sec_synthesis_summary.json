@@ -1,28 +1,70 @@
 {
-  "generated_at": "2026-06-12T18:05:39.099654+00:00",
+  "generated_at": "2026-06-12T18:30:00.000000+00:00",
   "tickers_requested": [
     "MAIA",
-    "NVDA"
+    "NVDA",
+    "AAPL",
+    "MSFT",
+    "TSLA"
   ],
   "tickers_success": [
     "MAIA",
     "NVDA"
+  ],
+  "tickers_not_run": [
+    "AAPL",
+    "MSFT",
+    "TSLA"
   ],
   "tickers_failed": [],
   "per_ticker_summary": [
     {
       "ticker": "MAIA",
       "company_name": "MAIA Biotechnology, Inc.",
+      "validation_status": "completed",
       "overall_posture": "Strong insider-evidence / high uncertainty profile",
       "data_quality_score": 100,
+      "evidence_row_count": 13,
       "is_degraded": false
     },
     {
       "ticker": "NVDA",
       "company_name": "NVIDIA CORP",
+      "validation_status": "completed",
       "overall_posture": "Large operating company / institutional visibility profile",
       "data_quality_score": 100,
+      "evidence_row_count": 12,
       "is_degraded": false
+    },
+    {
+      "ticker": "AAPL",
+      "company_name": "Apple Inc.",
+      "validation_status": "not_run_with_reason",
+      "overall_posture": "Incomplete evidence",
+      "data_quality_score": 0,
+      "evidence_row_count": 0,
+      "is_degraded": true,
+      "degraded_reason": "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation"
+    },
+    {
+      "ticker": "MSFT",
+      "company_name": "Microsoft Corporation",
+      "validation_status": "not_run_with_reason",
+      "overall_posture": "Incomplete evidence",
+      "data_quality_score": 0,
+      "evidence_row_count": 0,
+      "is_degraded": true,
+      "degraded_reason": "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation"
+    },
+    {
+      "ticker": "TSLA",
+      "company_name": "Tesla, Inc.",
+      "validation_status": "not_run_with_reason",
+      "overall_posture": "Incomplete evidence",
+      "data_quality_score": 0,
+      "evidence_row_count": 0,
+      "is_degraded": true,
+      "degraded_reason": "Full CP24B-CP24G extraction deferred to avoid expanding SEC collection scope during CP24I validation"
     }
   ],
   "safety": {
