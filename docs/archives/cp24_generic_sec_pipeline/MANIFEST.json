@@ -1,0 +1,516 @@
+{
+  "archive": "cp24_generic_sec_pipeline",
+  "created": "2026-06-12",
+  "version": "1.0.0",
+  "description": "Complete archive of CP24 generic SEC-only extraction and synthesis pipeline",
+  "checkpoints": [
+    "CP24A",
+    "CP24B",
+    "CP24C",
+    "CP24D",
+    "CP24E",
+    "CP24F",
+    "CP24G",
+    "CP24H",
+    "CP24H-Fix",
+    "CP24I",
+    "CP24I-Fix",
+    "CP24J"
+  ],
+  "artifacts": {
+    "checkpoint_reports": [
+      {
+        "path": "docs/checkpoints/reports/CP24A_full_sec_extraction_architecture_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24A",
+        "exists": true,
+        "size_bytes": 25539,
+        "sha256": "b29f3ba831dc53166d56ac7ef2665bfd32e30130b8d2912ce5cb1c3fbed2e24d",
+        "notes": "Pipeline architecture and design"
+      },
+      {
+        "path": "docs/checkpoints/reports/CP24B_ticker_cik_submissions_inventory_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24B",
+        "exists": true,
+        "size_bytes": 17770,
+        "sha256": "179ba5b43138ef933b66ad556efca94a0fd57402c57d7cc4976f7eea55f46cc9",
+        "notes": "Ticker/CIK resolution and submissions inventory"
+      },
+      {
+        "path": "docs/checkpoints/reports/CP24C_form4_extraction_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24C",
+        "exists": true,
+        "size_bytes": 13249,
+        "sha256": "80475ac5fd5c5664b823e11720892941310d2cc328474c9288e07b5eeaabdf02",
+        "notes": "Form 4 insider transaction extraction"
+      },
+      {
+        "path": "docs/checkpoints/reports/CP24D_ownership_filings_extraction_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24D",
+        "exists": true,
+        "size_bytes": 9957,
+        "sha256": "0d6bb5f7227dd85141b5ff8a01bad249a276f89b0eae7b45cd83d4fdfedad740",
+        "notes": "Form 144 and 13D/G ownership filings"
+      },
+      {
+        "path": "docs/checkpoints/reports/CP24E_xbrl_financial_extraction_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24E",
+        "exists": true,
+        "size_bytes": 17583,
+        "sha256": "102b2457253d7a9eba1db3f65b40bbd4f45a690aefc6060e4b52b5a958728a5c",
+        "notes": "XBRL financial metrics extraction"
+      },
+      {
+        "path": "docs/checkpoints/reports/CP24F_capital_structure_dilution_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24F",
+        "exists": true,
+        "size_bytes": 15033,
+        "sha256": "f0d2de5ab920b2655196911242163bb7f06f7920fd347fe69d08509343546e6c",
+        "notes": "Capital structure and dilution calculations"
+      },
+      {
+        "path": "docs/checkpoints/reports/CP24G_13f_institutional_ownership_integration_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24G",
+        "exists": true,
+        "size_bytes": 14892,
+        "sha256": "135f65912ac2341ef618423f570d3db8bc1e0cb322b9fca3609a322dc2886e93",
+        "notes": "13F institutional ownership integration"
+      },
+      {
+        "path": "docs/checkpoints/reports/CP24H_generic_sec_synthesis_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24H",
+        "exists": true,
+        "size_bytes": 13314,
+        "sha256": "8949811f5d2400537355ee3f62e24e62707ac615902e46673a9e39f2d300eda6",
+        "notes": "Generic SEC synthesis composer"
+      },
+      {
+        "path": "docs/checkpoints/reports/CP24H_fix_evidence_mapping_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24H-Fix",
+        "exists": true,
+        "size_bytes": 13688,
+        "sha256": "c5866c170f13b2a3aac44490c74a18aafb4d86403720e28b66d669e2b9683ec4",
+        "notes": "Evidence mapping fix for CP24H"
+      },
+      {
+        "path": "docs/checkpoints/reports/CP24I_multi_ticker_validation_report.md",
+        "category": "checkpoint_report",
+        "checkpoint": "CP24I",
+        "exists": true,
+        "size_bytes": 16371,
+        "sha256": "c3c0cf59eeb658ffbfce72f39be8633687e4dff97252228524572eb8cf99aa7d",
+        "notes": "Multi-ticker validation including CP24I-Fix"
+      }
+    ],
+    "workflow_docs": [
+      {
+        "path": "docs/workflows/full_sec_extraction_architecture.md",
+        "category": "workflow_doc",
+        "exists": true,
+        "notes": "Pipeline architecture documentation"
+      },
+      {
+        "path": "docs/workflows/full_sec_extraction_implementation_plan.md",
+        "category": "workflow_doc",
+        "exists": true,
+        "notes": "Implementation plan and roadmap"
+      },
+      {
+        "path": "docs/workflows/full_sec_extraction_schema.md",
+        "category": "workflow_doc",
+        "exists": true,
+        "notes": "Data schema definitions"
+      },
+      {
+        "path": "docs/workflows/full_sec_extraction_test_plan.md",
+        "category": "workflow_doc",
+        "exists": true,
+        "notes": "Test plan and validation strategy"
+      },
+      {
+        "path": "docs/workflows/generic_ticker_synthesis_workflow.md",
+        "category": "workflow_doc",
+        "exists": true,
+        "notes": "Synthesis workflow guide"
+      }
+    ],
+    "core_scripts": [
+      {
+        "path": "scripts/generic_sec_synthesis.py",
+        "category": "core_script",
+        "exists": true,
+        "size_bytes": 4803,
+        "sha256": "23842fdce85ae53367e4cecc8ff6790ee933a5b34403fe2492b3d9fe74ffde3c",
+        "notes": "Main synthesis script (CP24H)"
+      },
+      {
+        "path": "scripts/sec_ticker_inventory.py",
+        "category": "core_script",
+        "exists": true,
+        "notes": "Ticker/CIK inventory script (CP24B)"
+      },
+      {
+        "path": "scripts/form4_extractor.py",
+        "category": "core_script",
+        "exists": true,
+        "notes": "Form 4 extraction script (CP24C)"
+      },
+      {
+        "path": "scripts/ownership_filings_extractor.py",
+        "category": "core_script",
+        "exists": true,
+        "notes": "Ownership filings extraction script (CP24D)"
+      },
+      {
+        "path": "scripts/xbrl_financial_extractor.py",
+        "category": "core_script",
+        "exists": true,
+        "notes": "XBRL financial extraction script (CP24E)"
+      },
+      {
+        "path": "scripts/capital_structure_calculator.py",
+        "category": "core_script",
+        "exists": true,
+        "notes": "Capital structure calculation script (CP24F)"
+      },
+      {
+        "path": "scripts/institutional_13f_extractor.py",
+        "category": "core_script",
+        "exists": true,
+        "notes": "13F institutional ownership script (CP24G)"
+      }
+    ],
+    "source_modules": [
+      {
+        "path": "sources/generic_synthesis_composer.py",
+        "category": "source_module",
+        "exists": true,
+        "size_bytes": 51374,
+        "sha256": "06044accc9684f1eac69d1520fdd6fc716914ac8c479ef05342b599d358a8236",
+        "notes": "Synthesis composer module (CP24H)"
+      },
+      {
+        "path": "sources/sec_inventory_builder.py",
+        "category": "source_module",
+        "exists": true,
+        "notes": "SEC inventory builder module (CP24B)"
+      },
+      {
+        "path": "sources/form4_parser.py",
+        "category": "source_module",
+        "exists": true,
+        "notes": "Form 4 parser module (CP24C)"
+      },
+      {
+        "path": "sources/ownership_filings_parser.py",
+        "category": "source_module",
+        "exists": true,
+        "notes": "Ownership filings parser module (CP24D)"
+      },
+      {
+        "path": "sources/xbrl_extractor.py",
+        "category": "source_module",
+        "exists": true,
+        "notes": "XBRL extractor module (CP24E)"
+      },
+      {
+        "path": "sources/capital_structure_analyzer.py",
+        "category": "source_module",
+        "exists": true,
+        "notes": "Capital structure analyzer module (CP24F)"
+      },
+      {
+        "path": "sources/institutional_13f_parser.py",
+        "category": "source_module",
+        "exists": true,
+        "notes": "13F parser module (CP24G)"
+      }
+    ],
+    "test_files": [
+      {
+        "path": "tests/test_generic_sec_synthesis.py",
+        "category": "test_file",
+        "exists": true,
+        "size_bytes": 22977,
+        "sha256": "d7ca3162e0a650850da7c1a4342b6e5c307040b6fa2531bfa894bc6bc2ded42f",
+        "notes": "32 tests for generic synthesis (CP24H)"
+      },
+      {
+        "path": "tests/test_multi_ticker_validation.py",
+        "category": "test_file",
+        "exists": true,
+        "size_bytes": 8880,
+        "sha256": "5b02eb0b0ae7c0387cd4174e9f4fcf43c47ca19617a914962022caa3f2addc46",
+        "notes": "15 tests for multi-ticker validation (CP24I)"
+      }
+    ],
+    "maia_outputs": [
+      {
+        "path": "docs/sample_reports/sec_inventory/MAIA/",
+        "category": "sample_output",
+        "ticker": "MAIA",
+        "module": "CP24B",
+        "exists": true,
+        "notes": "MAIA ticker/CIK inventory outputs"
+      },
+      {
+        "path": "docs/sample_reports/form4_transactions/MAIA/",
+        "category": "sample_output",
+        "ticker": "MAIA",
+        "module": "CP24C",
+        "exists": true,
+        "notes": "MAIA Form 4 transaction outputs"
+      },
+      {
+        "path": "docs/sample_reports/ownership_filings/MAIA/",
+        "category": "sample_output",
+        "ticker": "MAIA",
+        "module": "CP24D",
+        "exists": true,
+        "notes": "MAIA ownership filings outputs"
+      },
+      {
+        "path": "docs/sample_reports/xbrl_financials/MAIA/",
+        "category": "sample_output",
+        "ticker": "MAIA",
+        "module": "CP24E",
+        "exists": true,
+        "notes": "MAIA XBRL financial outputs"
+      },
+      {
+        "path": "docs/sample_reports/capital_structure/MAIA/",
+        "category": "sample_output",
+        "ticker": "MAIA",
+        "module": "CP24F",
+        "exists": true,
+        "notes": "MAIA capital structure outputs"
+      },
+      {
+        "path": "docs/sample_reports/13f_institutional_ownership/MAIA/",
+        "category": "sample_output",
+        "ticker": "MAIA",
+        "module": "CP24G",
+        "exists": true,
+        "notes": "MAIA 13F institutional ownership outputs"
+      },
+      {
+        "path": "docs/sample_reports/generic_synthesis/MAIA/MAIA_generic_sec_synthesis.json",
+        "category": "sample_output",
+        "ticker": "MAIA",
+        "module": "CP24H",
+        "exists": true,
+        "size_bytes": 8182,
+        "sha256": "b07f697b7b626047f70bd496501d59dafbc50ee23b2fe0bb1f48cf5f9f068cbb",
+        "notes": "MAIA generic synthesis JSON output"
+      },
+      {
+        "path": "docs/sample_reports/generic_synthesis/MAIA/MAIA_generic_sec_synthesis.md",
+        "category": "sample_output",
+        "ticker": "MAIA",
+        "module": "CP24H",
+        "exists": true,
+        "notes": "MAIA generic synthesis Markdown output"
+      },
+      {
+        "path": "docs/sample_reports/generic_synthesis/MAIA/MAIA_evidence_matrix.csv",
+        "category": "sample_output",
+        "ticker": "MAIA",
+        "module": "CP24H",
+        "exists": true,
+        "notes": "MAIA evidence matrix CSV (13 rows)"
+      }
+    ],
+    "nvda_outputs": [
+      {
+        "path": "docs/sample_reports/sec_inventory/NVDA/",
+        "category": "sample_output",
+        "ticker": "NVDA",
+        "module": "CP24B",
+        "exists": true,
+        "notes": "NVDA ticker/CIK inventory outputs"
+      },
+      {
+        "path": "docs/sample_reports/form4_transactions/NVDA/",
+        "category": "sample_output",
+        "ticker": "NVDA",
+        "module": "CP24C",
+        "exists": true,
+        "notes": "NVDA Form 4 transaction outputs"
+      },
+      {
+        "path": "docs/sample_reports/ownership_filings/NVDA/",
+        "category": "sample_output",
+        "ticker": "NVDA",
+        "module": "CP24D",
+        "exists": true,
+        "notes": "NVDA ownership filings outputs"
+      },
+      {
+        "path": "docs/sample_reports/xbrl_financials/NVDA/",
+        "category": "sample_output",
+        "ticker": "NVDA",
+        "module": "CP24E",
+        "exists": true,
+        "notes": "NVDA XBRL financial outputs"
+      },
+      {
+        "path": "docs/sample_reports/capital_structure/NVDA/",
+        "category": "sample_output",
+        "ticker": "NVDA",
+        "module": "CP24F",
+        "exists": true,
+        "notes": "NVDA capital structure outputs"
+      },
+      {
+        "path": "docs/sample_reports/13f_institutional_ownership/NVDA/",
+        "category": "sample_output",
+        "ticker": "NVDA",
+        "module": "CP24G",
+        "exists": true,
+        "notes": "NVDA 13F institutional ownership outputs"
+      },
+      {
+        "path": "docs/sample_reports/generic_synthesis/NVDA/NVDA_generic_sec_synthesis.json",
+        "category": "sample_output",
+        "ticker": "NVDA",
+        "module": "CP24H",
+        "exists": true,
+        "size_bytes": 7794,
+        "sha256": "649599470a9b68f454489c64443e19ad17403707c10a95ded7de8a444b484c79",
+        "notes": "NVDA generic synthesis JSON output"
+      },
+      {
+        "path": "docs/sample_reports/generic_synthesis/NVDA/NVDA_generic_sec_synthesis.md",
+        "category": "sample_output",
+        "ticker": "NVDA",
+        "module": "CP24H",
+        "exists": true,
+        "notes": "NVDA generic synthesis Markdown output"
+      },
+      {
+        "path": "docs/sample_reports/generic_synthesis/NVDA/NVDA_evidence_matrix.csv",
+        "category": "sample_output",
+        "ticker": "NVDA",
+        "module": "CP24H",
+        "exists": true,
+        "notes": "NVDA evidence matrix CSV (12 rows)"
+      }
+    ],
+    "cp24i_validation": [
+      {
+        "path": "docs/sample_reports/cp24i_validation/batch_generic_sec_synthesis_summary.json",
+        "category": "validation_output",
+        "module": "CP24I",
+        "exists": true,
+        "size_bytes": 2444,
+        "sha256": "18e1c398d1a8e4ad189b35a3afedf2337758e520427173585b0bd08ad75def03",
+        "notes": "CP24I batch summary JSON (5 tickers)"
+      },
+      {
+        "path": "docs/sample_reports/cp24i_validation/batch_generic_sec_synthesis_summary.md",
+        "category": "validation_output",
+        "module": "CP24I",
+        "exists": true,
+        "notes": "CP24I batch summary Markdown"
+      },
+      {
+        "path": "docs/sample_reports/cp24i_validation/validation_matrix.csv",
+        "category": "validation_output",
+        "module": "CP24I",
+        "exists": true,
+        "size_bytes": 1461,
+        "sha256": "5a629ac4bb5e2b49c4331260a99ec4ace92241f51fc5c7e685c5c9f7020abb5c",
+        "notes": "CP24I validation matrix (5 tickers, 23 columns)"
+      },
+      {
+        "path": "docs/sample_reports/cp24i_validation/MAIA/",
+        "category": "validation_output",
+        "module": "CP24I",
+        "ticker": "MAIA",
+        "exists": true,
+        "notes": "MAIA validation summary (status: completed)"
+      },
+      {
+        "path": "docs/sample_reports/cp24i_validation/NVDA/",
+        "category": "validation_output",
+        "module": "CP24I",
+        "ticker": "NVDA",
+        "exists": true,
+        "notes": "NVDA validation summary (status: completed)"
+      },
+      {
+        "path": "docs/sample_reports/cp24i_validation/AAPL/",
+        "category": "validation_output",
+        "module": "CP24I-Fix",
+        "ticker": "AAPL",
+        "exists": true,
+        "notes": "AAPL validation summary (status: not_run_with_reason)"
+      },
+      {
+        "path": "docs/sample_reports/cp24i_validation/MSFT/",
+        "category": "validation_output",
+        "module": "CP24I-Fix",
+        "ticker": "MSFT",
+        "exists": true,
+        "notes": "MSFT validation summary (status: not_run_with_reason)"
+      },
+      {
+        "path": "docs/sample_reports/cp24i_validation/TSLA/",
+        "category": "validation_output",
+        "module": "CP24I-Fix",
+        "ticker": "TSLA",
+        "exists": true,
+        "notes": "TSLA validation summary (status: not_run_with_reason)"
+      }
+    ]
+  },
+  "excluded_files": [
+    ".env",
+    ".state/",
+    "*.db",
+    "*.sqlite",
+    "*.sqlite3",
+    "*.log",
+    ".venv/",
+    ".claude/",
+    "MAIA.xlsx",
+    "OpenInsider data",
+    "config/watchlists/ (except *.example.txt)",
+    "SEC cache files",
+    "Evidence cache files",
+    "Private portfolio files",
+    "Temporary files"
+  ],
+  "safety_confirmations": {
+    "report_only": true,
+    "no_alerts": true,
+    "no_telegram": true,
+    "no_email": true,
+    "no_scheduled_tasks_modified": true,
+    "no_env_exposed": true,
+    "no_secrets_in_archive": true,
+    "no_buy_sell_hold_language": true
+  },
+  "validation_metrics": {
+    "checkpoint_reports": 10,
+    "workflow_docs": 5,
+    "core_scripts": 7,
+    "source_modules": 7,
+    "test_files": 2,
+    "test_count": 47,
+    "test_pass_rate": "100%",
+    "tickers_validated": ["MAIA", "NVDA"],
+    "tickers_documented": ["MAIA", "NVDA", "AAPL", "MSFT", "TSLA"],
+    "evidence_rows_maia": 13,
+    "evidence_rows_nvda": 12,
+    "maia_leakage_check": "PASS"
+  }
+}
