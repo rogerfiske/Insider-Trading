@@ -1,0 +1,164 @@
+{
+  "ticker": "NVDA",
+  "cik": "0001045810",
+  "company_name": "NVIDIA CORP",
+  "generated_at": "2026-06-12T17:19:37.555320+00:00",
+  "source_modules": {
+    "sec_inventory": {
+      "path": "sec_inventory/NVDA",
+      "status": "unknown"
+    },
+    "form4_transactions": {
+      "path": "form4_transactions/NVDA",
+      "status": "unknown"
+    },
+    "ownership_filings": {
+      "path": "ownership_filings/NVDA",
+      "status": "unknown"
+    },
+    "xbrl_financials": {
+      "path": "xbrl_financials/NVDA",
+      "status": "ok"
+    },
+    "capital_structure": {
+      "path": "capital_structure/NVDA",
+      "status": "unknown"
+    },
+    "institutional_13f": {
+      "path": "13f_institutional_ownership/NVDA",
+      "status": "success"
+    }
+  },
+  "module_status": {
+    "sec_inventory": "success",
+    "form4_transactions": "success",
+    "ownership_filings": "success",
+    "xbrl_financials": "ok",
+    "capital_structure": "success",
+    "institutional_13f": "success"
+  },
+  "evidence_matrix": [
+    {
+      "category": "Identity",
+      "evidence": "Ticker NVDA resolved to CIK 0001045810",
+      "direction": "positive",
+      "strength": "high",
+      "confidence": "high",
+      "source_module": "sec_inventory",
+      "source_path": "sec_inventory/NVDA",
+      "comment": "SEC EDGAR confirmation"
+    },
+    {
+      "category": "Data Coverage",
+      "evidence": "0 SEC filings found across multiple form types",
+      "direction": "positive",
+      "strength": "high",
+      "confidence": "high",
+      "source_module": "sec_inventory",
+      "source_path": "sec_inventory/NVDA",
+      "comment": "Filing inventory completeness"
+    },
+    {
+      "category": "Insider Activity",
+      "evidence": "1 open-market insider purchases totaling $250,000.00",
+      "direction": "positive",
+      "strength": "high",
+      "confidence": "high",
+      "source_module": "form4_transactions",
+      "source_path": "form4_transactions/NVDA",
+      "comment": "Open-market buying activity"
+    },
+    {
+      "category": "Insider Activity",
+      "evidence": "1501 open-market insider sales totaling $5,218,282,389.93",
+      "direction": "negative",
+      "strength": "medium",
+      "confidence": "high",
+      "source_module": "form4_transactions",
+      "source_path": "form4_transactions/NVDA",
+      "comment": "Open-market selling activity"
+    },
+    {
+      "category": "Institutional Ownership",
+      "evidence": "10 institutional holdings matched ($26,855,805,249,000 total value)",
+      "direction": "positive",
+      "strength": "medium",
+      "confidence": "medium",
+      "source_module": "institutional_13f",
+      "source_path": "13f_institutional_ownership/NVDA",
+      "comment": "Partial visibility: 3/5 managers parsed"
+    }
+  ],
+  "synthesis_scores": {
+    "insider_evidence_score": 0,
+    "capital_structure_risk_score": null,
+    "financial_liquidity_score": 100,
+    "ownership_visibility_score": 80,
+    "data_quality_score": 100,
+    "overall_research_posture": "Weak insider-evidence / incomplete data profile"
+  },
+  "key_findings": [
+    "1 open-market insider purchases detected totaling $250,000.00"
+  ],
+  "critical_unknowns": [
+    "Institutional visibility partial: 2 manager(s) failed to parse"
+  ],
+  "monitoring_triggers": [
+    "Monitor for additional insider buying activity (Form 4 filings)"
+  ],
+  "limitations": [
+    "SEC-sourced data only; no live market data",
+    "13F institutional ownership coverage limited to reviewed managers",
+    "Form 144 indicates proposed sale intent, not actual sale execution",
+    "XBRL financial data reflects most recent filing, not real-time status",
+    "Capital structure estimates include disclosed instruments only",
+    "No clinical/regulatory live catalyst extraction",
+    "This is a research synthesis, not investment advice"
+  ],
+  "degraded_mode": {
+    "is_degraded": false,
+    "reasons": []
+  },
+  "evidence_provenance": [
+    {
+      "module": "sec_inventory",
+      "source": "SEC EDGAR public filings",
+      "timestamp": "2026-06-11T19:31:24.313924+00:00"
+    },
+    {
+      "module": "form4_transactions",
+      "source": "SEC EDGAR public filings",
+      "timestamp": "2026-06-11T19:54:54.126737+00:00"
+    },
+    {
+      "module": "ownership_filings",
+      "source": "SEC EDGAR public filings",
+      "timestamp": "2026-06-12T15:40:34.062743+00:00"
+    },
+    {
+      "module": "xbrl_financials",
+      "source": "SEC EDGAR public filings",
+      "timestamp": "2026-06-12T16:07:52.744640+00:00"
+    },
+    {
+      "module": "capital_structure",
+      "source": "SEC EDGAR public filings",
+      "timestamp": "2026-06-12T16:31:35.273597+00:00"
+    },
+    {
+      "module": "institutional_13f",
+      "source": "SEC EDGAR public filings",
+      "timestamp": "2026-06-12T16:54:16.645766+00:00"
+    }
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

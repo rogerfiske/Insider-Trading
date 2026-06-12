@@ -1,0 +1,5 @@
+category,evidence,direction,strength,confidence,source_module,source_path,comment
+Identity,Ticker MAIA resolved to CIK 0001878313,positive,high,high,sec_inventory,sec_inventory/MAIA,SEC EDGAR confirmation
+Data Coverage,0 SEC filings found across multiple form types,positive,high,high,sec_inventory,sec_inventory/MAIA,Filing inventory completeness
+Insider Activity,"141 open-market insider purchases totaling $5,276,429.73",positive,high,high,form4_transactions,form4_transactions/MAIA,Open-market buying activity
+Institutional Ownership,No matches among 3/5 reviewed managers,neutral,not_applicable,medium,institutional_13f,13f_institutional_ownership/MAIA,Institutional visibility is partial

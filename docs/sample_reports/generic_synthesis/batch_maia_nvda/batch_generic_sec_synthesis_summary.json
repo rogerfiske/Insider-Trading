@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-06-12T17:19:37.783458+00:00",
+  "tickers_requested": [
+    "MAIA",
+    "NVDA"
+  ],
+  "tickers_success": [
+    "MAIA",
+    "NVDA"
+  ],
+  "tickers_failed": [],
+  "per_ticker_summary": [
+    {
+      "ticker": "MAIA",
+      "company_name": "MAIA Biotechnology, Inc.",
+      "overall_posture": "Strong insider-evidence / high uncertainty profile",
+      "data_quality_score": 100,
+      "is_degraded": false
+    },
+    {
+      "ticker": "NVDA",
+      "company_name": "NVIDIA CORP",
+      "overall_posture": "Weak insider-evidence / incomplete data profile",
+      "data_quality_score": 100,
+      "is_degraded": false
+    }
+  ],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

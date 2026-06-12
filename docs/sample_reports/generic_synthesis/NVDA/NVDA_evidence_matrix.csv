@@ -1,0 +1,6 @@
+category,evidence,direction,strength,confidence,source_module,source_path,comment
+Identity,Ticker NVDA resolved to CIK 0001045810,positive,high,high,sec_inventory,sec_inventory/NVDA,SEC EDGAR confirmation
+Data Coverage,0 SEC filings found across multiple form types,positive,high,high,sec_inventory,sec_inventory/NVDA,Filing inventory completeness
+Insider Activity,"1 open-market insider purchases totaling $250,000.00",positive,high,high,form4_transactions,form4_transactions/NVDA,Open-market buying activity
+Insider Activity,"1501 open-market insider sales totaling $5,218,282,389.93",negative,medium,high,form4_transactions,form4_transactions/NVDA,Open-market selling activity
+Institutional Ownership,"10 institutional holdings matched ($26,855,805,249,000 total value)",positive,medium,medium,institutional_13f,13f_institutional_ownership/NVDA,Partial visibility: 3/5 managers parsed
