@@ -1,0 +1,61 @@
+{
+  "run_id": "20260612_121047_megacap_inventory_validation",
+  "generated_at": "2026-06-12T19:10:47.485366+00:00",
+  "mode": "inventory-first",
+  "tickers_requested": [
+    "AAPL",
+    "MSFT",
+    "TSLA"
+  ],
+  "ticker_results": {
+    "AAPL": {
+      "ticker": "AAPL",
+      "status": "degraded",
+      "modules_run": [
+        "inventory"
+      ],
+      "modules_status": {
+        "inventory": "error"
+      },
+      "degraded": true,
+      "degraded_reasons": [
+        "Inventory failed: Traceback (most recent call last):\n  File \"c:\\Users\\Minis\\CascadeProjects\\Insider-Trading\\scripts\\sec_ticker_inventory.py\", line 19, in <module>\n    from sources.sec_common import utcnow_iso\nModuleNotFoundError: No module named 'sources'\n"
+      ]
+    },
+    "MSFT": {
+      "ticker": "MSFT",
+      "status": "degraded",
+      "modules_run": [
+        "inventory"
+      ],
+      "modules_status": {
+        "inventory": "error"
+      },
+      "degraded": true,
+      "degraded_reasons": [
+        "Inventory failed: Traceback (most recent call last):\n  File \"c:\\Users\\Minis\\CascadeProjects\\Insider-Trading\\scripts\\sec_ticker_inventory.py\", line 19, in <module>\n    from sources.sec_common import utcnow_iso\nModuleNotFoundError: No module named 'sources'\n"
+      ]
+    },
+    "TSLA": {
+      "ticker": "TSLA",
+      "status": "degraded",
+      "modules_run": [
+        "inventory"
+      ],
+      "modules_status": {
+        "inventory": "error"
+      },
+      "degraded": true,
+      "degraded_reasons": [
+        "Inventory failed: Traceback (most recent call last):\n  File \"c:\\Users\\Minis\\CascadeProjects\\Insider-Trading\\scripts\\sec_ticker_inventory.py\", line 19, in <module>\n    from sources.sec_common import utcnow_iso\nModuleNotFoundError: No module named 'sources'\n"
+      ]
+    }
+  },
+  "safety": {
+    "report_only": true,
+    "no_alerts": true,
+    "no_telegram": true,
+    "no_email": true,
+    "no_scheduled_tasks_modified": true
+  }
+}

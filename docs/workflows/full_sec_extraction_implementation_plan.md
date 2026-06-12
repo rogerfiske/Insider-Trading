@@ -9,7 +9,7 @@
 
 ## Overview
 
-This document breaks down the full SEC extraction architecture into **9 implementation checkpoints** (CP24B through CP24J).
+This document breaks down the full SEC extraction architecture into **implementation checkpoints** (CP24B through CP25).
 
 Each checkpoint is:
 - **Focused**: Single phase or small group of related phases
@@ -17,8 +17,8 @@ Each checkpoint is:
 - **Safe**: Maintains no-alert/no-recommendation policy
 - **Incremental**: Builds on previous checkpoints
 
-**Total estimated checkpoints:** 9
-**Estimated duration:** 9-12 development sessions
+**Completed checkpoints:** CP24B through CP24J (core pipeline)
+**Current checkpoint:** CP25 (manual synthesis command)
 
 ---
 
@@ -836,6 +836,85 @@ CP24B (foundation)
 - No recommendation language
 - Full documentation
 - Test coverage ≥ 80%
+
+---
+
+## CP25 — Production-Ready Manual Ticker SEC Synthesis Command
+
+**Status:** In Progress (2026-06-12)
+
+### Goal
+
+Create a production-ready manual ticker SEC synthesis command that lets Roger provide one or more tickers and receive SEC-only research outputs using the approved CP24B-CP24H pipeline.
+
+### Key Features
+
+- **Three modes:** full, inventory-first, synthesis-only
+- **Report-only:** No alerts, Telegram, email, or scheduled tasks
+- **Structured outputs:** Timestamped run folders with manifests, summaries, validation matrices, safety audits
+- **Degraded-mode handling:** Graceful handling of missing data
+- **Safety controls:** Comprehensive safety audit for every run
+
+### CLI Usage
+
+```powershell
+# Synthesis-only mode (uses existing local outputs, no network)
+.\.venv\Scripts\python.exe scripts/manual_sec_synthesis.py --ticker MAIA --mode synthesis-only
+
+# Inventory-first mode (lightweight, safe for broad ticker lists)
+.\.venv\Scripts\python.exe scripts/manual_sec_synthesis.py --tickers AAPL,MSFT,TSLA --mode inventory-first
+
+# Full mode (run all available modules)
+.\.venv\Scripts\python.exe scripts/manual_sec_synthesis.py --ticker MAIA --mode full --lookback-days 730
+```
+
+### Files Created
+
+**Created:**
+
+- sources/manual_sec_synthesis_runner.py (orchestration runner)
+- scripts/manual_sec_synthesis.py (CLI tool)
+- tests/test_manual_sec_synthesis.py (20 tests)
+- docs/workflows/manual_sec_synthesis_user_guide.md (comprehensive user guide)
+
+**Modified:**
+
+- docs/workflows/full_sec_extraction_implementation_plan.md (this file - CP25 reference)
+- docs/workflows/generic_ticker_synthesis_workflow.md (CP25 command reference)
+- docs/archives/cp24_generic_sec_pipeline/CP24_safe_usage_guide.md (CP25 integration)
+
+### Output Structure
+
+Each run creates:
+
+```
+docs/sample_reports/manual_sec_synthesis_runs/<YYYYMMDD_HHMMSS>_<run_name>/
+├── run_manifest.json              # Complete run metadata
+├── run_summary.json                # Structured results
+├── run_summary.md                  # Human-readable summary
+├── validation_matrix.csv           # Per-ticker validation matrix
+├── safety_audit.json               # Safety audit log
+└── <TICKER>/
+    ├── module_outputs/             # CP24B-CP24G outputs
+    ├── synthesis/                  # CP24H synthesis outputs
+    └── <TICKER>_manual_summary.json
+```
+
+### Safety Constraints
+
+- No alert generation
+- No Telegram/email
+- No scheduled task modifications
+- No .env access
+- No OpenInsider spreadsheet usage
+- No buy/sell/hold recommendation language
+- Safety audit for every run
+
+### Documentation
+
+- **User Guide:** `docs/workflows/manual_sec_synthesis_user_guide.md`
+- **Archive Guide:** `docs/archives/cp24_generic_sec_pipeline/CP24_safe_usage_guide.md`
+- **Synthesis Workflow:** `docs/workflows/generic_ticker_synthesis_workflow.md`
 
 ---
 

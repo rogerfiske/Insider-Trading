@@ -1,0 +1,16 @@
+ticker,cik,company_name,mode,inventory_status,form4_status,ownership_status,xbrl_status,capital_structure_status,thirteenf_status,synthesis_status,evidence_rows,posture,degraded,primary_degraded_reason,safety_passed
+AAPL,,,degraded,error,not_run,not_run,not_run,not_run,not_run,not_run,,,true,"Inventory failed: Traceback (most recent call last):
+  File ""c:\Users\Minis\CascadeProjects\Insider-Trading\scripts\sec_ticker_inventory.py"", line 19, in <module>
+    from sources.sec_common import utcnow_iso
+ModuleNotFoundError: No module named 'sources'
+",true
+MSFT,,,degraded,error,not_run,not_run,not_run,not_run,not_run,not_run,,,true,"Inventory failed: Traceback (most recent call last):
+  File ""c:\Users\Minis\CascadeProjects\Insider-Trading\scripts\sec_ticker_inventory.py"", line 19, in <module>
+    from sources.sec_common import utcnow_iso
+ModuleNotFoundError: No module named 'sources'
+",true
+TSLA,,,degraded,error,not_run,not_run,not_run,not_run,not_run,not_run,,,true,"Inventory failed: Traceback (most recent call last):
+  File ""c:\Users\Minis\CascadeProjects\Insider-Trading\scripts\sec_ticker_inventory.py"", line 19, in <module>
+    from sources.sec_common import utcnow_iso
+ModuleNotFoundError: No module named 'sources'
+",true

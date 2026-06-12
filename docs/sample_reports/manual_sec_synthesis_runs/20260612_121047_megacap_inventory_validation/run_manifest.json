@@ -1,0 +1,51 @@
+{
+  "run_id": "20260612_121047_megacap_inventory_validation",
+  "generated_at": "2026-06-12T19:10:47.483365+00:00",
+  "tickers_requested": [
+    "AAPL",
+    "MSFT",
+    "TSLA"
+  ],
+  "mode": "inventory-first",
+  "output_root": "docs\\sample_reports\\manual_sec_synthesis_runs",
+  "project_root": "c:\\Users\\Minis\\CascadeProjects\\Insider-Trading",
+  "modules_requested": [
+    "inventory"
+  ],
+  "modules_run_by_ticker": {
+    "AAPL": [
+      "inventory"
+    ],
+    "MSFT": [
+      "inventory"
+    ],
+    "TSLA": [
+      "inventory"
+    ]
+  },
+  "outputs_by_ticker": {
+    "AAPL": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121047_megacap_inventory_validation\\AAPL",
+    "MSFT": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121047_megacap_inventory_validation\\MSFT",
+    "TSLA": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121047_megacap_inventory_validation\\TSLA"
+  },
+  "validation_matrix_path": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121047_megacap_inventory_validation\\validation_matrix.csv",
+  "run_summary_json_path": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121047_megacap_inventory_validation\\run_summary.json",
+  "run_summary_markdown_path": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121047_megacap_inventory_validation\\run_summary.md",
+  "safety_audit_path": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121047_megacap_inventory_validation\\safety_audit.json",
+  "degraded_tickers": [
+    "AAPL",
+    "MSFT",
+    "TSLA"
+  ],
+  "failed_tickers": [],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

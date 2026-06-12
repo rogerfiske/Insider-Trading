@@ -1,0 +1,42 @@
+{
+  "run_id": "20260612_121030_maia_nvda_validation",
+  "generated_at": "2026-06-12T19:10:30.679608+00:00",
+  "tickers_requested": [
+    "MAIA",
+    "NVDA"
+  ],
+  "mode": "synthesis-only",
+  "output_root": "docs\\sample_reports\\manual_sec_synthesis_runs",
+  "project_root": "c:\\Users\\Minis\\CascadeProjects\\Insider-Trading",
+  "modules_requested": [
+    "synthesis"
+  ],
+  "modules_run_by_ticker": {
+    "MAIA": [
+      "synthesis"
+    ],
+    "NVDA": [
+      "synthesis"
+    ]
+  },
+  "outputs_by_ticker": {
+    "MAIA": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121030_maia_nvda_validation\\MAIA",
+    "NVDA": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121030_maia_nvda_validation\\NVDA"
+  },
+  "validation_matrix_path": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121030_maia_nvda_validation\\validation_matrix.csv",
+  "run_summary_json_path": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121030_maia_nvda_validation\\run_summary.json",
+  "run_summary_markdown_path": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121030_maia_nvda_validation\\run_summary.md",
+  "safety_audit_path": "docs\\sample_reports\\manual_sec_synthesis_runs\\20260612_121030_maia_nvda_validation\\safety_audit.json",
+  "degraded_tickers": [],
+  "failed_tickers": [],
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

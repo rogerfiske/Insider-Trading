@@ -1,0 +1,42 @@
+{
+  "run_id": "20260612_121030_maia_nvda_validation",
+  "generated_at": "2026-06-12T19:10:30.680608+00:00",
+  "mode": "synthesis-only",
+  "tickers_requested": [
+    "MAIA",
+    "NVDA"
+  ],
+  "ticker_results": {
+    "MAIA": {
+      "ticker": "MAIA",
+      "status": "completed",
+      "modules_run": [
+        "synthesis"
+      ],
+      "modules_status": {
+        "synthesis": "success"
+      },
+      "degraded": false,
+      "degraded_reasons": []
+    },
+    "NVDA": {
+      "ticker": "NVDA",
+      "status": "completed",
+      "modules_run": [
+        "synthesis"
+      ],
+      "modules_status": {
+        "synthesis": "success"
+      },
+      "degraded": false,
+      "degraded_reasons": []
+    }
+  },
+  "safety": {
+    "report_only": true,
+    "no_alerts": true,
+    "no_telegram": true,
+    "no_email": true,
+    "no_scheduled_tasks_modified": true
+  }
+}

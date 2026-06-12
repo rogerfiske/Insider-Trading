@@ -1,0 +1,3 @@
+ticker,cik,company_name,mode,inventory_status,form4_status,ownership_status,xbrl_status,capital_structure_status,thirteenf_status,synthesis_status,evidence_rows,posture,degraded,primary_degraded_reason,safety_passed
+MAIA,,,completed,not_run,not_run,not_run,not_run,not_run,not_run,success,,,false,,true
+NVDA,,,completed,not_run,not_run,not_run,not_run,not_run,not_run,success,,,false,,true

@@ -449,6 +449,44 @@ See `tests/test_ticker_synthesis_workflow.py` and related test files.
 - CP23F-Fix: 13F Parser Hardening
 - CP23G: MAIA Market Confirmation Checklist
 - CP23H: MAIA Archive Packet
+- **CP24A-CP24J:** Generic SEC-only extraction and synthesis pipeline (archive: `docs/archives/cp24_generic_sec_pipeline/`)
+- **CP25:** Production-ready manual ticker SEC synthesis command (`scripts/manual_sec_synthesis.py`)
+
+## CP25 Manual Synthesis Command Integration
+
+The CP25 manual synthesis command provides a production-ready interface for running the CP24 generic SEC pipeline:
+
+**Usage:**
+
+```powershell
+# Synthesis-only mode (uses existing local outputs, no network)
+.\.venv\Scripts\python.exe scripts/manual_sec_synthesis.py --ticker MAIA --mode synthesis-only
+
+# Inventory-first mode (lightweight ticker check)
+.\.venv\Scripts\python.exe scripts/manual_sec_synthesis.py --tickers AAPL,MSFT --mode inventory-first
+
+# Full mode (run all available modules)
+.\.venv\Scripts\python.exe scripts/manual_sec_synthesis.py --ticker MAIA --mode full
+```
+
+**Documentation:**
+- User Guide: `docs/workflows/manual_sec_synthesis_user_guide.md`
+- Archive Guide: `docs/archives/cp24_generic_sec_pipeline/CP24_safe_usage_guide.md`
+
+**Output Structure:**
+
+Each run creates a timestamped folder under `docs/sample_reports/manual_sec_synthesis_runs/` with:
+- Run manifest (JSON)
+- Run summary (JSON + Markdown)
+- Validation matrix (CSV)
+- Safety audit (JSON)
+- Per-ticker synthesis outputs
+
+**Safety:**
+- Report-only mode (no alerts, Telegram, email)
+- No scheduled task modifications
+- No .env access
+- Safety audit for every run
 
 ---
 

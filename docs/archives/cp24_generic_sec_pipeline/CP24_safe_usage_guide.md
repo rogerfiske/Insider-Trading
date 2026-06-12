@@ -440,12 +440,59 @@ Before running any CP24 script:
 
 ---
 
+## CP25 Production-Ready Command (Recommended)
+
+**Update (2026-06-12):** The CP25 manual SEC synthesis command provides a production-ready interface for running the CP24 pipeline:
+
+### Quick Start
+
+```powershell
+# Synthesis-only mode (uses existing local outputs, no network, recommended first run)
+.\.venv\Scripts\python.exe scripts/manual_sec_synthesis.py --ticker MAIA --mode synthesis-only
+
+# Inventory-first mode (lightweight check for new tickers)
+.\.venv\Scripts\python.exe scripts/manual_sec_synthesis.py --tickers AAPL,MSFT,TSLA --mode inventory-first
+
+# Full mode (run all available modules)
+.\.venv\Scripts\python.exe scripts/manual_sec_synthesis.py --ticker MAIA --mode full
+```
+
+### Advantages Over Manual Scripts
+
+- **Orchestrated workflow:** Automatically runs modules in correct sequence
+- **Structured outputs:** Creates timestamped folders with manifests, summaries, validation matrices, safety audits
+- **Degraded-mode handling:** Gracefully handles missing data without crashes
+- **Safety controls:** Built-in safety audits for every run
+- **Three modes:** Choose between full pipeline, inventory-first, or synthesis-only
+
+### Documentation
+
+- **User Guide:** `docs/workflows/manual_sec_synthesis_user_guide.md`
+- **Workflow Reference:** `docs/workflows/generic_ticker_synthesis_workflow.md`
+
+### When to Use Manual Scripts vs CP25 Command
+
+**Use CP25 command when:**
+- Running complete ticker research workflow
+- Need structured, auditable outputs
+- Processing multiple tickers
+- Want automated safety audits
+
+**Use manual scripts when:**
+- Testing individual module functionality
+- Debugging specific extraction issues
+- Need fine-grained control over parameters
+- Developing new module features
+
+---
+
 ## Contact and Support
 
 For questions, issues, or enhancement requests:
 
-- **Checkpoint Reports:** `docs/checkpoints/reports/CP24*.md`
+- **Checkpoint Reports:** `docs/checkpoints/reports/CP24*.md` and `docs/checkpoints/reports/CP25*.md`
 - **Workflow Docs:** `docs/workflows/full_sec_extraction_*.md`
+- **User Guides:** `docs/workflows/manual_sec_synthesis_user_guide.md`
 - **Test Files:** `tests/test_*.py`
 - **Archive Manifest:** `docs/archives/cp24_generic_sec_pipeline/MANIFEST.md`
 

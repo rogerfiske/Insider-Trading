@@ -1,0 +1,4 @@
+ticker,cik,company_name,mode,inventory_status,form4_status,ownership_status,xbrl_status,capital_structure_status,thirteenf_status,synthesis_status,evidence_rows,posture,degraded,primary_degraded_reason,safety_passed
+AAPL,,,completed,success,not_run,not_run,not_run,not_run,not_run,not_run,,,false,,true
+MSFT,,,completed,success,not_run,not_run,not_run,not_run,not_run,not_run,,,false,,true
+TSLA,,,completed,success,not_run,not_run,not_run,not_run,not_run,not_run,,,false,,true
