@@ -1,0 +1,258 @@
+{
+  "ticker": "NVDA",
+  "status": "success",
+  "cik": "0001045810",
+  "company_name": "NVIDIA CORP",
+  "generated_at": "2026-06-12T16:54:30.880661+00:00",
+  "manager_universe": [
+    {
+      "name": "Berkshire Hathaway",
+      "cik": "0001067983"
+    },
+    {
+      "name": "Bridgewater Associates",
+      "cik": "0001350694"
+    },
+    {
+      "name": "Renaissance Technologies",
+      "cik": "0001037389"
+    },
+    {
+      "name": "Citadel Advisors",
+      "cik": "0001423053"
+    },
+    {
+      "name": "Two Sigma Investments",
+      "cik": "0001179392"
+    }
+  ],
+  "managers_reviewed": [
+    {
+      "manager_name": "Berkshire Hathaway",
+      "manager_cik": "0001067983",
+      "parse_status": "failed",
+      "holdings_count": 0,
+      "matches_count": 0,
+      "error_type": "all_parse_attempts_failed",
+      "error_message": "All parsing attempts failed. XML parse error: mismatched tag: line 33, column 2"
+    },
+    {
+      "manager_name": "Bridgewater Associates",
+      "manager_cik": "0001350694",
+      "parse_status": "fallback_namespace_success",
+      "holdings_count": 993,
+      "matches_count": 1,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "manager_name": "Renaissance Technologies",
+      "manager_cik": "0001037389",
+      "parse_status": "failed",
+      "holdings_count": 0,
+      "matches_count": 0,
+      "error_type": "all_parse_attempts_failed",
+      "error_message": "All parsing attempts failed. XML parse error: mismatched tag: line 33, column 2"
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "manager_cik": "0001423053",
+      "parse_status": "fallback_namespace_success",
+      "holdings_count": 15589,
+      "matches_count": 6,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "manager_name": "Two Sigma Investments",
+      "manager_cik": "0001179392",
+      "parse_status": "fallback_namespace_success",
+      "holdings_count": 4546,
+      "matches_count": 3,
+      "error_type": null,
+      "error_message": null
+    }
+  ],
+  "managers_parsed_successfully": [
+    {
+      "manager_name": "Bridgewater Associates",
+      "manager_cik": "0001350694",
+      "parse_status": "fallback_namespace_success",
+      "holdings_count": 993,
+      "matches_count": 1,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "manager_cik": "0001423053",
+      "parse_status": "fallback_namespace_success",
+      "holdings_count": 15589,
+      "matches_count": 6,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "manager_name": "Two Sigma Investments",
+      "manager_cik": "0001179392",
+      "parse_status": "fallback_namespace_success",
+      "holdings_count": 4546,
+      "matches_count": 3,
+      "error_type": null,
+      "error_message": null
+    }
+  ],
+  "managers_parse_failed": [
+    {
+      "manager_name": "Berkshire Hathaway",
+      "manager_cik": "0001067983",
+      "parse_status": "failed",
+      "holdings_count": 0,
+      "matches_count": 0,
+      "error_type": "all_parse_attempts_failed",
+      "error_message": "All parsing attempts failed. XML parse error: mismatched tag: line 33, column 2"
+    },
+    {
+      "manager_name": "Renaissance Technologies",
+      "manager_cik": "0001037389",
+      "parse_status": "failed",
+      "holdings_count": 0,
+      "matches_count": 0,
+      "error_type": "all_parse_attempts_failed",
+      "error_message": "All parsing attempts failed. XML parse error: mismatched tag: line 33, column 2"
+    }
+  ],
+  "matches": [
+    {
+      "manager_name": "Bridgewater Associates",
+      "manager_cik": "0001350694",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 818459723000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "manager_cik": "0001423053",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 7621280000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "manager_cik": "0001423053",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 1673495835000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "manager_cik": "0001423053",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 4970400000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "manager_cik": "0001423053",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 11657645920000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "manager_cik": "0001423053",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 1581655923000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    },
+    {
+      "manager_name": "Citadel Advisors",
+      "manager_cik": "0001423053",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 9009817920000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    },
+    {
+      "manager_name": "Two Sigma Investments",
+      "manager_cik": "0001179392",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 1959252328000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    },
+    {
+      "manager_name": "Two Sigma Investments",
+      "manager_cik": "0001179392",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 66917280000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    },
+    {
+      "manager_name": "Two Sigma Investments",
+      "manager_cik": "0001179392",
+      "report_period": "2026-03-31",
+      "issuer_name": "NVIDIA CORPORATION",
+      "cusip": "67066G104",
+      "value_usd": 75968640000.0,
+      "shares": 0.0,
+      "confidence": "NORMALIZED_ISSUER_NAME",
+      "match_method": "Normalized name match: 'nvidia' = 'nvidia'"
+    }
+  ],
+  "aggregate_stats": {
+    "total_managers_reviewed": 5,
+    "total_managers_parsed_successfully": 3,
+    "total_managers_parse_failed": 2,
+    "total_holdings_parsed": 21128,
+    "match_count": 10,
+    "total_value_usd": 26855805249000.0,
+    "total_shares": 0
+  },
+  "partial_visibility_note": "Matched 10 holdings among 3 successfully parsed managers. Institutional visibility is partial: limited to 5 managers reviewed. Parse failures: Berkshire Hathaway, Renaissance Technologies.",
+  "cp23f_reconciliation": null,
+  "safety": {
+    "report_only": true,
+    "alerts_generated": false,
+    "openinsider_spreadsheet_used": false,
+    "telegram_sent": false,
+    "email_sent": false,
+    "scheduled_tasks_modified": false,
+    "env_printed_or_changed": false,
+    "buy_sell_hold_language_used": false
+  }
+}

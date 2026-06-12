@@ -1,0 +1,6 @@
+manager_name,manager_cik,parse_status,holdings_count,matches_count,error_type,error_message
+Berkshire Hathaway,0001067983,failed,0,0,all_parse_attempts_failed,"All parsing attempts failed. XML parse error: mismatched tag: line 33, column 2"
+Bridgewater Associates,0001350694,fallback_namespace_success,993,0,,
+Renaissance Technologies,0001037389,failed,0,0,all_parse_attempts_failed,"All parsing attempts failed. XML parse error: mismatched tag: line 33, column 2"
+Citadel Advisors,0001423053,fallback_namespace_success,15589,0,,
+Two Sigma Investments,0001179392,fallback_namespace_success,4546,0,,

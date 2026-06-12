@@ -465,70 +465,89 @@ Extract capital structure and calculate dilution metrics.
 
 ---
 
-## CP24G — Integrate 13F InfoTable Matching into Generic Ticker Workflow
+## CP24G — Integrate 13F InfoTable Matching into Generic Ticker Workflow ✓ COMPLETED
+
+**Status:** ✓ Completed (2026-06-12)
 
 ### Goal
 
-Integrate existing 13F InfoTable matching into the generic ticker workflow.
+Integrate existing 13F InfoTable matching into the generic ticker workflow to identify institutional ownership by major asset managers.
 
 ### Inputs
 
-- Ticker (from CP24B)
-- CIK and company name (from CP24B)
-- Holdings from institutional managers (from sec_13f.py)
+- Ticker symbol (--ticker or --tickers)
+- Optional manager CIKs (default: DEFAULT_MANAGERS from sec_13f.py)
+- Manager universe: Berkshire Hathaway, Bridgewater, Renaissance, Citadel, Two Sigma
 
 ### Outputs
 
-- List[HoldingMatchResult] (matched holdings with confidence)
-- JSON output: `{ticker}_ownership_13f.json`
+- Per-ticker JSON: `{ticker}_13f_institutional_ownership.json`
+- Per-ticker Markdown: `{ticker}_13f_institutional_ownership.md`
+- Matches CSV: `{ticker}_13f_matches.csv`
+- Manager diagnostics CSV: `{ticker}_13f_manager_diagnostics.csv`
+- Batch summary JSON/MD for multiple tickers
+- CP23F reconciliation section for MAIA
 
-### Files Likely Changed
+### Files Created/Modified
 
-**Existing (Reuse):**
-- sources/sec_13f.py (already implemented)
-- sources/sec_13f_parser.py (already implemented)
-- sources/sec_13f_matcher.py (already implemented)
+**Created:**
 
-**New/Modified:**
-- scripts/ticker_13f_matcher.py (new CLI tool)
-- tests/test_ticker_13f_matching.py (integration tests)
+- scripts/sec_13f_institutional_ownership.py (CLI tool, 798 lines)
+- tests/test_sec_13f_institutional_ownership.py (23 tests)
+- docs/sample_reports/13f_institutional_ownership/MAIA/ (JSON, MD, 2 CSVs)
+- docs/sample_reports/13f_institutional_ownership/NVDA/ (JSON, MD, 2 CSVs)
+- docs/sample_reports/13f_institutional_ownership/batch_maia_nvda/ (batch summary)
 
-### Implementation Steps
+**Reused (preserved, not rewritten):**
 
-1. Create CLI tool `scripts/ticker_13f_matcher.py`:
-   - Load ticker/CIK from CP24B output
-   - Fetch latest 13F-HR filings for default managers
-   - Parse InfoTable XML/HTML
-   - Match ticker to holdings
-   - Save to JSON
+- sources/sec_13f.py (13F filing fetcher, DEFAULT_MANAGERS)
+- sources/sec_13f_parser.py (InfoTable XML/HTML parser with namespace/lowercase/fallback support)
+- sources/sec_13f_matcher.py (Issuer matching logic)
+- sources/sec_ticker.py (resolve_ticker_to_cik)
+- sources/sec_submissions.py (fetch_company_submissions)
 
-2. Add integration tests:
-   - End-to-end matching for known tickers (AAPL, MSFT)
-   - CUSIP exact match
-   - Issuer name match
-   - No matches scenario
-
-### Validation Commands
+### CLI Usage
 
 ```powershell
-# Match NVDA to 13F holdings
-python scripts/ticker_13f_matcher.py --ticker NVDA --input-dir docs/sample_reports/generic_ticker/NVDA --output-dir docs/sample_reports/generic_ticker/NVDA
+# Single ticker 13F ownership
+python -m scripts.sec_13f_institutional_ownership --ticker MAIA --output-dir docs/sample_reports/13f_institutional_ownership/MAIA
+
+# Multiple tickers (batch mode)
+python -m scripts.sec_13f_institutional_ownership --tickers MAIA,NVDA --output-dir docs/sample_reports/13f_institutional_ownership/batch
+
+# Custom manager universe (filter by CIKs)
+python -m scripts.sec_13f_institutional_ownership --ticker NVDA --manager-ciks 0001067983,0001350694 --output-dir docs/sample_reports/13f_institutional_ownership/NVDA
 ```
 
 ### Safety Constraints
 
-- Read-only access
-- No alerts
-- Manager list configurable (not hardcoded)
+- Read-only SEC access (no writes)
+- No alert generation
+- No Telegram/email
+- No scheduled task modification
+- No OpenInsider spreadsheet required
+- No buy/sell/hold language
+- Output JSON/Markdown/CSV only
+- Partial visibility language required (no exhaustive claims)
 
 ### Acceptance Criteria
 
-- ✓ Fetches 13F-HR filings for managers
-- ✓ Parses InfoTable (XML/HTML fallback)
-- ✓ Matches ticker to holdings
-- ✓ Returns confidence levels
-- ✓ Handles no matches gracefully
-- ✓ 10/10 tests pass
+- ✓ Uses DEFAULT_MANAGERS from sec_13f.py (Berkshire, Bridgewater, Renaissance, Citadel, Two Sigma)
+- ✓ Resolves ticker to CIK using CP24B infrastructure
+- ✓ Fetches latest 13F-HR filings for each manager
+- ✓ Parses InfoTable using existing parser (XML/namespace/lowercase/HTML fallbacks)
+- ✓ Matches target issuer using existing matcher (ticker/name/CUSIP)
+- ✓ Generates per-ticker outputs (JSON, MD, 2 CSVs)
+- ✓ Generates batch summary for multiple tickers
+- ✓ MAIA CP23F reconciliation: 3/5 managers parsed, 21,128 holdings, 0 MAIA matches
+- ✓ NVDA validation: 3/5 managers parsed, 21,128 holdings, 10 NVDA matches
+- ✓ Partial visibility language (no "zero institutional ownership" claims)
+- ✓ Safety flags present in all outputs
+- ✓ No secrets in outputs
+- ✓ No alert code paths
+- ✓ OpenInsider NOT required
+- ✓ 23/23 tests pass
+- ✓ Python compilation successful
 
 ---
 

@@ -1,0 +1,11 @@
+manager_name,manager_cik,report_period,issuer_name,cusip,value_usd,shares,confidence,match_method
+Bridgewater Associates,0001350694,2026-03-31,NVIDIA CORPORATION,67066G104,818459723000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
+Citadel Advisors,0001423053,2026-03-31,NVIDIA CORPORATION,67066G104,7621280000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
+Citadel Advisors,0001423053,2026-03-31,NVIDIA CORPORATION,67066G104,1673495835000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
+Citadel Advisors,0001423053,2026-03-31,NVIDIA CORPORATION,67066G104,4970400000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
+Citadel Advisors,0001423053,2026-03-31,NVIDIA CORPORATION,67066G104,11657645920000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
+Citadel Advisors,0001423053,2026-03-31,NVIDIA CORPORATION,67066G104,1581655923000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
+Citadel Advisors,0001423053,2026-03-31,NVIDIA CORPORATION,67066G104,9009817920000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
+Two Sigma Investments,0001179392,2026-03-31,NVIDIA CORPORATION,67066G104,1959252328000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
+Two Sigma Investments,0001179392,2026-03-31,NVIDIA CORPORATION,67066G104,66917280000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
+Two Sigma Investments,0001179392,2026-03-31,NVIDIA CORPORATION,67066G104,75968640000.00,0,NORMALIZED_ISSUER_NAME,Normalized name match: 'nvidia' = 'nvidia'
