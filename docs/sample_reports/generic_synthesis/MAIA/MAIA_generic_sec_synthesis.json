@@ -2,7 +2,7 @@
   "ticker": "MAIA",
   "cik": "0001878313",
   "company_name": "MAIA Biotechnology, Inc.",
-  "generated_at": "2026-06-12T17:35:33.479615+00:00",
+  "generated_at": "2026-06-12T17:52:16.722282+00:00",
   "source_modules": {
     "sec_inventory": {
       "path": "sec_inventory/MAIA",
@@ -236,7 +236,7 @@
   "safety": {
     "report_only": true,
     "alerts_generated": false,
-    "openinsider_spreadsheet_used": false,
+    "external_spreadsheet_used": false,
     "telegram_sent": false,
     "email_sent": false,
     "scheduled_tasks_modified": false,

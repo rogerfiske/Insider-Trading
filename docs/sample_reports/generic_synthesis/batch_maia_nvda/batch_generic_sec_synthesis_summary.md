@@ -1,6 +1,6 @@
 # Batch Generic SEC Synthesis Summary
 
-**Generated:** 2026-06-12T17:40:01.008498+00:00
+**Generated:** 2026-06-12T17:52:22.397576+00:00
 
 ---
 
@@ -25,7 +25,7 @@ MAIA, NVDA
 |------|-------|
 | Report only | True |
 | Alerts generated | False |
-| OpenInsider spreadsheet used | False |
+| External spreadsheet used | False |
 | Telegram sent | False |
 | Email sent | False |
 | Scheduled tasks modified | False |

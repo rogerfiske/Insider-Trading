@@ -2,7 +2,7 @@
   "ticker": "NVDA",
   "cik": "0001045810",
   "company_name": "NVIDIA CORP",
-  "generated_at": "2026-06-12T17:40:01.008498+00:00",
+  "generated_at": "2026-06-12T17:52:22.397576+00:00",
   "source_modules": {
     "sec_inventory": {
       "path": "sec_inventory/NVDA",
@@ -147,6 +147,16 @@
       "source_module": "xbrl_financials",
       "source_path": "xbrl_financials/NVDA",
       "comment": "Current assets / current liabilities"
+    },
+    {
+      "category": "Capital Structure",
+      "evidence": "Fully diluted share estimate: 24,362,363 - 27,362,363",
+      "direction": "neutral",
+      "strength": "medium",
+      "confidence": "medium",
+      "source_module": "capital_structure",
+      "source_path": "capital_structure/NVDA",
+      "comment": "Estimated fully diluted share count range"
     }
   ],
   "synthesis_scores": {
@@ -214,7 +224,7 @@
   "safety": {
     "report_only": true,
     "alerts_generated": false,
-    "openinsider_spreadsheet_used": false,
+    "external_spreadsheet_used": false,
     "telegram_sent": false,
     "email_sent": false,
     "scheduled_tasks_modified": false,

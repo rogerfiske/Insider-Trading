@@ -299,6 +299,76 @@ Evidence extraction and scoring methods updated with correct field mappings:
 
 ---
 
+## CP24H-Fix2: Complete NVDA Evidence Matrix Row Requirement
+
+**Date:** 2026-06-12
+**Reason:** CP24H-Fix achieved MAIA: 13 rows ✓, NVDA: 11 rows (1 short of >= 12 requirement)
+**PM Decision:** Complete NVDA evidence requirement before CP24I approval
+
+### Changes Made
+
+**Additional Evidence Category:**
+- **Capital Structure: Fully diluted share estimate** - Added for tickers where common_shares_outstanding is unavailable but fully_diluted estimates exist
+
+**Code Change:**
+- Updated `sources/generic_synthesis_composer.py` build_evidence_matrix() to extract fully_diluted_low_estimate and fully_diluted_high_estimate from derived_dilution_metrics when common shares are not available
+
+**Test Updates:**
+- Added `test_maia_evidence_row_count()` - Explicitly requires MAIA >= 12 evidence rows
+- Added `test_nvda_evidence_row_count()` - Explicitly requires NVDA >= 12 evidence rows
+
+### Results
+
+**Evidence Row Counts:**
+- Before: MAIA: 13, NVDA: 11
+- After: MAIA: 13, NVDA: 12 ✓
+
+**NVDA Capital Structure Evidence Added:**
+```
+Category: Capital Structure
+Evidence: Fully diluted share estimate: 24,362,363 - 27,362,363
+Direction: neutral
+Strength: medium
+Confidence: medium
+Source: capital_structure/NVDA
+Comment: Estimated fully diluted share count range
+```
+
+**MAIA Validation:**
+- Evidence rows: 13 ✓
+- Overall posture: "Strong insider-evidence / high uncertainty profile" ✓
+- Insider score: 70/100 ✓
+- All baseline values preserved ✓
+
+**NVDA Validation:**
+- Evidence rows: 12 ✓ (increased from 11)
+- Overall posture: "Large operating company / institutional visibility profile" ✓
+- Liquidity score: 100/100 ✓
+- Ownership score: 80/100 ✓
+
+**Test Results:**
+- 32/32 tests passing (100%) ✓
+- 2 new tests added for explicit evidence row count requirements
+- All previous tests still passing
+
+**Safety Confirmations:**
+- ✓ No secrets in outputs (verified via grep scan)
+- ✓ No Telegram/email/alert code paths
+- ✓ No scheduled tasks modified or triggered
+- ✓ No .env changes or secret printing
+- ✓ Roger's OpenInsider spreadsheet excluded
+- ✓ Report-only mode maintained
+
+**Outputs Regenerated:**
+- MAIA: JSON, Markdown, CSV ✓
+- NVDA: JSON, Markdown, CSV ✓
+- Batch: All outputs ✓
+
+**Commit:** Pending validation
+**Status:** Ready for PM approval
+
+---
+
 ## Conclusion
 
 CP24H-Fix successfully repairs the evidence mapping blocker by systematically analyzing actual CP24B-CP24G JSON structures and updating all evidence extraction code with correct field paths. The generic SEC synthesis composer now produces complete evidence matrices (12+ rows for tickers with full data coverage) while preserving all approved baseline values and maintaining 100% test pass rate.

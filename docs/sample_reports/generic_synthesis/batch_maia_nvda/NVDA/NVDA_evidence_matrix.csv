@@ -10,3 +10,4 @@ Institutional Ownership,"10 institutional holdings matched ($26,855,805,249,000 
 Financial Liquidity,"Cash and equivalents: $13,237,000,000",positive,high,high,xbrl_financials,xbrl_financials/NVDA,XBRL companyfacts API
 Financial Liquidity,"Working capital: $107,111,000,000",positive,high,high,xbrl_financials,xbrl_financials/NVDA,Current assets - current liabilities
 Financial Liquidity,Current ratio: 3.44,positive,medium,high,xbrl_financials,xbrl_financials/NVDA,Current assets / current liabilities
+Capital Structure,"Fully diluted share estimate: 24,362,363 - 27,362,363",neutral,medium,medium,capital_structure,capital_structure/NVDA,Estimated fully diluted share count range

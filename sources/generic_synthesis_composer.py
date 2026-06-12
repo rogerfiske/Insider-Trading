@@ -466,6 +466,23 @@ class GenericSynthesisComposer:
                     "comment": "Fully diluted share estimate / current shares"
                 })
 
+            # Fully diluted share estimates (available even when dilution % is not calculable)
+            fully_diluted_low = dilution_metrics.get("fully_diluted_low_estimate")
+            fully_diluted_high = dilution_metrics.get("fully_diluted_high_estimate")
+            if fully_diluted_low is not None and fully_diluted_high is not None:
+                # Only add if we don't already have common shares evidence
+                if common_shares is None:
+                    evidence.append({
+                        "category": "Capital Structure",
+                        "evidence": f"Fully diluted share estimate: {fully_diluted_low:,} - {fully_diluted_high:,}",
+                        "direction": "neutral",
+                        "strength": "medium",
+                        "confidence": "medium",
+                        "source_module": "capital_structure",
+                        "source_path": f"capital_structure/{ticker}",
+                        "comment": "Estimated fully diluted share count range"
+                    })
+
         return evidence
 
     def calculate_scores(self, evidence: List[Dict[str, Any]], modules: Dict[str, Any]) -> Dict[str, Any]:

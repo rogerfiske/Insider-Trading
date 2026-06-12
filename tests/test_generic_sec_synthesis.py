@@ -240,6 +240,20 @@ def test_evidence_matrix_required_categories(maia_synthesis):
         f"No required categories found. Found: {categories_found}"
 
 
+def test_maia_evidence_row_count(maia_synthesis):
+    """Test MAIA evidence matrix has at least 12 rows."""
+    evidence = maia_synthesis["evidence_matrix"]
+    assert len(evidence) >= 12, \
+        f"MAIA evidence matrix must have at least 12 rows, found {len(evidence)}"
+
+
+def test_nvda_evidence_row_count(nvda_synthesis):
+    """Test NVDA evidence matrix has at least 12 rows."""
+    evidence = nvda_synthesis["evidence_matrix"]
+    assert len(evidence) >= 12, \
+        f"NVDA evidence matrix must have at least 12 rows, found {len(evidence)}"
+
+
 def test_evidence_matrix_allowed_values(maia_synthesis):
     """Test evidence matrix uses only allowed direction/strength/confidence values."""
     evidence = maia_synthesis["evidence_matrix"]

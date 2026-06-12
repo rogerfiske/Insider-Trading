@@ -2,7 +2,7 @@
 
 **Company:** MAIA Biotechnology, Inc.
 **CIK:** 0001878313
-**Generated:** 2026-06-12T17:40:01.008498+00:00
+**Generated:** 2026-06-12T17:52:22.397576+00:00
 
 ---
 
@@ -120,7 +120,7 @@ This synthesis composes SEC EDGAR public filing data from CP24B-CP24G extraction
 |------|-------|
 | Report only | True |
 | Alerts generated | False |
-| OpenInsider spreadsheet used | False |
+| External spreadsheet used | False |
 | Telegram sent | False |
 | Email sent | False |
 | Scheduled tasks modified | False |

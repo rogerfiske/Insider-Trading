@@ -2,7 +2,7 @@
 
 **Company:** NVIDIA CORP
 **CIK:** 0001045810
-**Generated:** 2026-06-12T17:39:47.010706+00:00
+**Generated:** 2026-06-12T17:52:02.393445+00:00
 
 ---
 
@@ -65,7 +65,7 @@ This synthesis composes SEC EDGAR public filing data from CP24B-CP24G extraction
 | Financial Liquidity | Cash and equivalents: $13,237,000,000 | positive | high | high | xbrl_financials |
 | Financial Liquidity | Working capital: $107,111,000,000 | positive | high | high | xbrl_financials |
 
-*Showing 10 of 11 evidence rows. See NVDA_evidence_matrix.csv for complete matrix.*
+*Showing 10 of 12 evidence rows. See NVDA_evidence_matrix.csv for complete matrix.*
 
 ---
 
@@ -118,7 +118,7 @@ This synthesis composes SEC EDGAR public filing data from CP24B-CP24G extraction
 |------|-------|
 | Report only | True |
 | Alerts generated | False |
-| OpenInsider spreadsheet used | False |
+| External spreadsheet used | False |
 | Telegram sent | False |
 | Email sent | False |
 | Scheduled tasks modified | False |
