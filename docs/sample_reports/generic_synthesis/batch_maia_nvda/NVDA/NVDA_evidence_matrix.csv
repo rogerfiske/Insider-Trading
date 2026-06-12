@@ -3,4 +3,10 @@ Identity,Ticker NVDA resolved to CIK 0001045810,positive,high,high,sec_inventory
 Data Coverage,0 SEC filings found across multiple form types,positive,high,high,sec_inventory,sec_inventory/NVDA,Filing inventory completeness
 Insider Activity,"1 open-market insider purchases totaling $250,000.00",positive,high,high,form4_transactions,form4_transactions/NVDA,Open-market buying activity
 Insider Activity,"1501 open-market insider sales totaling $5,218,282,389.93",negative,medium,high,form4_transactions,form4_transactions/NVDA,Open-market selling activity
+Insider Activity,1 distinct insider(s) made open-market purchases,positive,medium,high,form4_transactions,form4_transactions/NVDA,Breadth of insider buying interest
+Ownership Filings,241 Form 144 sale-intent notice(s) filed,neutral,medium,high,ownership_filings,ownership_filings/NVDA,"Form 144 is notice of proposed sale, not actual sale"
+Ownership Filings,"14 Schedule 13D/G beneficial ownership filing(s) (0 active 13D, 14 passive 13G)",positive,medium,high,ownership_filings,ownership_filings/NVDA,Large shareholder disclosure
 Institutional Ownership,"10 institutional holdings matched ($26,855,805,249,000 total value)",positive,medium,medium,institutional_13f,13f_institutional_ownership/NVDA,Partial visibility: 3/5 managers parsed
+Financial Liquidity,"Cash and equivalents: $13,237,000,000",positive,high,high,xbrl_financials,xbrl_financials/NVDA,XBRL companyfacts API
+Financial Liquidity,"Working capital: $107,111,000,000",positive,high,high,xbrl_financials,xbrl_financials/NVDA,Current assets - current liabilities
+Financial Liquidity,Current ratio: 3.44,positive,medium,high,xbrl_financials,xbrl_financials/NVDA,Current assets / current liabilities

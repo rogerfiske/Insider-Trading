@@ -2,7 +2,7 @@
 
 **Company:** MAIA Biotechnology, Inc.
 **CIK:** 0001878313
-**Generated:** 2026-06-12T17:19:37.783458+00:00
+**Generated:** 2026-06-12T17:40:01.008498+00:00
 
 ---
 
@@ -43,8 +43,8 @@ This synthesis composes SEC EDGAR public filing data from CP24B-CP24G extraction
 | Component | Score | Comment |
 |-----------|-------|---------|
 | Insider Evidence | 70/100 | Form 4 activity strength |
-| Capital Structure Risk | N/A | Data unavailable |
-| Financial Liquidity | 100/100 | Higher is better |
+| Capital Structure Risk | 45/100 | Lower is less risky |
+| Financial Liquidity | 80/100 | Higher is better |
 | Ownership Visibility | 30/100 | Institutional coverage |
 | Data Quality | 100/100 | Module success rate |
 
@@ -57,13 +57,23 @@ This synthesis composes SEC EDGAR public filing data from CP24B-CP24G extraction
 | Identity | Ticker MAIA resolved to CIK 0001878313 | positive | high | high | sec_inventory |
 | Data Coverage | 0 SEC filings found across multiple form types | positive | high | high | sec_inventory |
 | Insider Activity | 141 open-market insider purchases totaling $5,276,429.73 | positive | high | high | form4_transactions |
+| Insider Activity | 10 distinct insider(s) made open-market purchases | positive | medium | high | form4_transactions |
+| Ownership Filings | 1 Form 144 sale-intent notice(s) filed | neutral | medium | high | ownership_filings |
+| Ownership Filings | 11 Schedule 13D/G beneficial ownership filing(s) (5 active 13D, 6 passive 13G) | positive | medium | high | ownership_filings |
 | Institutional Ownership | No matches among 3/5 reviewed managers | neutral | not_applicable | medium | institutional_13f |
+| Financial Liquidity | Cash and equivalents: $34,413,110 | positive | high | high | xbrl_financials |
+| Financial Liquidity | Working capital: $28,992,690 | positive | high | high | xbrl_financials |
+| Financial Liquidity | Cash runway: 19.4 months | positive | high | medium | xbrl_financials |
+
+*Showing 10 of 13 evidence rows. See MAIA_evidence_matrix.csv for complete matrix.*
 
 ---
 
 ## Key Findings
 
 - 141 open-market insider purchases detected totaling $5,276,429.73
+- Estimated cash runway: 19.4 months based on trailing burn
+- Significant dilution overhang: 45.1% (high estimate)
 
 ---
 

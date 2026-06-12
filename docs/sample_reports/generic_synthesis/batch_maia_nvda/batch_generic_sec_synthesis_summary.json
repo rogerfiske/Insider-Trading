@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-12T17:19:37.783458+00:00",
+  "generated_at": "2026-06-12T17:40:01.008498+00:00",
   "tickers_requested": [
     "MAIA",
     "NVDA"
@@ -20,7 +20,7 @@
     {
       "ticker": "NVDA",
       "company_name": "NVIDIA CORP",
-      "overall_posture": "Weak insider-evidence / incomplete data profile",
+      "overall_posture": "Large operating company / institutional visibility profile",
       "data_quality_score": 100,
       "is_degraded": false
     }

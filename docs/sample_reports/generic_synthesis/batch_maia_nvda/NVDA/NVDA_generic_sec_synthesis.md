@@ -2,7 +2,7 @@
 
 **Company:** NVIDIA CORP
 **CIK:** 0001045810
-**Generated:** 2026-06-12T17:19:37.783458+00:00
+**Generated:** 2026-06-12T17:40:01.008498+00:00
 
 ---
 
@@ -36,7 +36,7 @@ This synthesis composes SEC EDGAR public filing data from CP24B-CP24G extraction
 
 ## Executive Research Posture
 
-**Overall Posture:** Weak insider-evidence / incomplete data profile
+**Overall Posture:** Large operating company / institutional visibility profile
 
 **Scoring Components:**
 
@@ -58,7 +58,14 @@ This synthesis composes SEC EDGAR public filing data from CP24B-CP24G extraction
 | Data Coverage | 0 SEC filings found across multiple form types | positive | high | high | sec_inventory |
 | Insider Activity | 1 open-market insider purchases totaling $250,000.00 | positive | high | high | form4_transactions |
 | Insider Activity | 1501 open-market insider sales totaling $5,218,282,389.93 | negative | medium | high | form4_transactions |
+| Insider Activity | 1 distinct insider(s) made open-market purchases | positive | medium | high | form4_transactions |
+| Ownership Filings | 241 Form 144 sale-intent notice(s) filed | neutral | medium | high | ownership_filings |
+| Ownership Filings | 14 Schedule 13D/G beneficial ownership filing(s) (0 active 13D, 14 passive 13G) | positive | medium | high | ownership_filings |
 | Institutional Ownership | 10 institutional holdings matched ($26,855,805,249,000 total value) | positive | medium | medium | institutional_13f |
+| Financial Liquidity | Cash and equivalents: $13,237,000,000 | positive | high | high | xbrl_financials |
+| Financial Liquidity | Working capital: $107,111,000,000 | positive | high | high | xbrl_financials |
+
+*Showing 10 of 11 evidence rows. See NVDA_evidence_matrix.csv for complete matrix.*
 
 ---
 

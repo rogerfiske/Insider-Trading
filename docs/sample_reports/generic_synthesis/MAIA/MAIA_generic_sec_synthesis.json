@@ -2,7 +2,7 @@
   "ticker": "MAIA",
   "cik": "0001878313",
   "company_name": "MAIA Biotechnology, Inc.",
-  "generated_at": "2026-06-12T17:19:37.361302+00:00",
+  "generated_at": "2026-06-12T17:35:33.479615+00:00",
   "source_modules": {
     "sec_inventory": {
       "path": "sec_inventory/MAIA",
@@ -69,6 +69,36 @@
       "comment": "Open-market buying activity"
     },
     {
+      "category": "Insider Activity",
+      "evidence": "10 distinct insider(s) made open-market purchases",
+      "direction": "positive",
+      "strength": "medium",
+      "confidence": "high",
+      "source_module": "form4_transactions",
+      "source_path": "form4_transactions/MAIA",
+      "comment": "Breadth of insider buying interest"
+    },
+    {
+      "category": "Ownership Filings",
+      "evidence": "1 Form 144 sale-intent notice(s) filed",
+      "direction": "neutral",
+      "strength": "medium",
+      "confidence": "high",
+      "source_module": "ownership_filings",
+      "source_path": "ownership_filings/MAIA",
+      "comment": "Form 144 is notice of proposed sale, not actual sale"
+    },
+    {
+      "category": "Ownership Filings",
+      "evidence": "11 Schedule 13D/G beneficial ownership filing(s) (5 active 13D, 6 passive 13G)",
+      "direction": "positive",
+      "strength": "medium",
+      "confidence": "high",
+      "source_module": "ownership_filings",
+      "source_path": "ownership_filings/MAIA",
+      "comment": "Large shareholder disclosure"
+    },
+    {
       "category": "Institutional Ownership",
       "evidence": "No matches among 3/5 reviewed managers",
       "direction": "neutral",
@@ -77,18 +107,80 @@
       "source_module": "institutional_13f",
       "source_path": "13f_institutional_ownership/MAIA",
       "comment": "Institutional visibility is partial"
+    },
+    {
+      "category": "Financial Liquidity",
+      "evidence": "Cash and equivalents: $34,413,110",
+      "direction": "positive",
+      "strength": "high",
+      "confidence": "high",
+      "source_module": "xbrl_financials",
+      "source_path": "xbrl_financials/MAIA",
+      "comment": "XBRL companyfacts API"
+    },
+    {
+      "category": "Financial Liquidity",
+      "evidence": "Working capital: $28,992,690",
+      "direction": "positive",
+      "strength": "high",
+      "confidence": "high",
+      "source_module": "xbrl_financials",
+      "source_path": "xbrl_financials/MAIA",
+      "comment": "Current assets - current liabilities"
+    },
+    {
+      "category": "Financial Liquidity",
+      "evidence": "Cash runway: 19.4 months",
+      "direction": "positive",
+      "strength": "high",
+      "confidence": "medium",
+      "source_module": "xbrl_financials",
+      "source_path": "xbrl_financials/MAIA",
+      "comment": "Based on trailing burn rate"
+    },
+    {
+      "category": "Financial Liquidity",
+      "evidence": "Current ratio: 5.59",
+      "direction": "positive",
+      "strength": "medium",
+      "confidence": "high",
+      "source_module": "xbrl_financials",
+      "source_path": "xbrl_financials/MAIA",
+      "comment": "Current assets / current liabilities"
+    },
+    {
+      "category": "Capital Structure",
+      "evidence": "Common shares outstanding: 60,671,491",
+      "direction": "neutral",
+      "strength": "high",
+      "confidence": "high",
+      "source_module": "capital_structure",
+      "source_path": "capital_structure/MAIA",
+      "comment": "XBRL-sourced share count"
+    },
+    {
+      "category": "Capital Structure",
+      "evidence": "Dilution overhang: 40.1% - 45.1%",
+      "direction": "negative",
+      "strength": "medium",
+      "confidence": "medium",
+      "source_module": "capital_structure",
+      "source_path": "capital_structure/MAIA",
+      "comment": "Fully diluted share estimate / current shares"
     }
   ],
   "synthesis_scores": {
     "insider_evidence_score": 70,
-    "capital_structure_risk_score": null,
-    "financial_liquidity_score": 100,
+    "capital_structure_risk_score": 45,
+    "financial_liquidity_score": 80,
     "ownership_visibility_score": 30,
     "data_quality_score": 100,
     "overall_research_posture": "Strong insider-evidence / high uncertainty profile"
   },
   "key_findings": [
-    "141 open-market insider purchases detected totaling $5,276,429.73"
+    "141 open-market insider purchases detected totaling $5,276,429.73",
+    "Estimated cash runway: 19.4 months based on trailing burn",
+    "Significant dilution overhang: 45.1% (high estimate)"
   ],
   "critical_unknowns": [
     "Institutional visibility partial: 2 manager(s) failed to parse"

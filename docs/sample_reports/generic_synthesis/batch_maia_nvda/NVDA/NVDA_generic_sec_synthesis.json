@@ -2,7 +2,7 @@
   "ticker": "NVDA",
   "cik": "0001045810",
   "company_name": "NVIDIA CORP",
-  "generated_at": "2026-06-12T17:19:37.783458+00:00",
+  "generated_at": "2026-06-12T17:40:01.008498+00:00",
   "source_modules": {
     "sec_inventory": {
       "path": "sec_inventory/NVDA",
@@ -79,6 +79,36 @@
       "comment": "Open-market selling activity"
     },
     {
+      "category": "Insider Activity",
+      "evidence": "1 distinct insider(s) made open-market purchases",
+      "direction": "positive",
+      "strength": "medium",
+      "confidence": "high",
+      "source_module": "form4_transactions",
+      "source_path": "form4_transactions/NVDA",
+      "comment": "Breadth of insider buying interest"
+    },
+    {
+      "category": "Ownership Filings",
+      "evidence": "241 Form 144 sale-intent notice(s) filed",
+      "direction": "neutral",
+      "strength": "medium",
+      "confidence": "high",
+      "source_module": "ownership_filings",
+      "source_path": "ownership_filings/NVDA",
+      "comment": "Form 144 is notice of proposed sale, not actual sale"
+    },
+    {
+      "category": "Ownership Filings",
+      "evidence": "14 Schedule 13D/G beneficial ownership filing(s) (0 active 13D, 14 passive 13G)",
+      "direction": "positive",
+      "strength": "medium",
+      "confidence": "high",
+      "source_module": "ownership_filings",
+      "source_path": "ownership_filings/NVDA",
+      "comment": "Large shareholder disclosure"
+    },
+    {
       "category": "Institutional Ownership",
       "evidence": "10 institutional holdings matched ($26,855,805,249,000 total value)",
       "direction": "positive",
@@ -87,6 +117,36 @@
       "source_module": "institutional_13f",
       "source_path": "13f_institutional_ownership/NVDA",
       "comment": "Partial visibility: 3/5 managers parsed"
+    },
+    {
+      "category": "Financial Liquidity",
+      "evidence": "Cash and equivalents: $13,237,000,000",
+      "direction": "positive",
+      "strength": "high",
+      "confidence": "high",
+      "source_module": "xbrl_financials",
+      "source_path": "xbrl_financials/NVDA",
+      "comment": "XBRL companyfacts API"
+    },
+    {
+      "category": "Financial Liquidity",
+      "evidence": "Working capital: $107,111,000,000",
+      "direction": "positive",
+      "strength": "high",
+      "confidence": "high",
+      "source_module": "xbrl_financials",
+      "source_path": "xbrl_financials/NVDA",
+      "comment": "Current assets - current liabilities"
+    },
+    {
+      "category": "Financial Liquidity",
+      "evidence": "Current ratio: 3.44",
+      "direction": "positive",
+      "strength": "medium",
+      "confidence": "high",
+      "source_module": "xbrl_financials",
+      "source_path": "xbrl_financials/NVDA",
+      "comment": "Current assets / current liabilities"
     }
   ],
   "synthesis_scores": {
@@ -95,7 +155,7 @@
     "financial_liquidity_score": 100,
     "ownership_visibility_score": 80,
     "data_quality_score": 100,
-    "overall_research_posture": "Weak insider-evidence / incomplete data profile"
+    "overall_research_posture": "Large operating company / institutional visibility profile"
   },
   "key_findings": [
     "1 open-market insider purchases detected totaling $250,000.00"

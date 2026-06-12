@@ -1,6 +1,6 @@
 # Batch Generic SEC Synthesis Summary
 
-**Generated:** 2026-06-12T17:19:37.783458+00:00
+**Generated:** 2026-06-12T17:40:01.008498+00:00
 
 ---
 
@@ -15,7 +15,7 @@ MAIA, NVDA
 | Ticker | Company | Overall Posture | Data Quality | Degraded |
 |--------|---------|-----------------|--------------|----------|
 | MAIA | MAIA Biotechnology, Inc. | Strong insider-evidence / high uncertainty profile | 100/100 | False |
-| NVDA | NVIDIA CORP | Weak insider-evidence / incomplete data profile | 100/100 | False |
+| NVDA | NVIDIA CORP | Large operating company / institutional visibility profile | 100/100 | False |
 
 ---
 

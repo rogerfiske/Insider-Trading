@@ -198,6 +198,10 @@ class GenericSynthesisComposer:
         if self._is_module_valid(inv):
             filing_stats = inv.get("filing_stats", {})
             total_filings = sum(filing_stats.get(ft, 0) for ft in ["4", "144", "13D", "13G", "10-Q", "10-K", "S-1", "S-3", "S-8", "8-K"])
+            form4_count = filing_stats.get("4", 0)
+            form10q_count = filing_stats.get("10-Q", 0)
+            form10k_count = filing_stats.get("10-K", 0)
+
             evidence.append({
                 "category": "Data Coverage",
                 "evidence": f"{total_filings} SEC filings found across multiple form types",
@@ -208,6 +212,32 @@ class GenericSynthesisComposer:
                 "source_path": f"sec_inventory/{ticker}",
                 "comment": "Filing inventory completeness"
             })
+
+            # Detailed Form 4 coverage
+            if form4_count > 0:
+                evidence.append({
+                    "category": "Data Coverage",
+                    "evidence": f"{form4_count} Form 4 insider transaction filings on record",
+                    "direction": "positive",
+                    "strength": "medium",
+                    "confidence": "high",
+                    "source_module": "sec_inventory",
+                    "source_path": f"sec_inventory/{ticker}",
+                    "comment": "Insider transaction filing coverage"
+                })
+
+            # Financial reporting coverage
+            if form10q_count > 0 or form10k_count > 0:
+                evidence.append({
+                    "category": "Data Coverage",
+                    "evidence": f"{form10q_count} quarterly (10-Q) and {form10k_count} annual (10-K) financial reports",
+                    "direction": "positive",
+                    "strength": "medium",
+                    "confidence": "high",
+                    "source_module": "sec_inventory",
+                    "source_path": f"sec_inventory/{ticker}",
+                    "comment": "Financial reporting coverage"
+                })
 
         # Form 4 open-market activity
         form4 = modules.get("form4_transactions", {})
@@ -254,10 +284,25 @@ class GenericSynthesisComposer:
                     "comment": "No open-market activity detected"
                 })
 
+            # Insider breadth
+            distinct_buyers = agg.get("distinct_buyers", 0)
+            if distinct_buyers > 0:
+                evidence.append({
+                    "category": "Insider Activity",
+                    "evidence": f"{distinct_buyers} distinct insider(s) made open-market purchases",
+                    "direction": "positive",
+                    "strength": "medium",
+                    "confidence": "high",
+                    "source_module": "form4_transactions",
+                    "source_path": f"form4_transactions/{ticker}",
+                    "comment": "Breadth of insider buying interest"
+                })
+
         # Form 144 sale-intent notices
         ownership = modules.get("ownership_filings", {})
         if self._is_module_valid(ownership):
-            form144_count = ownership.get("form_144_count", 0)
+            form144_summary = ownership.get("form144_summary", {})
+            form144_count = form144_summary.get("total_filings", 0)
             if form144_count > 0:
                 evidence.append({
                     "category": "Ownership Filings",
@@ -272,11 +317,14 @@ class GenericSynthesisComposer:
 
         # 13D/G beneficial ownership
         if self._is_module_valid(ownership):
-            dg_count = ownership.get("schedule_13dg_count", 0)
+            dg_summary = ownership.get("ownership_13dg_summary", {})
+            dg_count = dg_summary.get("total_filings", 0)
+            active_13d = dg_summary.get("active_13d_count", 0)
+            passive_13g = dg_summary.get("passive_13g_count", 0)
             if dg_count > 0:
                 evidence.append({
                     "category": "Ownership Filings",
-                    "evidence": f"{dg_count} Schedule 13D/G beneficial ownership filing(s)",
+                    "evidence": f"{dg_count} Schedule 13D/G beneficial ownership filing(s) ({active_13d} active 13D, {passive_13g} passive 13G)",
                     "direction": "positive",
                     "strength": "medium",
                     "confidence": "high",
@@ -320,13 +368,18 @@ class GenericSynthesisComposer:
         # Financial liquidity
         xbrl = modules.get("xbrl_financials", {})
         if self._is_module_valid(xbrl):
-            latest = xbrl.get("latest_quarterly", {}) or xbrl.get("latest_annual", {})
-            metrics = latest.get("metrics", {})
-            derived = latest.get("derived_metrics", {})
+            # Get quarterly metrics (latest values are at top level of each metric)
+            quarterly_metrics = xbrl.get("quarterly_metrics", {})
+            cash_metric = quarterly_metrics.get("cash_and_cash_equivalents", {})
+            cash = cash_metric.get("value")
 
-            cash = metrics.get("cash_and_equivalents")
-            working_capital = derived.get("working_capital")
-            runway = derived.get("cash_runway_months")
+            # Get derived metrics (at top level of XBRL JSON)
+            derived = xbrl.get("derived_metrics", {})
+            working_capital_obj = derived.get("working_capital", {})
+            working_capital = working_capital_obj.get("value") if isinstance(working_capital_obj, dict) else working_capital_obj
+
+            runway_obj = derived.get("cash_runway_months", {})
+            runway = runway_obj.get("value") if isinstance(runway_obj, dict) else runway_obj
 
             if cash is not None:
                 evidence.append({
@@ -364,13 +417,30 @@ class GenericSynthesisComposer:
                     "comment": "Based on trailing burn rate"
                 })
 
+            # Current ratio
+            current_ratio_obj = derived.get("current_ratio", {})
+            current_ratio = current_ratio_obj.get("value") if isinstance(current_ratio_obj, dict) else current_ratio_obj
+            if current_ratio is not None:
+                evidence.append({
+                    "category": "Financial Liquidity",
+                    "evidence": f"Current ratio: {current_ratio:.2f}",
+                    "direction": "positive" if current_ratio > 1.0 else "negative",
+                    "strength": "medium",
+                    "confidence": "high",
+                    "source_module": "xbrl_financials",
+                    "source_path": f"xbrl_financials/{ticker}",
+                    "comment": "Current assets / current liabilities"
+                })
+
         # Capital structure and dilution
         capital = modules.get("capital_structure", {})
         if self._is_module_valid(capital):
-            common_shares = capital.get("common_shares_outstanding")
-            dilution = capital.get("dilution_overhang", {})
-            dilution_low = dilution.get("overhang_percent_low")
-            dilution_high = dilution.get("overhang_percent_high")
+            share_counts = capital.get("share_counts", {})
+            common_shares = share_counts.get("common_shares_outstanding")
+
+            dilution_metrics = capital.get("derived_dilution_metrics", {})
+            dilution_low = dilution_metrics.get("dilution_overhang_percent_low")
+            dilution_high = dilution_metrics.get("dilution_overhang_percent_high")
 
             if common_shares is not None:
                 evidence.append({
@@ -465,8 +535,8 @@ class GenericSynthesisComposer:
         if not self._is_module_valid(capital_data):
             return None
 
-        dilution = capital_data.get("dilution_overhang", {})
-        dilution_high = dilution.get("overhang_percent_high")
+        dilution_metrics = capital_data.get("derived_dilution_metrics", {})
+        dilution_high = dilution_metrics.get("dilution_overhang_percent_high")
 
         if dilution_high is None:
             return None
@@ -481,9 +551,9 @@ class GenericSynthesisComposer:
         if not self._is_module_valid(xbrl_data):
             return None
 
-        latest = xbrl_data.get("latest_quarterly", {}) or xbrl_data.get("latest_annual", {})
-        derived = latest.get("derived_metrics", {})
-        runway = derived.get("cash_runway_months")
+        derived = xbrl_data.get("derived_metrics", {})
+        runway_obj = derived.get("cash_runway_months", {})
+        runway = runway_obj.get("value") if isinstance(runway_obj, dict) else runway_obj
 
         if runway is None or runway == "not_meaningful":
             # Profitable companies get max score
@@ -539,14 +609,8 @@ class GenericSynthesisComposer:
         """Determine overall research posture label."""
 
         # Check if this is a large operating company (NVDA-like)
-        xbrl = modules.get("xbrl_financials", {})
-        is_profitable = False
-        if self._is_module_valid(xbrl):
-            latest = xbrl.get("latest_quarterly", {}) or xbrl.get("latest_annual", {})
-            derived = latest.get("derived_metrics", {})
-            runway = derived.get("cash_runway_months")
-            if runway == "not_meaningful":
-                is_profitable = True
+        # Use liquidity score as proxy: score of 100 with no meaningful runway = profitable
+        is_profitable = (liquidity_score == 100)
 
         # Large profitable company with institutional visibility
         if is_profitable and ownership_score and ownership_score >= 50:
@@ -592,17 +656,17 @@ class GenericSynthesisComposer:
         # Financial findings
         xbrl = modules.get("xbrl_financials", {})
         if self._is_module_valid(xbrl):
-            latest = xbrl.get("latest_quarterly", {}) or xbrl.get("latest_annual", {})
-            derived = latest.get("derived_metrics", {})
-            runway = derived.get("cash_runway_months")
+            derived = xbrl.get("derived_metrics", {})
+            runway_obj = derived.get("cash_runway_months", {})
+            runway = runway_obj.get("value") if isinstance(runway_obj, dict) else runway_obj
             if runway and runway != "not_meaningful":
                 findings.append(f"Estimated cash runway: {runway:.1f} months based on trailing burn")
 
         # Dilution findings
         capital = modules.get("capital_structure", {})
         if self._is_module_valid(capital):
-            dilution = capital.get("dilution_overhang", {})
-            overhang_high = dilution.get("overhang_percent_high")
+            dilution_metrics = capital.get("derived_dilution_metrics", {})
+            overhang_high = dilution_metrics.get("dilution_overhang_percent_high")
             if overhang_high and overhang_high > 40:
                 findings.append(f"Significant dilution overhang: {overhang_high:.1f}% (high estimate)")
 
@@ -643,9 +707,9 @@ class GenericSynthesisComposer:
         # Financial monitoring
         xbrl = modules.get("xbrl_financials", {})
         if self._is_module_valid(xbrl):
-            latest = xbrl.get("latest_quarterly", {}) or xbrl.get("latest_annual", {})
-            derived = latest.get("derived_metrics", {})
-            runway = derived.get("cash_runway_months")
+            derived = xbrl.get("derived_metrics", {})
+            runway_obj = derived.get("cash_runway_months", {})
+            runway = runway_obj.get("value") if isinstance(runway_obj, dict) else runway_obj
             if runway and runway != "not_meaningful" and runway < 12:
                 triggers.append("Monitor for capital raises or burn rate improvements (10-Q filings)")
 
@@ -748,7 +812,7 @@ class GenericSynthesisComposer:
             "safety": {
                 "report_only": True,
                 "alerts_generated": False,
-                "openinsider_spreadsheet_used": False,
+                "external_spreadsheet_used": False,
                 "telegram_sent": False,
                 "email_sent": False,
                 "scheduled_tasks_modified": False,
@@ -979,7 +1043,7 @@ class GenericSynthesisComposer:
         lines.append("|------|-------|")
         lines.append(f"| Report only | {safety['report_only']} |")
         lines.append(f"| Alerts generated | {safety['alerts_generated']} |")
-        lines.append(f"| OpenInsider spreadsheet used | {safety['openinsider_spreadsheet_used']} |")
+        lines.append(f"| External spreadsheet used | {safety['external_spreadsheet_used']} |")
         lines.append(f"| Telegram sent | {safety['telegram_sent']} |")
         lines.append(f"| Email sent | {safety['email_sent']} |")
         lines.append(f"| Scheduled tasks modified | {safety['scheduled_tasks_modified']} |")
@@ -1033,7 +1097,7 @@ class GenericSynthesisComposer:
             "safety": {
                 "report_only": True,
                 "alerts_generated": False,
-                "openinsider_spreadsheet_used": False,
+                "external_spreadsheet_used": False,
                 "telegram_sent": False,
                 "email_sent": False,
                 "scheduled_tasks_modified": False,
@@ -1116,7 +1180,7 @@ class GenericSynthesisComposer:
         lines.append("|------|-------|")
         lines.append(f"| Report only | {safety['report_only']} |")
         lines.append(f"| Alerts generated | {safety['alerts_generated']} |")
-        lines.append(f"| OpenInsider spreadsheet used | {safety['openinsider_spreadsheet_used']} |")
+        lines.append(f"| External spreadsheet used | {safety['external_spreadsheet_used']} |")
         lines.append(f"| Telegram sent | {safety['telegram_sent']} |")
         lines.append(f"| Email sent | {safety['email_sent']} |")
         lines.append(f"| Scheduled tasks modified | {safety['scheduled_tasks_modified']} |")
