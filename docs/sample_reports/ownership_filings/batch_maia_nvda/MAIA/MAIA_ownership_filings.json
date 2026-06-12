@@ -1,0 +1,43 @@
+{
+  "ticker": "MAIA",
+  "issuer_cik": "0001878313",
+  "company_name": "MAIA Biotechnology, Inc.",
+  "lookback_days": 1460,
+  "form144_summary": {
+    "ticker": "UNKNOWN",
+    "issuer_cik": "0001878313",
+    "total_filings": 1,
+    "successful_parses": 0,
+    "failed_parses": 0,
+    "partial_parses": 1,
+    "earliest_filing_date": "2024-01-19",
+    "latest_filing_date": "2024-01-19",
+    "distinct_sellers": 1,
+    "report_only": true,
+    "alert_enabled": false,
+    "openinsider_required": false,
+    "generated_at": "2026-06-12T15:40:43.299240+00:00"
+  },
+  "ownership_13dg_summary": {
+    "ticker": "UNKNOWN",
+    "issuer_cik": "0001878313",
+    "total_filings": 11,
+    "active_13d_count": 5,
+    "passive_13g_count": 6,
+    "amendment_count": 3,
+    "successful_parses": 0,
+    "failed_parses": 0,
+    "partial_parses": 11,
+    "earliest_filing_date": "2022-08-10",
+    "latest_filing_date": "2026-05-15",
+    "distinct_filers": 5,
+    "report_only": true,
+    "alert_enabled": false,
+    "openinsider_required": false,
+    "generated_at": "2026-06-12T15:40:43.299240+00:00"
+  },
+  "report_only": true,
+  "alert_enabled": false,
+  "openinsider_required": false,
+  "generated_at": "2026-06-12T15:40:43.301244+00:00"
+}

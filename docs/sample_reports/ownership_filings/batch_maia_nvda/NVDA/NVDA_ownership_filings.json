@@ -1,0 +1,43 @@
+{
+  "ticker": "NVDA",
+  "issuer_cik": "0001045810",
+  "company_name": "NVIDIA CORP",
+  "lookback_days": 1460,
+  "form144_summary": {
+    "ticker": "UNKNOWN",
+    "issuer_cik": "0001045810",
+    "total_filings": 241,
+    "successful_parses": 0,
+    "failed_parses": 0,
+    "partial_parses": 241,
+    "earliest_filing_date": "2023-05-18",
+    "latest_filing_date": "2026-06-03",
+    "distinct_sellers": 1,
+    "report_only": true,
+    "alert_enabled": false,
+    "openinsider_required": false,
+    "generated_at": "2026-06-12T15:40:43.879252+00:00"
+  },
+  "ownership_13dg_summary": {
+    "ticker": "UNKNOWN",
+    "issuer_cik": "0001045810",
+    "total_filings": 14,
+    "active_13d_count": 0,
+    "passive_13g_count": 14,
+    "amendment_count": 11,
+    "successful_parses": 3,
+    "failed_parses": 0,
+    "partial_parses": 11,
+    "earliest_filing_date": "2023-01-31",
+    "latest_filing_date": "2026-04-28",
+    "distinct_filers": 4,
+    "report_only": true,
+    "alert_enabled": false,
+    "openinsider_required": false,
+    "generated_at": "2026-06-12T15:40:43.879252+00:00"
+  },
+  "report_only": true,
+  "alert_enabled": false,
+  "openinsider_required": false,
+  "generated_at": "2026-06-12T15:40:43.884244+00:00"
+}

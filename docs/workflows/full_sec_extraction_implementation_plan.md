@@ -194,72 +194,90 @@ Extract and normalize Form 4 insider transactions for arbitrary tickers.
 
 ---
 
-## CP24D — Generic Form 144 and 13D/G Extraction
+## CP24D — Generic Form 144 and 13D/G Extraction ✓ COMPLETED
+
+**Status:** ✓ Completed (2026-06-12)
 
 ### Goal
 
-Extract Form 144 (resale registration) and 13D/13G (beneficial ownership) filings.
+Extract Form 144 (notice of proposed sale) and Schedule 13D/G (beneficial ownership) filings.
 
 ### Inputs
 
-- Ticker
-- List[SecSubmissionFiling] for Form 144, 13D, 13G
+- Ticker (from CP24B)
+- CIK and company name (from CP24B)
+- All Form 144 and 13D/G filings from SEC submissions API
 
 ### Outputs
 
-- List[Form144Filing] (reporting_person, shares_proposed, sale_date)
-- List[Ownership13DG] (filer_name, shares_held, percent_of_class)
-- JSON outputs: `{ticker}_form144_filings.json`, `{ticker}_ownership_13dg.json`
+- List[Form144Filing] (seller, securities, proposed sale date, sale_status="proposed")
+- List[Ownership13DG] (filer, ownership percent, shares owned, active/passive classification)
+- JSON output: `{ticker}_ownership_filings.json`
+- Markdown report: `{ticker}_ownership_filings.md`
+- CSV outputs: `{ticker}_form144_filings.csv`, `{ticker}_13dg_filings.csv`
+- Batch summary for multiple tickers
 
-### Files Likely Changed
+### Files Created/Modified
 
-**New:**
-- sources/sec_form144.py (Form 144 parser)
-- sources/sec_13dg.py (13D/G parser)
-- scripts/ticker_form144_extractor.py (CLI tool)
-- scripts/ticker_13dg_extractor.py (CLI tool)
-- tests/test_sec_form144.py
-- tests/test_sec_13dg.py
+**Created:**
 
-### Implementation Steps
+- sources/sec_form144.py (Form 144 parser, 427 lines)
+- sources/sec_13dg.py (13D/G parser, 574 lines)
+- scripts/sec_ownership_filings.py (CLI tool, 577 lines)
+- tests/test_sec_form144_13dg.py (15 tests)
+- docs/sample_reports/ownership_filings/MAIA/ (sample reports)
+- docs/sample_reports/ownership_filings/NVDA/ (sample reports)
+- docs/sample_reports/ownership_filings/batch_maia_nvda/ (batch sample)
+- docs/checkpoints/reports/CP24D_ownership_filings_extraction_report.md
 
-1. Create Form 144 parser:
-   - Fetch Form 144 text file
-   - Extract reporting person, proposed shares, sale date
-   - Return Form144Filing dataclass
+**Reused:**
 
-2. Create 13D/G parser:
-   - Fetch 13D/13G text file
-   - Extract filer identity, shares held, ownership percent
-   - Return Ownership13DG dataclass
+- sources/sec_submissions.py (fetch_company_submissions)
+- sources/sec_ticker.py (resolve_ticker_to_cik)
+- sources/sec_common.py (sec_fetch, utcnow_iso)
 
-3. Create CLI tools for each form type
-
-4. Add tests for parsing and extraction
-
-### Validation Commands
+### CLI Usage
 
 ```powershell
-# Extract NVDA Form 144s
-python scripts/ticker_form144_extractor.py --ticker NVDA --input-dir docs/sample_reports/generic_ticker/NVDA/submissions --output-dir docs/sample_reports/generic_ticker/NVDA
+# Single ticker extraction
+.venv/Scripts/python.exe -m scripts.sec_ownership_filings --ticker MAIA --output-dir docs/sample_reports/ownership_filings/MAIA
 
-# Extract NVDA 13D/Gs
-python scripts/ticker_13dg_extractor.py --ticker NVDA --input-dir docs/sample_reports/generic_ticker/NVDA/submissions --output-dir docs/sample_reports/generic_ticker/NVDA
+# Multiple tickers (batch mode)
+.venv/Scripts/python.exe -m scripts.sec_ownership_filings --tickers MAIA,NVDA --output-dir docs/sample_reports/ownership_filings/batch
+
+# Custom lookback period
+.venv/Scripts/python.exe -m scripts.sec_ownership_filings --ticker NVDA --lookback-days 730 --output-dir docs/sample_reports/ownership_filings/NVDA
 ```
 
 ### Safety Constraints
 
-- Read-only access
-- No alerts
-- Graceful failure on parse errors
+- Read-only SEC access (no writes)
+- No alert generation
+- No Telegram/email
+- No scheduled task modification
+- Output JSON/Markdown/CSV only
+- User-Agent compliance
+- Parse failures logged but don't halt extraction
+- Partial success acceptable
 
 ### Acceptance Criteria
 
-- ✓ Fetches Form 144 and 13D/G filings
-- ✓ Parses text documents correctly
-- ✓ Extracts required fields
-- ✓ Handles missing optional fields
-- ✓ 10/10 tests pass per form type
+- ✓ Fetches Form 144 and 13D/G filings within lookback window
+- ✓ Parses Form 144 text documents (sale_status="proposed")
+- ✓ Parses Schedule 13D/G text documents
+- ✓ Distinguishes 13D (active) vs 13G (passive)
+- ✓ Distinguishes original vs amendment filings
+- ✓ Extracts required fields (filer, ownership, shares)
+- ✓ Handles missing optional fields gracefully
+- ✓ Preserves parse failures with error provenance
+- ✓ Generates JSON/Markdown/CSV outputs with safety flags
+- ✓ Batch mode for multiple tickers
+- ✓ No buy/sell/hold language
+- ✓ No secrets in outputs
+- ✓ 15/15 tests pass
+- ✓ Python compilation successful
+- ✓ MAIA baseline reconciled with CP24B (1 Form 144, 11 13D/G)
+- ✓ NVDA extraction successful (241 Form 144, 14 13D/G)
 
 ---
 

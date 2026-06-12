@@ -1,0 +1,2 @@
+ticker,issuer_cik,accession_number,filing_date,seller_name,seller_relationship,securities_to_be_sold,aggregate_market_value,approximate_date_of_sale,broker_name,exchange,notice_date,sale_status,parse_status,error_message
+UNKNOWN,0001878313,0001959173-24-000374,2024-01-19,for Whose Account the Securities are To Be Sold,to Issuer,,,,,COMMIS,2024-01-19,proposed,partial,

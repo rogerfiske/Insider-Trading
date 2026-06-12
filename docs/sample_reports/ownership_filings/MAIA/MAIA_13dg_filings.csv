@@ -1,0 +1,12 @@
+ticker,issuer_cik,accession_number,filing_date,form,filer_name,filer_cik,beneficial_owner_name,ownership_percent,shares_beneficially_owned,sole_voting_power,shared_voting_power,sole_dispositive_power,shared_dispositive_power,type_of_reporting_person,active_or_passive_classification,amendment_number,event_date,purpose_of_transaction,parse_status,error_message
+UNKNOWN,0001878313,0001604867-26-000011,2026-05-15,SCHEDULE 13G,With,,of any of the securities reported herein.,,,,,,,,passive,,,of or with the effect of changing or influencing the control of the issuer of the securities and were not acquired and are not held in connection with or as a participant in any transaction having tha,partial,
+UNKNOWN,0001878313,0001493152-25-026173,2025-12-04,SCHEDULE 13D/A,,,,,,,,,,,active,1,,of Section,partial,
+UNKNOWN,0001878313,0001493152-25-008928,2025-03-03,SCHEDULE 13G,With,,,,,,,,,,passive,,,of or with the effect of changing or influencing the control of the issuer of the securities and were not acquired and are not held in connection with or as a participant in any transaction having tha,partial,
+UNKNOWN,0001878313,0000950170-25-021496,2025-02-14,SCHEDULE 13G/A,With,,,,,,,,,,passive,1,,,partial,
+UNKNOWN,0001878313,0001193125-24-244324,2024-10-25,SC 13D/A,,,of,,,,,,,,active,1,,of Section,partial,
+UNKNOWN,0001878313,0001193125-24-244217,2024-10-25,SC 13D,has not during the last,,,,,,,,,,active,,,of Section,partial,
+UNKNOWN,0001878313,0001193125-24-244214,2024-10-25,SC 13D,has not during the last five years been convicted in a criminal proceeding,,,,,,,,,,active,,,of Section,partial,
+UNKNOWN,0001878313,0001193125-23-038036,2023-02-14,SC 13G,has ceased to be the beneficial owner of more than,,of more than,,,,,,,,passive,,,of Section,partial,
+UNKNOWN,0001878313,0001193125-23-037957,2023-02-14,SC 13G,has ceased to be the beneficial owner of more than,,of more than,,,,,,,,passive,,,of Section,partial,
+UNKNOWN,0001878313,0001193125-23-037951,2023-02-14,SC 13G,has ceased to be the beneficial owner of more than,,of more than,,,,,,,,passive,,,of Section,partial,
+UNKNOWN,0001878313,0001564590-22-028823,2022-08-10,SC 13D,WITH,,of securities held by The Stan V. Smith Trust Dated,,,,,,,,active,,,of Section,partial,
