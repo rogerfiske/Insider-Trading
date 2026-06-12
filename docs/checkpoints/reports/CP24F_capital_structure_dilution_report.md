@@ -426,7 +426,7 @@ All secrets and private files remain protected.
 
 ### Commit Hash
 
-*(To be added after commit)*
+**1b31ce7** - feat: Add capital structure dilution extraction (CP24F)
 
 ### Files Staged
 
@@ -455,7 +455,7 @@ docs/checkpoints/reports/CP24F_capital_structure_dilution_report.md
 
 ### Push Result
 
-*(To be added after push)*
+**✓ SUCCESS** - Pushed to origin/main (e6943a6..1b31ce7)
 
 ---
 
