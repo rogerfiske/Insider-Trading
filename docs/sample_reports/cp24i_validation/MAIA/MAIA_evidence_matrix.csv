@@ -1,0 +1,14 @@
+category,evidence,direction,strength,confidence,source_module,source_path,comment
+Identity,Ticker MAIA resolved to CIK 0001878313,positive,high,high,sec_inventory,sec_inventory/MAIA,SEC EDGAR confirmation
+Data Coverage,0 SEC filings found across multiple form types,positive,high,high,sec_inventory,sec_inventory/MAIA,Filing inventory completeness
+Insider Activity,"141 open-market insider purchases totaling $5,276,429.73",positive,high,high,form4_transactions,form4_transactions/MAIA,Open-market buying activity
+Insider Activity,10 distinct insider(s) made open-market purchases,positive,medium,high,form4_transactions,form4_transactions/MAIA,Breadth of insider buying interest
+Ownership Filings,1 Form 144 sale-intent notice(s) filed,neutral,medium,high,ownership_filings,ownership_filings/MAIA,"Form 144 is notice of proposed sale, not actual sale"
+Ownership Filings,"11 Schedule 13D/G beneficial ownership filing(s) (5 active 13D, 6 passive 13G)",positive,medium,high,ownership_filings,ownership_filings/MAIA,Large shareholder disclosure
+Institutional Ownership,No matches among 3/5 reviewed managers,neutral,not_applicable,medium,institutional_13f,13f_institutional_ownership/MAIA,Institutional visibility is partial
+Financial Liquidity,"Cash and equivalents: $34,413,110",positive,high,high,xbrl_financials,xbrl_financials/MAIA,XBRL companyfacts API
+Financial Liquidity,"Working capital: $28,992,690",positive,high,high,xbrl_financials,xbrl_financials/MAIA,Current assets - current liabilities
+Financial Liquidity,Cash runway: 19.4 months,positive,high,medium,xbrl_financials,xbrl_financials/MAIA,Based on trailing burn rate
+Financial Liquidity,Current ratio: 5.59,positive,medium,high,xbrl_financials,xbrl_financials/MAIA,Current assets / current liabilities
+Capital Structure,"Common shares outstanding: 60,671,491",neutral,high,high,capital_structure,capital_structure/MAIA,XBRL-sourced share count
+Capital Structure,Dilution overhang: 40.1% - 45.1%,negative,medium,medium,capital_structure,capital_structure/MAIA,Fully diluted share estimate / current shares

@@ -1,0 +1,3 @@
+ticker,cik,company_name,evidence_rows,posture,degraded,module_sec_inventory,module_form4,module_ownership,module_xbrl,module_capital,module_13f,safety_report_only,safety_no_alerts,safety_no_external_spreadsheet,safety_no_telegram,safety_no_email,safety_no_scheduled_tasks,safety_no_env_changes,safety_no_buy_sell_hold,maia_leakage_check
+MAIA,0001878313,MAIA Biotechnology Inc.,13,Strong insider-evidence / high uncertainty profile,False,success,success,success,ok,success,success,True,True,True,True,True,True,True,True,N/A
+NVDA,0001045810,NVIDIA CORP,12,Large operating company / institutional visibility profile,False,success,success,success,ok,success,success,True,True,True,True,True,True,True,True,PASS
